@@ -52,6 +52,8 @@ export function createApp(pool) {
         query: request.query.q?.toString().trim(),
         level: request.query.level?.toString(),
         tools: stringValues(request.query.tool),
+        industries: stringValues(request.query.industry),
+        departments: stringValues(request.query.department),
         technologyCategories: stringValues(request.query.technologyCategory),
         durationMinutes: positiveIntegerValues(request.query.durationMinutes),
         sort: request.query.sort?.toString(),

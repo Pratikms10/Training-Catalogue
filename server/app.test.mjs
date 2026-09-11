@@ -37,6 +37,14 @@ const fakePool = {
         ],
       };
     }
+    if (sql.includes("SELECT 'industry' AS group_id")) {
+      return {
+        rows: [
+          { group_id: 'department', value: 'Human Resources', count: 4 },
+          { group_id: 'duration', value: '240', count: 1 },
+        ],
+      };
+    }
     if (sql.includes('count(*)::integer AS total')) return { rows: [{ total: 1 }] };
     if (sql.includes('SELECT\n    ccv.*')) return { rows: [sampleRow] };
     throw new Error(`Unexpected test query: ${sql}`);
@@ -87,6 +95,15 @@ test('catalogue filters endpoint returns database-derived Tools filters', async 
   assert.equal(body.groups.length, 3);
   assert.equal(body.groups[0].options[0].label, 'ChatGPT');
   assert.equal(body.groups[2].options[0].label, '16 Hours');
+});
+
+test('catalogue filters endpoint returns database-derived Role-Based filters', async () => {
+  const response = await fetch(`${baseUrl}/api/catalogue/filters?category=role-based`);
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.groups.length, 3);
+  assert.equal(body.groups[1].options[0].label, 'Human Resources');
+  assert.equal(body.groups[2].options[0].label, '4 Hours');
 });
 
 test('detail endpoint rejects malformed course IDs before querying PostgreSQL', async () => {

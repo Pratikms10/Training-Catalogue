@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { coursesToJsonl, parseImportSource, validateToolsRecords } from './toolsImportParser.mjs';
+import { coursesToJsonl, parseImportSource, validateCourseRecords, validateToolsRecords } from './toolsImportParser.mjs';
 
 test('structured course text converts colored module items without invalid Unicode', async () => {
   const source = `Claude\t16 Hours\t"**Course ID:** TT9001
@@ -95,4 +95,48 @@ Participants complete a cited research workflow.
   assert.equal(validation.courses[0].format, null);
   assert.equal(validation.courses[0].delivery, 'Instructor-Led');
   assert.equal(validation.courses[0].scenarios[0].description, 'Participants complete a cited research workflow.');
+});
+
+test('role-based structured text maps department, skills, modules, and scenarios', async () => {
+  const source = `RB9001\tChatGPT\tHuman Resources\t4 Hours\t"**Course ID:** RB9001
+**Title:** ChatGPT for Human Resources: Pilot
+**Format:**
+**Delivery:** Instructor-Led
+**Level:** Awareness
+**Duration:** 4 Hours
+**Tools Covered:** ChatGPT, Prompting, File Analysis
+
+## Programme Objectives
+* Apply ChatGPT to representative HR work.
+
+## Who Should Attend
+* **HR Professionals**
+
+## Prerequisites
+* Basic HR knowledge
+
+## Modules
+
+### Module 1: HR Foundations
+* 🔴 Understand responsible HR use
+* 🟢 Draft an HR communication
+
+## Applied Business Scenario
+
+### Scenario 1: Policy communication
+**Policy → Summary → Review**
+
+Participants create a reviewed employee communication.
+"`;
+
+  const parsed = await parseImportSource(Buffer.from(source), 'role-sample.txt');
+  const validation = validateCourseRecords(parsed.records, parsed.sourceIssues);
+  assert.equal(validation.valid, true);
+  assert.equal(validation.courses[0].courseId, 'RB9001');
+  assert.equal(validation.courses[0].category, 'role-based');
+  assert.equal(validation.courses[0].department, 'Human Resources');
+  assert.equal(validation.courses[0].functionName, 'Human Resources');
+  assert.deepEqual(validation.courses[0].relatedSkills, ['ChatGPT', 'Prompting', 'File Analysis']);
+  assert.equal(validation.courses[0].modules.length, 1);
+  assert.equal(validation.courses[0].scenarios.length, 1);
 });

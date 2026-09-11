@@ -9,7 +9,7 @@ import { CourseDetail } from './components/CourseDetail';
 import { FooterStructure } from './components/FooterStructure';
 import { RfqModal } from './components/RfqModal';
 import { FloatingActions } from './components/FloatingActions';
-import { roleBasedProgrammes, peopleProcessProgrammes } from './data/actualProgrammes';
+import { peopleProcessProgrammes } from './data/actualProgrammes';
 import { fetchCourseById } from './api/catalogueApi';
 import { ImportCentre } from './components/admin/ImportCentre';
 
@@ -31,8 +31,9 @@ export default function App() {
         const id = decodeURIComponent(path.replace('/programmes/', '')).toUpperCase();
         setProgrammeLoadError(null);
 
-        if (id.startsWith('TT')) {
-          setActiveCategoryId('tools-technology');
+        if (id.startsWith('TT') || id.startsWith('RB')) {
+          const databaseCategory: CategoryId = id.startsWith('TT') ? 'tools-technology' : 'role-based';
+          setActiveCategoryId(databaseCategory);
           setSelectedProgramme(null);
           setIsProgrammeLoading(true);
           const controller = new AbortController();
@@ -46,7 +47,7 @@ export default function App() {
               setSelectedProgramme({
                 id: 'NOT_FOUND',
                 title: 'Programme Not Found',
-                category: 'tools-technology',
+                category: databaseCategory,
                 level: 'Awareness',
               });
             })
@@ -57,13 +58,11 @@ export default function App() {
         }
 
         let prog: BaseProgramme | undefined;
-        if (id.startsWith('RB')) prog = roleBasedProgrammes.find(p => p.id === id);
-        else if (id.startsWith('PP')) prog = peopleProcessProgrammes.find(p => p.id === id);
+        if (id.startsWith('PP')) prog = peopleProcessProgrammes.find(p => p.id === id);
 
         setIsProgrammeLoading(false);
         if (prog) {
-          if (id.startsWith('RB')) setActiveCategoryId('role-based');
-          else if (id.startsWith('PP')) setActiveCategoryId('people-process');
+          if (id.startsWith('PP')) setActiveCategoryId('people-process');
           setSelectedProgramme(prog);
         } else {
           setSelectedProgramme({

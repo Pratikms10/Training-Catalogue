@@ -21,8 +21,10 @@ export interface ImportPreview {
   issues: ImportIssue[];
   sample: Array<{
     courseId: string;
+    category: 'tools-technology' | 'role-based';
     title: string;
-    toolName: string;
+    toolName?: string;
+    department?: string;
     level: string;
     durationMinutes: number;
     modules: number;

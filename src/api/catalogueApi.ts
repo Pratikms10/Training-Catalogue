@@ -1,5 +1,5 @@
-import { AnyProgramme, ToolsTechProgramme } from '../types';
-import { FilterGroupConfig, SortOption, ToolsTechnologyFilterState } from '../types/filters';
+import { AnyProgramme, RoleBasedProgramme, ToolsTechProgramme } from '../types';
+import { FilterGroupConfig, RoleBasedFilterState, SortOption, ToolsTechnologyFilterState } from '../types/filters';
 
 export const CATALOGUE_PAGE_SIZE = 9;
 
@@ -10,8 +10,8 @@ interface Pagination {
   totalPages: number;
 }
 
-interface CourseListResponse {
-  data: ToolsTechProgramme[];
+interface CourseListResponse<TProgramme> {
+  data: TProgramme[];
   pagination: Pagination;
 }
 
@@ -26,6 +26,14 @@ interface CourseDetailResponse {
 interface ToolsCourseQuery {
   query: string;
   filters: ToolsTechnologyFilterState;
+  sort: SortOption;
+  page: number;
+  signal?: AbortSignal;
+}
+
+interface RoleCourseQuery {
+  query: string;
+  filters: RoleBasedFilterState;
   sort: SortOption;
   page: number;
   signal?: AbortSignal;
@@ -66,12 +74,44 @@ export function fetchToolsProgrammes({ query, filters, sort, page, signal }: Too
     params.set('sort', sort);
   }
 
-  return requestJson<CourseListResponse>(`/api/courses?${params}`, signal);
+  return requestJson<CourseListResponse<ToolsTechProgramme>>(`/api/courses?${params}`, signal);
 }
 
 export async function fetchToolsFilterGroups(signal?: AbortSignal) {
   const response = await requestJson<FilterGroupsResponse>(
     '/api/catalogue/filters?category=tools-technology',
+    signal,
+  );
+  return response.groups;
+}
+
+export function fetchRoleProgrammes({ query, filters, sort, page, signal }: RoleCourseQuery) {
+  const params = new URLSearchParams({
+    category: 'role-based',
+    page: String(page),
+    pageSize: String(CATALOGUE_PAGE_SIZE),
+  });
+
+  if (query.trim()) params.set('q', query.trim());
+  filters.industries.forEach((value) => params.append('industry', value));
+  filters.departments.forEach((value) => params.append('department', value));
+  filters.durations.forEach((value) => {
+    const minutes = durationToMinutes(value);
+    if (minutes) params.append('durationMinutes', String(minutes));
+  });
+
+  if (['Awareness', 'Basic', 'Intermediate', 'Advanced'].includes(sort)) {
+    params.set('level', sort);
+  } else {
+    params.set('sort', sort);
+  }
+
+  return requestJson<CourseListResponse<RoleBasedProgramme>>(`/api/courses?${params}`, signal);
+}
+
+export async function fetchRoleFilterGroups(signal?: AbortSignal) {
+  const response = await requestJson<FilterGroupsResponse>(
+    '/api/catalogue/filters?category=role-based',
     signal,
   );
   return response.groups;

@@ -84,6 +84,8 @@ function buildFilters(filters) {
     conditions.push(`c.level_code = ${addValue(filters.level)}`);
   }
   if (filters.tools?.length) conditions.push(`tt.tool_name = ANY(${addValue(filters.tools)}::text[])`);
+  if (filters.industries?.length) conditions.push(`rb.industry = ANY(${addValue(filters.industries)}::text[])`);
+  if (filters.departments?.length) conditions.push(`rb.department = ANY(${addValue(filters.departments)}::text[])`);
   if (filters.technologyCategories?.length) {
     conditions.push(`EXISTS (
       SELECT 1 FROM catalogue.course_technology_categories filter_ctc
@@ -102,6 +104,20 @@ function buildFilters(filters) {
       OR c.course_id ILIKE '%' || ${queryParameter} || '%'
       OR tt.tool_name ILIKE '%' || ${queryParameter} || '%'
       OR tt.vendor ILIKE '%' || ${queryParameter} || '%'
+      OR rb.industry ILIKE '%' || ${queryParameter} || '%'
+      OR rb.department ILIKE '%' || ${queryParameter} || '%'
+      OR rb.function_name ILIKE '%' || ${queryParameter} || '%'
+      OR rb.role_title ILIKE '%' || ${queryParameter} || '%'
+      OR EXISTS (
+        SELECT 1 FROM catalogue.course_related_skills search_skills
+        WHERE search_skills.course_id = c.course_id
+          AND search_skills.skill ILIKE '%' || ${queryParameter} || '%'
+      )
+      OR EXISTS (
+        SELECT 1 FROM catalogue.course_tools search_tools
+        WHERE search_tools.course_id = c.course_id
+          AND search_tools.tool_name ILIKE '%' || ${queryParameter} || '%'
+      )
     )`);
   }
 
@@ -114,6 +130,7 @@ const catalogueSelect = `
   FROM catalogue.course_catalogue_view ccv
   JOIN catalogue.courses c ON c.course_id = ccv.course_id
   LEFT JOIN catalogue.tools_technology_details tt ON tt.course_id = c.course_id
+  LEFT JOIN catalogue.role_based_details rb ON rb.course_id = c.course_id
 `;
 
 export async function listCourses(pool, filters) {
@@ -132,6 +149,7 @@ export async function listCourses(pool, filters) {
     SELECT count(*)::integer AS total
     FROM catalogue.courses c
     LEFT JOIN catalogue.tools_technology_details tt ON tt.course_id = c.course_id
+    LEFT JOIN catalogue.role_based_details rb ON rb.course_id = c.course_id
     WHERE ${whereSql}
   `;
   const dataSql = `${catalogueSelect}
@@ -229,7 +247,50 @@ export async function getCourseById(pool, courseId) {
 
 export async function getCatalogueFilters(pool, category) {
   if (!allowedCategories.has(category)) throw new Error('Invalid category filter.');
-  if (category !== 'tools-technology') return { groups: [] };
+  if (category === 'people-process') return { groups: [] };
+
+  if (category === 'role-based') {
+    const result = await pool.query(`
+      SELECT 'industry' AS group_id, rb.industry AS value, count(*)::integer AS count
+      FROM catalogue.courses c
+      JOIN catalogue.role_based_details rb ON rb.course_id = c.course_id
+      WHERE c.status = 'published' AND c.category_code = 'role-based' AND rb.industry IS NOT NULL
+      GROUP BY rb.industry
+      UNION ALL
+      SELECT 'department', rb.department, count(*)::integer
+      FROM catalogue.courses c
+      JOIN catalogue.role_based_details rb ON rb.course_id = c.course_id
+      WHERE c.status = 'published' AND c.category_code = 'role-based' AND rb.department IS NOT NULL
+      GROUP BY rb.department
+      UNION ALL
+      SELECT 'duration', c.duration_minutes::text, count(*)::integer
+      FROM catalogue.courses c
+      WHERE c.status = 'published' AND c.category_code = 'role-based'
+      GROUP BY c.duration_minutes
+    `);
+
+    const definitions = [
+      { id: 'industry', title: 'Industry' },
+      { id: 'department', title: 'Department', initialVisibleCount: 8 },
+      { id: 'duration', title: 'Duration' },
+    ];
+    return {
+      groups: definitions.map((definition) => ({
+        ...definition,
+        allowMultiple: true,
+        options: result.rows
+          .filter((row) => row.group_id === definition.id)
+          .map((row) => ({
+            id: definition.id === 'duration' ? durationLabel(Number(row.value)) : row.value,
+            label: definition.id === 'duration' ? durationLabel(Number(row.value)) : row.value,
+            count: row.count,
+          }))
+          .sort((left, right) => definition.id === 'duration'
+            ? Number.parseInt(left.id, 10) - Number.parseInt(right.id, 10)
+            : left.label.localeCompare(right.label)),
+      })),
+    };
+  }
 
   const result = await pool.query(`
     SELECT 'technology' AS group_id, tt.tool_name AS value, count(*)::integer AS count

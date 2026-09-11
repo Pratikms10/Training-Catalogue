@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDebounce } from '../hooks/useDebounce';
-import { CategoryId, BaseProgramme, ToolsTechProgramme } from '../types';
+import { CategoryId, BaseProgramme, RoleBasedProgramme, ToolsTechProgramme } from '../types';
 import {
-  roleBasedProgrammes,
   peopleProcessProgrammes,
 } from '../data/actualProgrammes';
 import {
@@ -13,7 +12,6 @@ import {
   PeopleProcessFilterState,
 } from '../types/filters';
 import {
-  filterRoleBasedProgrammes,
   filterPeopleProcessProgrammes,
   getRoleBasedActiveChips,
   getToolsTechnologyActiveChips,
@@ -21,6 +19,8 @@ import {
 } from '../utils/catalogueFiltering';
 import {
   CATALOGUE_PAGE_SIZE,
+  fetchRoleFilterGroups,
+  fetchRoleProgrammes,
   fetchToolsFilterGroups,
   fetchToolsProgrammes,
 } from '../api/catalogueApi';
@@ -72,6 +72,15 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
   const [toolsError, setToolsError] = useState<string | null>(null);
   const [toolsReloadToken, setToolsReloadToken] = useState(0);
 
+  // Role-Based is also database-backed so departments and future course volumes stay server-side.
+  const [roleProgrammes, setRoleProgrammes] = useState<RoleBasedProgramme[]>([]);
+  const [roleTotal, setRoleTotal] = useState(0);
+  const [rolePage, setRolePage] = useState(1);
+  const [roleFilterGroups, setRoleFilterGroups] = useState<FilterGroupConfig[]>([]);
+  const [roleLoading, setRoleLoading] = useState(false);
+  const [roleError, setRoleError] = useState<string | null>(null);
+  const [roleReloadToken, setRoleReloadToken] = useState(0);
+
   // Requirement 20 & 21: Reset filters, search query, and sort on category change
   useEffect(() => {
     setSearchQuery('');
@@ -80,6 +89,7 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
     setToolsTechFilters(INITIAL_TT_FILTERS);
     setPeopleProcessFilters(INITIAL_PP_FILTERS);
     setToolsPage(1);
+    setRolePage(1);
     setIsMobileFiltersOpen(false);
   }, [activeCategoryId]);
 
@@ -95,6 +105,19 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
 
     return () => controller.abort();
   }, [activeCategoryId, toolsFilterGroups.length, toolsReloadToken]);
+
+  useEffect(() => {
+    if (activeCategoryId !== 'role-based' || roleFilterGroups.length > 0) return;
+    const controller = new AbortController();
+
+    fetchRoleFilterGroups(controller.signal)
+      .then(setRoleFilterGroups)
+      .catch((error: Error) => {
+        if (error.name !== 'AbortError') setRoleError(error.message);
+      });
+
+    return () => controller.abort();
+  }, [activeCategoryId, roleFilterGroups.length, roleReloadToken]);
 
   useEffect(() => {
     if (activeCategoryId !== 'tools-technology') return;
@@ -127,9 +150,41 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
     return () => controller.abort();
   }, [activeCategoryId, debouncedSearchQuery, sortBy, toolsTechFilters, toolsPage, toolsReloadToken]);
 
+  useEffect(() => {
+    if (activeCategoryId !== 'role-based') return;
+    const controller = new AbortController();
+    setRoleLoading(true);
+    setRoleError(null);
+
+    fetchRoleProgrammes({
+      query: debouncedSearchQuery,
+      filters: roleBasedFilters,
+      sort: sortBy,
+      page: rolePage,
+      signal: controller.signal,
+    })
+      .then((response) => {
+        setRoleProgrammes(response.data);
+        setRoleTotal(response.pagination.total);
+      })
+      .catch((error: Error) => {
+        if (error.name !== 'AbortError') {
+          setRoleProgrammes([]);
+          setRoleTotal(0);
+          setRoleError(error.message);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setRoleLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [activeCategoryId, debouncedSearchQuery, sortBy, roleBasedFilters, rolePage, roleReloadToken]);
+
   // Handle filter toggles dynamically by group ID
   const handleToggleFilter = (groupId: string, value: string) => {
     if (activeCategoryId === 'role-based') {
+      setRolePage(1);
       setRoleBasedFilters((prev) => {
         if (groupId === 'industry') {
           const exists = prev.industries.includes(value);
@@ -211,6 +266,7 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
   // Clear filters for the current category
   const handleClearCategoryFilters = () => {
     if (activeCategoryId === 'role-based') {
+      setRolePage(1);
       setRoleBasedFilters(INITIAL_RB_FILTERS);
     } else if (activeCategoryId === 'tools-technology') {
       setToolsPage(1);
@@ -268,7 +324,7 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
   // Filtered programme results based on active category, search, filters and sort
   const filteredProgrammes = useMemo(() => {
     if (activeCategoryId === 'role-based') {
-      return filterRoleBasedProgrammes(roleBasedProgrammes, debouncedSearchQuery, roleBasedFilters, sortBy);
+      return roleProgrammes;
     }
     if (activeCategoryId === 'tools-technology') {
       return toolsProgrammes;
@@ -277,28 +333,31 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
       return filterPeopleProcessProgrammes(peopleProcessProgrammes, debouncedSearchQuery, peopleProcessFilters, sortBy);
     }
     return [];
-  }, [activeCategoryId, debouncedSearchQuery, sortBy, roleBasedFilters, peopleProcessFilters, toolsProgrammes]);
+  }, [activeCategoryId, debouncedSearchQuery, sortBy, roleBasedFilters, peopleProcessFilters, roleProgrammes, toolsProgrammes]);
 
   // Category Total Metadata
   const totalCategoryCount = useMemo(() => {
-    if (activeCategoryId === 'role-based') return roleBasedProgrammes.length;
+    if (activeCategoryId === 'role-based') return roleTotal;
     if (activeCategoryId === 'tools-technology') return toolsTotal;
     if (activeCategoryId === 'people-process') return peopleProcessProgrammes.length;
     return 0;
-  }, [activeCategoryId, toolsTotal]);
+  }, [activeCategoryId, roleTotal, toolsTotal]);
 
   const handleSearchChange = (value: string) => {
     if (activeCategoryId === 'tools-technology') setToolsPage(1);
+    if (activeCategoryId === 'role-based') setRolePage(1);
     setSearchQuery(value);
   };
 
   const handleSortChange = (value: SortOption) => {
     if (activeCategoryId === 'tools-technology') setToolsPage(1);
+    if (activeCategoryId === 'role-based') setRolePage(1);
     setSortBy(value);
   };
 
   const handleClearSearch = () => {
     if (activeCategoryId === 'tools-technology') setToolsPage(1);
+    if (activeCategoryId === 'role-based') setRolePage(1);
     setSearchQuery('');
   };
 
@@ -349,6 +408,18 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
             </button>
           </div>
         )}
+        {activeCategoryId === 'role-based' && roleError && (
+          <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
+            <span>Unable to load the Role-Based catalogue: {roleError}</span>
+            <button
+              type="button"
+              className="shrink-0 font-semibold underline"
+              onClick={() => setRoleReloadToken((value) => value + 1)}
+            >
+              Retry
+            </button>
+          </div>
+        )}
         {/* MAIN BODY: Dynamic Filter Sidebar + Catalogue Results */}
         <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
           {/* Dynamic Filter Panel (Desktop Sidebar & Mobile Drawer) */}
@@ -360,8 +431,12 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
             activeCount={activeChips.length}
             isMobileOpen={isMobileFiltersOpen}
             onCloseMobile={() => setIsMobileFiltersOpen(false)}
-            totalResultsCount={activeCategoryId === 'tools-technology' ? toolsTotal : filteredProgrammes.length}
-            groupsOverride={activeCategoryId === 'tools-technology' && toolsFilterGroups.length > 0 ? toolsFilterGroups : undefined}
+            totalResultsCount={activeCategoryId === 'tools-technology' ? toolsTotal : activeCategoryId === 'role-based' ? roleTotal : filteredProgrammes.length}
+            groupsOverride={activeCategoryId === 'tools-technology' && toolsFilterGroups.length > 0
+              ? toolsFilterGroups
+              : activeCategoryId === 'role-based' && roleFilterGroups.length > 0
+                ? roleFilterGroups
+                : undefined}
           />
 
           {/* Results Column (Active Chips + Result Count + Grid or Empty State) */}
@@ -379,11 +454,11 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
             hasActiveSearch={hasActiveSearch}
             hasActiveFilters={hasActiveFilters}
             onViewDetail={onViewDetail}
-            totalResultsCount={activeCategoryId === 'tools-technology' ? toolsTotal : undefined}
-            currentPage={activeCategoryId === 'tools-technology' ? toolsPage : undefined}
-            pageSize={activeCategoryId === 'tools-technology' ? CATALOGUE_PAGE_SIZE : undefined}
-            onPageChange={activeCategoryId === 'tools-technology' ? setToolsPage : undefined}
-            isLoading={activeCategoryId === 'tools-technology' ? toolsLoading : undefined}
+            totalResultsCount={activeCategoryId === 'tools-technology' ? toolsTotal : activeCategoryId === 'role-based' ? roleTotal : undefined}
+            currentPage={activeCategoryId === 'tools-technology' ? toolsPage : activeCategoryId === 'role-based' ? rolePage : undefined}
+            pageSize={activeCategoryId === 'tools-technology' || activeCategoryId === 'role-based' ? CATALOGUE_PAGE_SIZE : undefined}
+            onPageChange={activeCategoryId === 'tools-technology' ? setToolsPage : activeCategoryId === 'role-based' ? setRolePage : undefined}
+            isLoading={activeCategoryId === 'tools-technology' ? toolsLoading : activeCategoryId === 'role-based' ? roleLoading : undefined}
           />
         </div>
       </div>

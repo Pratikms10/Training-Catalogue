@@ -5,7 +5,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
-import { coursesToJsonl, parseImportSource, validateToolsRecords } from './toolsImportParser.mjs';
+import { coursesToJsonl, parseImportSource, validateCourseRecords } from './toolsImportParser.mjs';
 
 const execFileAsync = promisify(execFile);
 const serverDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -43,16 +43,24 @@ function safeFileName(value) {
 async function findDatabaseConflicts(pool, courses) {
   if (courses.length === 0) return [];
   const result = await pool.query(
-    `SELECT c.course_id, c.title, tt.tool_name
+    `SELECT c.course_id, c.category_code, c.title, tt.tool_name, rb.department
      FROM catalogue.courses c
      LEFT JOIN catalogue.tools_technology_details tt ON tt.course_id = c.course_id
+     LEFT JOIN catalogue.role_based_details rb ON rb.course_id = c.course_id
      WHERE c.course_id = ANY($1::text[])`,
     [courses.map((course) => course.courseId)],
   );
   const incoming = new Map(courses.map((course) => [course.courseId, course]));
   return result.rows.flatMap((row) => {
     const course = incoming.get(row.course_id);
-    const sameIdentity = course?.title === row.title && course?.toolName === row.tool_name;
+    const sameCategory = course?.category === row.category_code;
+    const sameCategoryIdentity = row.category_code === 'role-based'
+      ? course?.department === row.department
+      : course?.toolName === row.tool_name;
+    const sameIdentity = sameCategory && course?.title === row.title && sameCategoryIdentity;
+    const existingDescriptor = row.category_code === 'role-based'
+      ? row.department || 'unknown department'
+      : row.tool_name || 'unknown tool';
     return [{
       severity: sameIdentity ? 'warning' : 'error',
       code: sameIdentity ? 'EXISTING_COURSE_UPDATE' : 'EXISTING_COURSE_CONFLICT',
@@ -61,7 +69,7 @@ async function findDatabaseConflicts(pool, courses) {
       field: 'courseId',
       message: sameIdentity
         ? 'This Course ID already exists and will be updated.'
-        : `This Course ID belongs to “${row.title}” (${row.tool_name || 'unknown tool'}). The incoming record has a different identity and was rejected.`,
+        : `This Course ID belongs to “${row.title}” (${existingDescriptor}). The incoming record has a different identity and was rejected.`,
     }];
   });
 }
@@ -81,7 +89,7 @@ export function createImportCentreRouter(pool) {
       }
 
       const parsed = await parseImportSource(request.body, fileName);
-      const validation = validateToolsRecords(parsed.records, parsed.sourceIssues);
+      const validation = validateCourseRecords(parsed.records, parsed.sourceIssues);
       const conflictIssues = await findDatabaseConflicts(pool, validation.courses);
       const issues = [...validation.issues, ...conflictIssues];
       const rejectedIds = new Set(
@@ -114,8 +122,10 @@ export function createImportCentreRouter(pool) {
         issues,
         sample: validCourses.slice(0, 5).map((course) => ({
           courseId: course.courseId,
+          category: course.category,
           title: course.title,
           toolName: course.toolName,
+          department: course.department,
           level: course.level,
           durationMinutes: course.durationMinutes,
           modules: course.modules.length,

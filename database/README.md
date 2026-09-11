@@ -60,8 +60,10 @@ Read endpoints:
 
 - `GET /api/health`
 - `GET /api/courses?page=1&pageSize=24&category=tools-technology`
+- `GET /api/courses?page=1&pageSize=24&category=role-based`
 - `GET /api/courses?q=chatgpt&level=Intermediate`
 - `GET /api/courses/TT0003`
+- `GET /api/courses/RB0001`
 
 ## Local Import Centre
 
@@ -70,9 +72,11 @@ The local Import Centre accepts:
 
 - `.xlsx` files created from the downloadable workbook template
 - `.json` and `.jsonl` files
-- structured course text containing the Course ID, programme sections, modules, and scenarios
+- structured Tools or Role-Based course text containing the Course ID, programme sections, modules, and scenarios
 
 The preview step converts the source to normalized JSONL, validates all records, checks incoming Course IDs against the database, and shows rejected rows before any write. The commit step imports valid rows with upsert semantics. It never deletes courses that are absent from an incoming batch.
+
+Role-Based structured-text rows use `Course ID`, `Tool`, `Department`, and `Duration` before the quoted Markdown record. The department is stored in `role_based_details`; Tools Covered are also available as related skills for catalogue cards and search.
 
 The import routes are available only from the local machine during development. Production keeps them disabled unless `ENABLE_IMPORT_CENTRE=true` is deliberately configured; authentication must be added before enabling them on a public deployment.
 

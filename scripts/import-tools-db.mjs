@@ -13,12 +13,14 @@ const canonicalPath = inputArgument
 const canonicalText = await fs.readFile(canonicalPath, 'utf8');
 const canonical = JSON.parse(canonicalText);
 const courses = canonical.courses;
+const supportedCategories = new Set(['tools-technology', 'role-based']);
+const category = courses?.[0]?.category;
 
 if (!Array.isArray(courses) || courses.length === 0) {
-  throw new Error('Canonical Tools data is missing or contains no courses. Run npm run import:tools first.');
+  throw new Error('Canonical course data is missing or contains no courses.');
 }
-if (courses.some((course) => course.category !== 'tools-technology')) {
-  throw new Error('Canonical Tools data contains a course from another category.');
+if (!supportedCategories.has(category) || courses.some((course) => course.category !== category)) {
+  throw new Error('Every course in a batch must use the same supported category.');
 }
 
 const actor = process.env.IMPORT_ACTOR?.trim() || 'local-admin';
@@ -48,7 +50,7 @@ try {
        ), inserted_rows AS (
          INSERT INTO catalogue.import_rows
            (batch_id, sheet_name, row_number, course_id, status, payload)
-         SELECT $1, 'Canonical Tools JSON', display_order, course->>'courseId', 'valid', course
+         SELECT $1, 'Canonical Course JSON', display_order, course->>'courseId', 'valid', course
          FROM incoming
          RETURNING 1
        )
@@ -68,7 +70,7 @@ try {
           summary, objective, image_url, status, source_reference, published_at)
        SELECT
          course->>'courseId',
-         'tools-technology',
+         course->>'category',
          course->>'title',
          course->>'level',
          (course->>'durationMinutes')::integer,
@@ -78,7 +80,7 @@ try {
          (SELECT string_agg(objective, E'\n' ORDER BY display_order)
           FROM jsonb_array_elements_text(COALESCE(course->'objectives', '[]'::jsonb))
                WITH ORDINALITY AS objective_item(objective, display_order)),
-         NULLIF(course->>'toolLogoUrl', ''),
+         NULLIF(COALESCE(course->>'imageUrl', course->>'toolLogoUrl'), ''),
          'published',
          $2,
          now()
@@ -113,11 +115,35 @@ try {
          NULLIF(course->>'toolLogoUrl', ''),
          NULLIF(course->>'skillArea', '')
        FROM incoming
+       WHERE course->>'category' = 'tools-technology'
        ON CONFLICT (course_id) DO UPDATE SET
          tool_name = EXCLUDED.tool_name,
          vendor = EXCLUDED.vendor,
          tool_logo_url = EXCLUDED.tool_logo_url,
          skill_area = EXCLUDED.skill_area`,
+      [coursePayload],
+    );
+
+    await client.query(
+      `WITH incoming AS (
+         SELECT course
+         FROM jsonb_array_elements($1::jsonb) AS item(course)
+       )
+       INSERT INTO catalogue.role_based_details
+         (course_id, industry, department, function_name, role_title)
+       SELECT
+         course->>'courseId',
+         NULLIF(course->>'industry', ''),
+         NULLIF(course->>'department', ''),
+         NULLIF(course->>'functionName', ''),
+         NULLIF(course->>'roleTitle', '')
+       FROM incoming
+       WHERE course->>'category' = 'role-based'
+       ON CONFLICT (course_id) DO UPDATE SET
+         industry = EXCLUDED.industry,
+         department = EXCLUDED.department,
+         function_name = EXCLUDED.function_name,
+         role_title = EXCLUDED.role_title`,
       [coursePayload],
     );
 
@@ -130,6 +156,9 @@ try {
          WHERE target.course_id = source.course_id RETURNING 1
        ), deleted_tools AS (
          DELETE FROM catalogue.course_tools target USING incoming_ids source
+         WHERE target.course_id = source.course_id RETURNING 1
+       ), deleted_related_skills AS (
+         DELETE FROM catalogue.course_related_skills target USING incoming_ids source
          WHERE target.course_id = source.course_id RETURNING 1
        ), deleted_categories AS (
          DELETE FROM catalogue.course_technology_categories target USING incoming_ids source
@@ -150,6 +179,7 @@ try {
        SELECT
          (SELECT count(*) FROM deleted_objectives) +
          (SELECT count(*) FROM deleted_tools) +
+         (SELECT count(*) FROM deleted_related_skills) +
          (SELECT count(*) FROM deleted_categories) +
          (SELECT count(*) FROM deleted_audiences) +
          (SELECT count(*) FROM deleted_prerequisites) +
@@ -174,6 +204,13 @@ try {
          SELECT course->>'courseId', value, display_order
          FROM incoming
          CROSS JOIN LATERAL jsonb_array_elements_text(COALESCE(course->'toolsCovered', '[]'::jsonb))
+           WITH ORDINALITY AS item(value, display_order)
+         RETURNING 1
+       ), inserted_related_skills AS (
+         INSERT INTO catalogue.course_related_skills (course_id, skill, display_order)
+         SELECT course->>'courseId', value, display_order
+         FROM incoming
+         CROSS JOIN LATERAL jsonb_array_elements_text(COALESCE(course->'relatedSkills', '[]'::jsonb))
            WITH ORDINALITY AS item(value, display_order)
          RETURNING 1
        ), inserted_categories AS (
@@ -201,6 +238,7 @@ try {
        SELECT
          (SELECT count(*) FROM inserted_objectives) +
          (SELECT count(*) FROM inserted_tools) +
+         (SELECT count(*) FROM inserted_related_skills) +
          (SELECT count(*) FROM inserted_categories) +
          (SELECT count(*) FROM inserted_audiences) +
          (SELECT count(*) FROM inserted_prerequisites) AS inserted_rows`,
@@ -285,13 +323,16 @@ try {
        SET status = 'completed',
            imported_rows = (SELECT count(*) FROM updated_rows),
            completed_at = now(),
-           metadata = jsonb_build_object('scenarioRows', (SELECT count(*) FROM inserted_scenarios))
+           metadata = jsonb_build_object(
+             'category', $3::text,
+             'scenarioRows', (SELECT count(*) FROM inserted_scenarios)
+           )
        WHERE id = $1`,
-      [batchId, coursePayload],
+      [batchId, coursePayload, category],
     );
 
     await client.query('COMMIT');
-    console.log(`Imported ${courses.length} Tools courses in batch ${batchId}.`);
+    console.log(`Imported ${courses.length} ${category} courses in batch ${batchId}.`);
   } catch (error) {
     await client.query('ROLLBACK');
     await pool.query(

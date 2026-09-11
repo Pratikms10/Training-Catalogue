@@ -57,7 +57,7 @@ export const ImportCentre: React.FC = () => {
         <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-[#0000FF]">Local administration</p>
         <h1 id="import-centre-title" className="text-3xl font-bold text-black">Course Import Centre</h1>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-black/65">
-          Upload an Excel, JSON, JSONL, or structured course-text file. Validation happens before Supabase is changed.
+          Upload a Tools or Role-Based Excel, JSON, JSONL, or structured course-text file. Validation happens before Supabase is changed.
           Rejected records are skipped and listed below.
         </p>
       </div>
@@ -207,7 +207,7 @@ export const ImportCentre: React.FC = () => {
               <div key={course.courseId} className="rounded-lg border border-blue-100 bg-white p-4 text-sm">
                 <div className="font-mono text-xs font-semibold text-[#0000FF]">{course.courseId}</div>
                 <div className="mt-1 font-bold">{course.title}</div>
-                <div className="mt-2 text-xs text-black/55">{course.toolName} · {course.level} · {course.durationMinutes / 60} hours · {course.modules} modules · {course.scenarios} scenarios</div>
+                <div className="mt-2 text-xs text-black/55">{course.department || course.toolName || course.category} · {course.level} · {course.durationMinutes / 60} hours · {course.modules} modules · {course.scenarios} scenarios</div>
               </div>
             ))}
           </div>

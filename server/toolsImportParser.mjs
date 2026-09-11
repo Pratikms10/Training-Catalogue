@@ -155,17 +155,37 @@ function inferTechnologyCategories(toolName) {
   return ['AI'];
 }
 
+function inferDepartmentFromMarkdown(markdown) {
+  const title = field(markdown, 'Title') || '';
+  return cleanString(title.match(/\bfor\s+(.+?):/i)?.[1]);
+}
+
 function parseStructuredCourseText(text) {
-  const rowHeader = /^(?<tool>[^\t\r\n]+)\t(?<duration>[^\t\r\n]+)\t"(?=\*\*Course ID:\*\*)/gm;
+  const toolsRowHeader = /^(?<tool>[^\t\r\n]+)\t(?<duration>[^\t\r\n]+)\t"(?=\*\*Course ID:\*\*)/gm;
+  const roleRowHeader = /^(?<headerCourseId>RB\d{4,})\t(?<tool>[^\t\r\n]+)\t(?<department>[^\t\r\n]+)\t(?<duration>[^\t\r\n]+)\t"(?=\*\*Course ID:\*\*)/gm;
   let normalizedText = text;
+  let rowHeader = roleRowHeader;
   let headers = [...normalizedText.matchAll(rowHeader)];
+  if (headers.length === 0) {
+    rowHeader = toolsRowHeader;
+    headers = [...normalizedText.matchAll(rowHeader)];
+  }
   const standaloneMarkdown = text.trimStart().replace(/^"/, '');
   if (headers.length === 0 && field(standaloneMarkdown, 'Course ID')) {
+    const courseId = field(standaloneMarkdown, 'Course ID').toUpperCase();
     const toolName = inferToolNameFromMarkdown(standaloneMarkdown);
     const duration = field(standaloneMarkdown, 'Duration');
     if (!toolName) throw new Error('Could not infer the tool name from the standalone course title or tools covered.');
     if (!duration) throw new Error('The standalone course is missing a duration.');
-    normalizedText = `${toolName}\t${duration}\t"${standaloneMarkdown}`;
+    if (courseId.startsWith('RB')) {
+      const department = inferDepartmentFromMarkdown(standaloneMarkdown);
+      if (!department) throw new Error('Could not infer the department from the standalone Role-Based course title.');
+      rowHeader = roleRowHeader;
+      normalizedText = `${courseId}\t${toolName}\t${department}\t${duration}\t"${standaloneMarkdown}`;
+    } else {
+      rowHeader = toolsRowHeader;
+      normalizedText = `${toolName}\t${duration}\t"${standaloneMarkdown}`;
+    }
     headers = [...normalizedText.matchAll(rowHeader)];
   }
   if (headers.length === 0) throw new Error('No structured course records were found.');
@@ -175,8 +195,11 @@ function parseStructuredCourseText(text) {
     const bodyEnd = index + 1 < headers.length ? headers[index + 1].index : normalizedText.length;
     const markdown = normalizedText.slice(bodyStart, bodyEnd).trim().replace(/"\s*$/, '').trim();
     const toolName = cleanString(header.groups.tool);
+    const courseId = field(markdown, 'Course ID')?.toUpperCase();
+    const category = courseId?.startsWith('RB') ? 'role-based' : 'tools-technology';
     const durationText = field(markdown, 'Duration') || header.groups.duration;
     const durationHours = Number.parseFloat(durationText);
+    const toolsCovered = (field(markdown, 'Tools Covered') || '').split(',').map(cleanString).filter(Boolean);
 
     const moduleHeadings = [...markdown.matchAll(/^#{1,4}\s+Module\s+(\d+):\s*(.+)$/gmi)];
     const appliedHeading = /^#{1,4}\s+Applied Business Scenarios?\s*$/mi.exec(markdown);
@@ -223,24 +246,41 @@ function parseStructuredCourseText(text) {
       };
     });
 
-    return {
+    const record = {
       __sourceRow: index + 1,
-      courseId: field(markdown, 'Course ID'),
-      category: 'tools-technology',
+      __headerCourseId: cleanString(header.groups.headerCourseId)?.toUpperCase() || null,
+      courseId,
+      category,
       title: field(markdown, 'Title'),
-      toolName,
-      vendor: vendorByTool.get(toolName) || toolName,
       level: field(markdown, 'Level'),
       durationMinutes: durationHours * 60,
       format: field(markdown, 'Format'),
       delivery: field(markdown, 'Delivery'),
       summary: null,
       objectives: bulletItems(section(markdown, 'Programme Objectives')),
-      toolsCovered: (field(markdown, 'Tools Covered') || '').split(',').map(cleanString).filter(Boolean),
+      toolsCovered,
       audiences: bulletItems(section(markdown, 'Who Should Attend')),
       prerequisites: bulletItems(section(markdown, 'Prerequisites')),
       modules,
       scenarios,
+    };
+
+    if (category === 'role-based') {
+      return {
+        ...record,
+        industry: null,
+        department: cleanString(header.groups.department) || inferDepartmentFromMarkdown(markdown),
+        functionName: cleanString(header.groups.department) || inferDepartmentFromMarkdown(markdown),
+        roleTitle: null,
+        imageUrl: null,
+        relatedSkills: toolsCovered,
+      };
+    }
+
+    return {
+      ...record,
+      toolName,
+      vendor: vendorByTool.get(toolName) || toolName,
       toolLogoUrl: null,
       skillArea: 'Artificial Intelligence',
       technologyCategories: inferTechnologyCategories(toolName),
@@ -287,10 +327,16 @@ async function parseWorkbook(buffer) {
     return {
       __sourceRow: row.__sourceRow,
       courseId: row.courseid,
-      category: row.category || 'tools-technology',
+      category: row.category || (cleanString(row.courseid)?.toUpperCase().startsWith('RB') ? 'role-based' : 'tools-technology'),
       title: row.title,
       toolName: row.toolname,
       vendor: row.vendor,
+      industry: row.industry,
+      department: row.department,
+      functionName: row.functionname,
+      roleTitle: row.roletitle,
+      imageUrl: row.imageurl,
+      relatedSkills: splitList(row.relatedskills),
       level: row.level,
       durationMinutes: Number.isFinite(minutes) && minutes > 0 ? minutes : hours * 60,
       format: row.format,
@@ -355,28 +401,41 @@ async function parseWorkbook(buffer) {
   return { records, sourceIssues };
 }
 
-export function validateToolsRecords(records, sourceIssues = []) {
+export function validateCourseRecords(records, sourceIssues = []) {
   const issues = [...sourceIssues];
   const normalized = [];
   const seenIds = new Map();
+  let batchCategory = null;
   const add = (...arguments_) => issues.push(issue(...arguments_));
 
   records.forEach((raw, index) => {
     const sourceRow = raw.__sourceRow || index + 1;
     const courseId = cleanString(raw.courseId)?.toUpperCase() || null;
-    if (!courseId || !/^TT\d{4,}$/.test(courseId)) {
-      add('error', 'INVALID_COURSE_ID', sourceRow, courseId, 'courseId', 'Course ID must use TT followed by at least four digits.');
+    const category = cleanString(raw.category) || (courseId?.startsWith('RB') ? 'role-based' : 'tools-technology');
+    if (!batchCategory) batchCategory = category;
+    else if (category !== batchCategory) {
+      add('error', 'MIXED_CATEGORY_BATCH', sourceRow, courseId, 'category', `This batch starts with ${batchCategory} records; import ${category} records separately.`);
+    }
+    const expectedPrefix = category === 'role-based' ? 'RB' : 'TT';
+    if (!courseId || !new RegExp(`^${expectedPrefix}\\d{4,}$`).test(courseId)) {
+      add('error', 'INVALID_COURSE_ID', sourceRow, courseId, 'courseId', `Course ID must use ${expectedPrefix} followed by at least four digits.`);
     } else if (seenIds.has(courseId)) {
       add('error', 'DUPLICATE_COURSE_ID', sourceRow, courseId, 'courseId', `Course ID already appeared on row ${seenIds.get(courseId)}.`);
     } else seenIds.set(courseId, sourceRow);
+    if (raw.__headerCourseId && cleanString(raw.__headerCourseId)?.toUpperCase() !== courseId) {
+      add('error', 'HEADER_COURSE_ID_MISMATCH', sourceRow, courseId, 'courseId', `Header Course ID ${raw.__headerCourseId} does not match the Markdown Course ID ${courseId}.`);
+    }
 
-    const category = cleanString(raw.category) || 'tools-technology';
-    if (category !== 'tools-technology') add('error', 'INVALID_CATEGORY', sourceRow, courseId, 'category', 'Only tools-technology records are accepted.');
+    if (!['tools-technology', 'role-based'].includes(category)) {
+      add('error', 'INVALID_CATEGORY', sourceRow, courseId, 'category', 'Only tools-technology and role-based records are accepted.');
+    }
 
     const title = cleanString(raw.title);
     const toolName = cleanString(raw.toolName);
+    const department = cleanString(raw.department);
     if (!title) add('error', 'MISSING_TITLE', sourceRow, courseId, 'title', 'Title is required.');
-    if (!toolName) add('error', 'MISSING_TOOL_NAME', sourceRow, courseId, 'toolName', 'Tool Name is required.');
+    if (category === 'tools-technology' && !toolName) add('error', 'MISSING_TOOL_NAME', sourceRow, courseId, 'toolName', 'Tool Name is required.');
+    if (category === 'role-based' && !department) add('error', 'MISSING_DEPARTMENT', sourceRow, courseId, 'department', 'Department is required for a Role-Based course.');
 
     const durationMinutes = Number(raw.durationMinutes);
     if (!Number.isInteger(durationMinutes) || durationMinutes <= 0) {
@@ -392,10 +451,10 @@ export function validateToolsRecords(records, sourceIssues = []) {
 
     const defaults = toolDefaults.get(toolName?.toLowerCase());
     let vendor = cleanString(raw.vendor);
-    if (!vendor && defaults) {
+    if (category === 'tools-technology' && !vendor && defaults) {
       vendor = defaults.vendor;
       add('warning', 'VENDOR_INFERRED', sourceRow, courseId, 'vendor', 'Vendor inferred from Tool Name.', vendor);
-    } else if (!vendor) add('error', 'MISSING_VENDOR', sourceRow, courseId, 'vendor', 'Vendor is required.');
+    } else if (category === 'tools-technology' && !vendor) add('error', 'MISSING_VENDOR', sourceRow, courseId, 'vendor', 'Vendor is required.');
 
     const list = (value) => splitList(value);
     const objectives = list(raw.objectives);
@@ -430,12 +489,10 @@ export function validateToolsRecords(records, sourceIssues = []) {
       return { title: scenarioTitle, workflow, description };
     }) : [];
 
-    normalized.push({
+    const normalizedCourse = {
       courseId,
-      category: 'tools-technology',
+      category,
       title,
-      toolName,
-      vendor,
       level,
       durationMinutes,
       format: cleanString(raw.format),
@@ -447,12 +504,30 @@ export function validateToolsRecords(records, sourceIssues = []) {
       prerequisites: list(raw.prerequisites),
       modules,
       scenarios,
-      toolLogoUrl: cleanString(raw.toolLogoUrl),
-      skillArea: cleanString(raw.skillArea) || defaults?.skillArea || null,
-      technologyCategories: list(raw.technologyCategories).length > 0
-        ? list(raw.technologyCategories)
-        : defaults?.technologyCategories || [],
-    });
+    };
+
+    if (category === 'role-based') {
+      normalized.push({
+        ...normalizedCourse,
+        industry: cleanString(raw.industry),
+        department,
+        functionName: cleanString(raw.functionName) || department,
+        roleTitle: cleanString(raw.roleTitle),
+        imageUrl: cleanString(raw.imageUrl),
+        relatedSkills: list(raw.relatedSkills).length > 0 ? list(raw.relatedSkills) : list(raw.toolsCovered),
+      });
+    } else {
+      normalized.push({
+        ...normalizedCourse,
+        toolName,
+        vendor,
+        toolLogoUrl: cleanString(raw.toolLogoUrl),
+        skillArea: cleanString(raw.skillArea) || defaults?.skillArea || null,
+        technologyCategories: list(raw.technologyCategories).length > 0
+          ? list(raw.technologyCategories)
+          : defaults?.technologyCategories || [],
+      });
+    }
   });
 
   const errorCount = issues.filter((item) => item.severity === 'error').length;
@@ -464,6 +539,8 @@ export function validateToolsRecords(records, sourceIssues = []) {
     valid: errorCount === 0 && normalized.length > 0,
   };
 }
+
+export const validateToolsRecords = validateCourseRecords;
 
 export function coursesToJsonl(courses) {
   return `${courses.map((course) => JSON.stringify(course)).join('\n')}\n`;

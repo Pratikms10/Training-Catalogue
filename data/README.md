@@ -1,6 +1,13 @@
 # Course data import
 
-The Tools & Technology pilot is imported from newline-delimited JSON (JSONL). Each non-empty line must contain one complete course object.
+The catalogue import pipeline supports Tools & Technology and Role-Based courses. Each non-empty JSONL line contains one complete course object.
+
+Validated database-ready backups currently include:
+
+- `data/converted/tools-TT0011-TT0188-valid.jsonl`
+- `data/converted/role-based-RB0001-RB0011-valid.jsonl`
+
+Use the local Import Centre at `http://localhost:3000/admin/import` for structured text, Excel, JSON, or JSONL preview and Supabase import. The command below remains available for generating the legacy local Tools dataset.
 
 ## Run an import
 
@@ -26,9 +33,10 @@ On success it writes:
 
 ## Current normalization rules
 
-- Course IDs must be unique and use the `TT` prefix followed by at least four digits.
-- The category must be `tools-technology`.
+- Course IDs must be unique and use the category prefix (`TT` or `RB`) followed by at least four digits.
+- A database import batch must contain only one category.
 - Vendor is inferred for ChatGPT/OpenAI, Gemini/Google, and Claude/Anthropic when absent.
+- Role-Based records require a department. Their related skills default to Tools Covered when no separate skill list is supplied.
 - Level is inferred from duration only when it is absent: 240 minutes = Awareness, 480 = Basic, 960 = Intermediate, and 1920 = Advanced.
 - Summary is derived from the first objective when absent.
 - Format is not guessed. A missing format remains a warning and the website displays the neutral label `Programme`.
