@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-11T10:41:08.959Z",
+  "source": {
+    "fileName": "pasted-text.txt",
+    "sha256": "f178d9401e25acfba735aa79ec6f4568167dc3f39f91118e68cf49b651a3ed1c"
+  },
+  "mode": "merge",
+  "result": "validated",
+  "counts": {
+    "nonEmptyLines": 1,
+    "parsedRecords": 1,
+    "validRecords": 1,
+    "finalRecords": 10,
+    "errors": 0,
+    "warnings": 3
+  },
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "VENDOR_INFERRED",
+      "line": 1,
+      "courseId": "TT0003",
+      "field": "vendor",
+      "message": "Missing vendor inferred from Tool Name.",
+      "appliedValue": "OpenAI"
+    },
+    {
+      "severity": "warning",
+      "code": "SUMMARY_DERIVED",
+      "line": 1,
+      "courseId": "TT0003",
+      "field": "summary",
+      "message": "Missing summary derived from the first programme objective.",
+      "appliedValue": "Develop functional proficiency in using ChatGPT for research, analysis, writing, problem-solving, and structured professional workflows."
+    },
+    {
+      "severity": "warning",
+      "code": "FORMAT_EMPTY",
+      "line": 1,
+      "courseId": "TT0003",
+      "field": "format",
+      "message": "Format is empty and will remain unset."
+    }
+  ]
+}

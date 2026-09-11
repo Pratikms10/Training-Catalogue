@@ -1,0 +1,98 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { coursesToJsonl, parseImportSource, validateToolsRecords } from './toolsImportParser.mjs';
+
+test('structured course text converts colored module items without invalid Unicode', async () => {
+  const source = `Claude\t16 Hours\t"**Course ID:** TT9001
+**Title:** Claude Workflow Test
+**Delivery:** Instructor-Led
+**Level:** Intermediate
+**Duration:** 16 Hours
+**Tools Covered:** Claude, Research
+
+## Programme Objectives
+* Build a validated workflow.
+
+## Who Should Attend
+* **Business Analysts**
+
+## Prerequisites
+* Basic computer skills
+
+## Modules
+
+### Module 1: Foundations
+* 🔴 Understand the concept
+* 🟢 Complete the practical activity
+
+## Applied Business Scenario
+
+### Scenario 1: Test workflow
+**Input → Review → Output**
+
+Participants complete a representative workflow.
+"`;
+
+  const parsed = await parseImportSource(Buffer.from(source), 'sample.txt');
+  const validation = validateToolsRecords(parsed.records, parsed.sourceIssues);
+  assert.equal(validation.valid, true);
+  assert.equal(validation.courses[0].modules[0].concepts[0], 'Understand the concept');
+  assert.equal(validation.courses[0].modules[0].practicalActivities[0], 'Complete the practical activity');
+  assert.equal(validation.courses[0].scenarios.length, 1);
+
+  const jsonl = coursesToJsonl(validation.courses);
+  for (let index = 0; index < jsonl.length; index += 1) {
+    const code = jsonl.charCodeAt(index);
+    if (code >= 0xD800 && code <= 0xDBFF) {
+      const next = jsonl.charCodeAt(index + 1);
+      assert.ok(next >= 0xDC00 && next <= 0xDFFF, 'high surrogate must have a matching low surrogate');
+      index += 1;
+    } else {
+      assert.ok(code < 0xDC00 || code > 0xDFFF, 'low surrogate must have a matching high surrogate');
+    }
+  }
+});
+
+test('standalone structured course text infers its tool and excludes trailing reference definitions', async () => {
+  const source = `"**Course ID:** TT9002
+**Title:** Perplexity Research Test
+**Delivery:** Instructor-Led
+**Level:** Basic
+**Duration:** 8 Hours
+**Tools Covered:** Perplexity Search, Research Mode
+
+## Programme Objectives
+* Build an evidence-based workflow.
+
+## Who Should Attend
+* **Business Analysts**
+
+## Prerequisites
+* Basic computer skills
+
+## Modules
+
+### Module 1: Foundations
+* 🔴 Understand cited search
+* 🟢 Complete a practical search
+
+## Applied Business Scenario
+
+### Scenario 1: Research workflow
+**Question → Sources → Answer**
+
+Participants complete a cited research workflow.
+
+[1]: https://example.com/source "Example source"
+"`;
+
+  const parsed = await parseImportSource(Buffer.from(source), 'standalone.txt');
+  const validation = validateToolsRecords(parsed.records, parsed.sourceIssues);
+  assert.equal(validation.valid, true);
+  assert.equal(validation.courses[0].courseId, 'TT9002');
+  assert.equal(validation.courses[0].toolName, 'Perplexity');
+  assert.equal(validation.courses[0].vendor, 'Perplexity AI');
+  assert.equal(validation.courses[0].format, null);
+  assert.equal(validation.courses[0].delivery, 'Instructor-Led');
+  assert.equal(validation.courses[0].scenarios[0].description, 'Participants complete a cited research workflow.');
+});

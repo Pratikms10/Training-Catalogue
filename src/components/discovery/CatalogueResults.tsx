@@ -28,6 +28,11 @@ interface CatalogueResultsProps {
   hasActiveSearch: boolean;
   hasActiveFilters: boolean;
   onViewDetail: (programme: BaseProgramme) => void;
+  totalResultsCount?: number;
+  currentPage?: number;
+  pageSize?: number;
+  onPageChange?: (page: number) => void;
+  isLoading?: boolean;
 }
 
 const ITEMS_PER_PAGE = 9;
@@ -106,36 +111,50 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
   hasActiveSearch,
   hasActiveFilters,
   onViewDetail,
+  totalResultsCount,
+  currentPage: externalCurrentPage,
+  pageSize = ITEMS_PER_PAGE,
+  onPageChange,
+  isLoading,
 }) => {
-  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [localPage, setLocalPage] = useState<number>(1);
   const [isSimulatingLoad, setIsSimulatingLoad] = useState<boolean>(false);
   const gridContainerRef = useRef<HTMLDivElement>(null);
-  const resultCount = programmes.length;
+  const isServerPaginated = totalResultsCount !== undefined
+    && externalCurrentPage !== undefined
+    && onPageChange !== undefined;
+  const resultCount = totalResultsCount ?? programmes.length;
+  const currentPage = isServerPaginated ? externalCurrentPage! : localPage;
+  const showLoading = isLoading ?? isSimulatingLoad;
 
   // Reset to page 1 whenever filters, category, search, or sort change
   useEffect(() => {
-    setCurrentPage(1);
-  }, [activeCategoryId, activeChips, searchQuery, sortBy, programmes]);
+    if (!isServerPaginated) setLocalPage(1);
+  }, [activeCategoryId, activeChips, searchQuery, sortBy, programmes, isServerPaginated]);
 
   useEffect(() => {
+    if (isLoading !== undefined) return;
     setIsSimulatingLoad(true);
     const timer = setTimeout(() => {
       setIsSimulatingLoad(false);
     }, 350);
     return () => clearTimeout(timer);
-  }, [activeChips, activeCategoryId, searchQuery, sortBy]);
+  }, [activeChips, activeCategoryId, searchQuery, sortBy, isLoading]);
 
-  const totalPages = Math.ceil(resultCount / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(resultCount / pageSize);
   const validCurrentPage = Math.min(Math.max(1, currentPage), Math.max(1, totalPages));
-  const startIndex = (validCurrentPage - 1) * ITEMS_PER_PAGE;
-  const visibleProgrammes = programmes.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const startIndex = (validCurrentPage - 1) * pageSize;
+  const visibleProgrammes = isServerPaginated
+    ? programmes
+    : programmes.slice(startIndex, startIndex + pageSize);
 
-  const startDisplay = startIndex + 1;
-  const endDisplay = Math.min(startIndex + ITEMS_PER_PAGE, resultCount);
+  const startDisplay = resultCount === 0 ? 0 : startIndex + 1;
+  const endDisplay = Math.min(startIndex + pageSize, resultCount);
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages || newPage === validCurrentPage) return;
-    setCurrentPage(newPage);
+    if (isServerPaginated) onPageChange!(newPage);
+    else setLocalPage(newPage);
 
     // Smooth-scroll back to the beginning of the programme results area
     const target = document.getElementById('catalogue-results-container') || document.getElementById('programme-catalogue-section');
@@ -159,7 +178,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-4 mb-6 border-b border-[rgba(0,0,255,0.12)]">
         <div>
           <h2 className="text-base font-bold text-[#000000] tracking-tight">
-            {isSimulatingLoad ? 'Updating...' : (resultCount === 1 ? '1 programme found' : `${resultCount.toLocaleString()} programmes found`)}
+            {showLoading ? 'Updating...' : (resultCount === 1 ? '1 programme found' : `${resultCount.toLocaleString()} programmes found`)}
           </h2>
           <p className="text-xs text-[rgba(0,0,0,0.62)] mt-0.5">
             {resultCount === 0 ? (
@@ -175,7 +194,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
 
       {/* Grid or Empty State */}
       <AnimatePresence mode="wait">
-        {isSimulatingLoad ? (
+        {showLoading ? (
           <motion.div
             key="skeleton-loader"
             initial={{ opacity: 0, y: 8 }}

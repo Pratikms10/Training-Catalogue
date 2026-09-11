@@ -6,6 +6,7 @@ import {
   TOOLS_TECHNOLOGY_FILTER_GROUPS,
   PEOPLE_PROCESS_FILTER_GROUPS,
 } from '../../data/filterConfig';
+import { FilterGroupConfig } from '../../types/filters';
 import { FilterGroupAccordion } from './FilterGroupAccordion';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -18,6 +19,7 @@ interface DynamicFilterPanelProps {
   isMobileOpen: boolean;
   onCloseMobile: () => void;
   totalResultsCount: number;
+  groupsOverride?: FilterGroupConfig[];
 }
 
 export const DynamicFilterPanel: React.FC<DynamicFilterPanelProps> = ({
@@ -29,9 +31,10 @@ export const DynamicFilterPanel: React.FC<DynamicFilterPanelProps> = ({
   isMobileOpen,
   onCloseMobile,
   totalResultsCount,
+  groupsOverride,
 }) => {
   // Select the appropriate filter groups according to active category
-  const currentGroups = (() => {
+  const currentGroups = groupsOverride || (() => {
     switch (activeCategoryId) {
       case 'role-based':
         return ROLE_BASED_FILTER_GROUPS;

@@ -9,32 +9,73 @@ import { CourseDetail } from './components/CourseDetail';
 import { FooterStructure } from './components/FooterStructure';
 import { RfqModal } from './components/RfqModal';
 import { FloatingActions } from './components/FloatingActions';
-import { roleBasedProgrammes, peopleProcessProgrammes, toolsTechnologyProgrammes } from './data/actualProgrammes';
+import { roleBasedProgrammes, peopleProcessProgrammes } from './data/actualProgrammes';
+import { fetchCourseById } from './api/catalogueApi';
+import { ImportCentre } from './components/admin/ImportCentre';
 
 export default function App() {
+  const isImportCentre = window.location.pathname === '/admin/import';
   const [activeCategoryId, setActiveCategoryId] = useState<CategoryId>('role-based');
   const [selectedProgramme, setSelectedProgramme] = useState<BaseProgramme | null>(null);
+  const [isProgrammeLoading, setIsProgrammeLoading] = useState(false);
+  const [programmeLoadError, setProgrammeLoadError] = useState<string | null>(null);
   const [isEnterpriseInquiryOpen, setIsEnterpriseInquiryOpen] = useState(false);
 
   useEffect(() => {
+    let activeController: AbortController | null = null;
+
     const handlePathChange = () => {
+      activeController?.abort();
       const path = window.location.pathname;
       if (path.startsWith('/programmes/')) {
-        const id = path.replace('/programmes/', '');
+        const id = decodeURIComponent(path.replace('/programmes/', '')).toUpperCase();
+        setProgrammeLoadError(null);
+
+        if (id.startsWith('TT')) {
+          setActiveCategoryId('tools-technology');
+          setSelectedProgramme(null);
+          setIsProgrammeLoading(true);
+          const controller = new AbortController();
+          activeController = controller;
+
+          fetchCourseById(id, controller.signal)
+            .then((programme) => setSelectedProgramme(programme))
+            .catch((error: Error) => {
+              if (error.name === 'AbortError') return;
+              setProgrammeLoadError(error.message);
+              setSelectedProgramme({
+                id: 'NOT_FOUND',
+                title: 'Programme Not Found',
+                category: 'tools-technology',
+                level: 'Awareness',
+              });
+            })
+            .finally(() => {
+              if (!controller.signal.aborted) setIsProgrammeLoading(false);
+            });
+          return;
+        }
+
         let prog: BaseProgramme | undefined;
         if (id.startsWith('RB')) prog = roleBasedProgrammes.find(p => p.id === id);
         else if (id.startsWith('PP')) prog = peopleProcessProgrammes.find(p => p.id === id);
-        else if (id.startsWith('TT')) prog = toolsTechnologyProgrammes.find(p => p.id === id);
-        
+
+        setIsProgrammeLoading(false);
         if (prog) {
           if (id.startsWith('RB')) setActiveCategoryId('role-based');
           else if (id.startsWith('PP')) setActiveCategoryId('people-process');
-          else if (id.startsWith('TT')) setActiveCategoryId('tools-technology');
           setSelectedProgramme(prog);
         } else {
-          setSelectedProgramme({ id: 'NOT_FOUND', title: 'Programme Not Found' } as any);
+          setSelectedProgramme({
+            id: 'NOT_FOUND',
+            title: 'Programme Not Found',
+            category: id.startsWith('PP') ? 'people-process' : 'role-based',
+            level: 'Awareness',
+          });
         }
       } else {
+        setIsProgrammeLoading(false);
+        setProgrammeLoadError(null);
         setSelectedProgramme(null);
       }
     };
@@ -42,7 +83,10 @@ export default function App() {
     window.addEventListener('popstate', handlePathChange);
     handlePathChange(); // Initial check
 
-    return () => window.removeEventListener('popstate', handlePathChange);
+    return () => {
+      activeController?.abort();
+      window.removeEventListener('popstate', handlePathChange);
+    };
   }, []);
 
   const handleSelectProgramme = (programme: BaseProgramme) => {
@@ -119,6 +163,16 @@ export default function App() {
         onEnterpriseInquiryClick={() => setIsEnterpriseInquiryOpen(true)}
       />
       <main id="main-catalogue-content" className="flex-1 flex flex-col">
+        {isImportCentre ? (
+          <ImportCentre />
+        ) : (
+          <>
+        {isProgrammeLoading && (
+          <div className="flex-1 flex items-center justify-center py-24 px-6" role="status">
+            <p className="text-base font-semibold text-[rgba(0,0,0,0.70)]">Loading programme…</p>
+          </div>
+        )}
+
         {selectedProgramme && selectedProgramme.id !== 'NOT_FOUND' && (
           <CourseDetail 
              programme={selectedProgramme} 
@@ -129,7 +183,9 @@ export default function App() {
         {selectedProgramme && selectedProgramme.id === 'NOT_FOUND' && (
           <div className="flex-1 flex flex-col items-center justify-center py-24 px-6 text-center">
             <h1 className="text-3xl font-bold text-[#000000] mb-4">Programme not found</h1>
-            <p className="text-[rgba(0,0,0,0.70)] mb-8">The requested programme could not be found or has been removed.</p>
+            <p className="text-[rgba(0,0,0,0.70)] mb-8">
+              {programmeLoadError || 'The requested programme could not be found or has been removed.'}
+            </p>
             <button 
               onClick={handleBack} 
               className="bg-[#0000FF] hover:opacity-90 active:opacity-100 text-white px-6 py-3 rounded-lg font-semibold transition-opacity focus:outline-none focus:ring-2 focus:ring-[#0000FF]"
@@ -139,7 +195,7 @@ export default function App() {
           </div>
         )}
 
-        <div className={selectedProgramme ? 'hidden' : 'block'}>
+        <div className={selectedProgramme || isProgrammeLoading ? 'hidden' : 'block'}>
           <IntroductionStructure />
           <CategoryNavigation
             categories={CATEGORIES_ARCHITECTURE}
@@ -151,6 +207,8 @@ export default function App() {
              onViewDetail={handleSelectProgramme}
           />
         </div>
+          </>
+        )}
       </main>
       <FooterStructure 
         onSelectCategory={handleFooterCategorySelect}

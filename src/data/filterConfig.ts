@@ -1,5 +1,4 @@
 import { FilterGroupConfig } from '../types/filters';
-import { toolsTechnologyProgrammes } from './actualProgrammes';
 
 export const ROLE_BASED_FILTER_GROUPS: FilterGroupConfig[] = [
   {
@@ -55,10 +54,7 @@ export const TOOLS_TECHNOLOGY_FILTER_GROUPS: FilterGroupConfig[] = [
     id: 'technology',
     title: 'Technology',
     allowMultiple: true,
-    options: Array.from(new Set(toolsTechnologyProgrammes.map((p) => p.toolName).filter(Boolean))).map(tech => ({
-      id: tech,
-      label: tech,
-    })),
+    options: [],
   },
   {
     id: 'toolCategory',

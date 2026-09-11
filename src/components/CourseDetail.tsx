@@ -298,7 +298,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                   Format
                 </div>
                 <div id="course-metadata-approach-value" className="font-bold text-[#000000] text-sm sm:text-base">
-                  {details.format || (programme as any).format || 'Role-Based Programme'}
+                  {details.format || programme.format || 'Programme'}
                 </div>
               </div>
             </div>
@@ -342,14 +342,25 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                 >
                   <div className="px-6 sm:px-8 py-6 sm:py-8 space-y-6">
                     
-                    {/* Programme Objective on clean white background */}
-                    {details.objective && (
+                    {/* Programme Objectives on clean white background */}
+                    {((details.objectives && details.objectives.length > 0) || details.objective) && (
                       <div>
                         <h3 className="text-base sm:text-lg font-bold text-[#000000] mb-3">
-                          Programme Objective
+                          Programme Objectives
                         </h3>
                         <div className="text-[rgba(0,0,0,0.72)] text-sm sm:text-base leading-relaxed max-w-4xl">
-                          {renderTextWithBreaks(details.objective)}
+                          {details.objectives && details.objectives.length > 0 ? (
+                            <ul className="space-y-2.5">
+                              {details.objectives.map((objective: string, index: number) => (
+                                <li key={index} className="flex items-start gap-2.5">
+                                  <Check className="w-4 h-4 text-[#0000FF] shrink-0 mt-1" />
+                                  <span>{objective}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            renderTextWithBreaks(details.objective)
+                          )}
                         </div>
                       </div>
                     )}
@@ -513,6 +524,9 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                       {modules.map((module: ProgrammeModule, index: number) => {
                         const isExpanded = !!expandedModules[module.id];
                         const tileStyle = getModuleTileStyle(index);
+                        const hasStructuredLearning =
+                          (module.concepts?.length || 0) > 0 ||
+                          (module.practicalActivities?.length || 0) > 0;
 
                         return (
                           <div 
@@ -564,8 +578,43 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                                 >
                                   <div className="p-5 pl-16 sm:pl-20 pr-6">
                                     
-                                    {/* Learning Outcomes */}
-                                    {module.learningOutcomes && module.learningOutcomes.length > 0 && (
+                                    {/* Structured concepts and practical activities */}
+                                    {hasStructuredLearning ? (
+                                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                                        {module.concepts && module.concepts.length > 0 && (
+                                          <div className="bg-white/80 p-4 rounded-lg border border-[rgba(0,0,255,0.08)]">
+                                            <div className="text-[11px] font-semibold text-[rgba(0,0,0,0.58)] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                              <Lightbulb className="w-3.5 h-3.5 text-[#0000FF]" />
+                                              <span>Concepts</span>
+                                            </div>
+                                            <ul className="list-disc pl-4 space-y-1.5 text-xs sm:text-sm text-[rgba(0,0,0,0.72)]">
+                                              {module.concepts.map((concept, conceptIndex) => (
+                                                <li key={conceptIndex} className="leading-relaxed">
+                                                  {concept}
+                                                </li>
+                                              ))}
+                                            </ul>
+                                          </div>
+                                        )}
+
+                                        {module.practicalActivities && module.practicalActivities.length > 0 && (
+                                          <div className="bg-white/80 p-4 rounded-lg border border-[rgba(0,0,255,0.08)]">
+                                            <div className="text-[11px] font-semibold text-[rgba(0,0,0,0.58)] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                                              <Target className="w-3.5 h-3.5 text-[#0000FF]" />
+                                              <span>Practical activities</span>
+                                            </div>
+                                            <ul className="space-y-1.5 text-xs sm:text-sm text-[rgba(0,0,0,0.72)]">
+                                              {module.practicalActivities.map((activity, activityIndex) => (
+                                                <li key={activityIndex} className="flex items-start gap-2 leading-relaxed">
+                                                  <Check className="w-3.5 h-3.5 text-[#0000FF] shrink-0 mt-0.5" />
+                                                  <span>{activity}</span>
+                                                </li>
+                                              ))}
+                                            </ul>
+                                          </div>
+                                        )}
+                                      </div>
+                                    ) : module.learningOutcomes && module.learningOutcomes.length > 0 ? (
                                       <div className="mb-4">
                                         <div className="text-[11px] font-semibold text-[rgba(0,0,0,0.58)] uppercase tracking-wider mb-2">
                                           Topics & Learning Outcomes
@@ -578,7 +627,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                                           ))}
                                         </ul>
                                       </div>
-                                    )}
+                                    ) : null}
 
                                     {/* Applied Exercise (if present) */}
                                     {module.appliedExercise && (
@@ -680,11 +729,16 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                                 <h4 className="text-sm sm:text-base font-bold text-[#000000] mb-2">
                                   {scenario.title}
                                 </h4>
+                                {scenario.workflow && (
+                                  <div className="bg-[rgba(33,150,243,0.08)] border border-[rgba(0,0,255,0.08)] rounded-lg px-3 py-2.5 mb-3 text-xs font-semibold text-[#0000FF] leading-relaxed">
+                                    {scenario.workflow}
+                                  </div>
+                                )}
                                 <div className="text-xs sm:text-sm text-[rgba(0,0,0,0.70)] leading-relaxed">
                                   {renderTextWithBreaks(
-                                    Array.isArray(scenario.content)
+                                    scenario.description || (Array.isArray(scenario.content)
                                       ? scenario.content.join('\n\n')
-                                      : scenario.content
+                                      : scenario.content)
                                   )}
                                 </div>
                               </div>

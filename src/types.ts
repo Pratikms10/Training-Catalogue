@@ -34,6 +34,8 @@ export interface ProgrammeModule {
   id: string;
   title: string;
   learningOutcomes?: string[];
+  concepts?: string[];
+  practicalActivities?: string[];
   duration?: string;
   appliedExercise?: {
     title: string;
@@ -44,11 +46,14 @@ export interface ProgrammeModule {
 export interface ProgrammeScenario {
   title: string;
   content: string | string[];
+  workflow?: string;
+  description?: string;
 }
 
 export interface ProgrammeDetails {
   summary?: string;
   objective?: string;
+  objectives?: string[];
   audience?: string[];
   prerequisitesList?: string[];
   delivery?: string;

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDebounce } from '../hooks/useDebounce';
-import { CategoryId, BaseProgramme } from '../types';
+import { CategoryId, BaseProgramme, ToolsTechProgramme } from '../types';
 import {
   roleBasedProgrammes,
   peopleProcessProgrammes,
-  toolsTechnologyProgrammes,
 } from '../data/actualProgrammes';
 import {
+  FilterGroupConfig,
   SortOption,
   RoleBasedFilterState,
   ToolsTechnologyFilterState,
@@ -14,12 +14,16 @@ import {
 } from '../types/filters';
 import {
   filterRoleBasedProgrammes,
-  filterToolsTechnologyProgrammes,
   filterPeopleProcessProgrammes,
   getRoleBasedActiveChips,
   getToolsTechnologyActiveChips,
   getPeopleProcessActiveChips,
 } from '../utils/catalogueFiltering';
+import {
+  CATALOGUE_PAGE_SIZE,
+  fetchToolsFilterGroups,
+  fetchToolsProgrammes,
+} from '../api/catalogueApi';
 import { CatalogueToolbar } from './discovery/CatalogueToolbar';
 import { DynamicFilterPanel } from './discovery/DynamicFilterPanel';
 import { CatalogueResults } from './discovery/CatalogueResults';
@@ -59,6 +63,15 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
   const [toolsTechFilters, setToolsTechFilters] = useState<ToolsTechnologyFilterState>(INITIAL_TT_FILTERS);
   const [peopleProcessFilters, setPeopleProcessFilters] = useState<PeopleProcessFilterState>(INITIAL_PP_FILTERS);
 
+  // Tools & Technology is database-backed so it can scale beyond a browser bundle.
+  const [toolsProgrammes, setToolsProgrammes] = useState<ToolsTechProgramme[]>([]);
+  const [toolsTotal, setToolsTotal] = useState(0);
+  const [toolsPage, setToolsPage] = useState(1);
+  const [toolsFilterGroups, setToolsFilterGroups] = useState<FilterGroupConfig[]>([]);
+  const [toolsLoading, setToolsLoading] = useState(false);
+  const [toolsError, setToolsError] = useState<string | null>(null);
+  const [toolsReloadToken, setToolsReloadToken] = useState(0);
+
   // Requirement 20 & 21: Reset filters, search query, and sort on category change
   useEffect(() => {
     setSearchQuery('');
@@ -66,8 +79,53 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
     setRoleBasedFilters(INITIAL_RB_FILTERS);
     setToolsTechFilters(INITIAL_TT_FILTERS);
     setPeopleProcessFilters(INITIAL_PP_FILTERS);
+    setToolsPage(1);
     setIsMobileFiltersOpen(false);
   }, [activeCategoryId]);
+
+  useEffect(() => {
+    if (activeCategoryId !== 'tools-technology' || toolsFilterGroups.length > 0) return;
+    const controller = new AbortController();
+
+    fetchToolsFilterGroups(controller.signal)
+      .then(setToolsFilterGroups)
+      .catch((error: Error) => {
+        if (error.name !== 'AbortError') setToolsError(error.message);
+      });
+
+    return () => controller.abort();
+  }, [activeCategoryId, toolsFilterGroups.length, toolsReloadToken]);
+
+  useEffect(() => {
+    if (activeCategoryId !== 'tools-technology') return;
+    const controller = new AbortController();
+    setToolsLoading(true);
+    setToolsError(null);
+
+    fetchToolsProgrammes({
+      query: debouncedSearchQuery,
+      filters: toolsTechFilters,
+      sort: sortBy,
+      page: toolsPage,
+      signal: controller.signal,
+    })
+      .then((response) => {
+        setToolsProgrammes(response.data);
+        setToolsTotal(response.pagination.total);
+      })
+      .catch((error: Error) => {
+        if (error.name !== 'AbortError') {
+          setToolsProgrammes([]);
+          setToolsTotal(0);
+          setToolsError(error.message);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setToolsLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [activeCategoryId, debouncedSearchQuery, sortBy, toolsTechFilters, toolsPage, toolsReloadToken]);
 
   // Handle filter toggles dynamically by group ID
   const handleToggleFilter = (groupId: string, value: string) => {
@@ -97,6 +155,7 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
         return prev;
       });
     } else if (activeCategoryId === 'tools-technology') {
+      setToolsPage(1);
       setToolsTechFilters((prev) => {
         if (groupId === 'technology') {
           const exists = prev.technologies.includes(value);
@@ -154,6 +213,7 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
     if (activeCategoryId === 'role-based') {
       setRoleBasedFilters(INITIAL_RB_FILTERS);
     } else if (activeCategoryId === 'tools-technology') {
+      setToolsPage(1);
       setToolsTechFilters(INITIAL_TT_FILTERS);
     } else if (activeCategoryId === 'people-process') {
       setPeopleProcessFilters(INITIAL_PP_FILTERS);
@@ -211,21 +271,36 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
       return filterRoleBasedProgrammes(roleBasedProgrammes, debouncedSearchQuery, roleBasedFilters, sortBy);
     }
     if (activeCategoryId === 'tools-technology') {
-      return filterToolsTechnologyProgrammes(toolsTechnologyProgrammes, debouncedSearchQuery, toolsTechFilters, sortBy);
+      return toolsProgrammes;
     }
     if (activeCategoryId === 'people-process') {
       return filterPeopleProcessProgrammes(peopleProcessProgrammes, debouncedSearchQuery, peopleProcessFilters, sortBy);
     }
     return [];
-  }, [activeCategoryId, debouncedSearchQuery, sortBy, roleBasedFilters, toolsTechFilters, peopleProcessFilters]);
+  }, [activeCategoryId, debouncedSearchQuery, sortBy, roleBasedFilters, peopleProcessFilters, toolsProgrammes]);
 
   // Category Total Metadata
   const totalCategoryCount = useMemo(() => {
     if (activeCategoryId === 'role-based') return roleBasedProgrammes.length;
-    if (activeCategoryId === 'tools-technology') return toolsTechnologyProgrammes.length;
+    if (activeCategoryId === 'tools-technology') return toolsTotal;
     if (activeCategoryId === 'people-process') return peopleProcessProgrammes.length;
     return 0;
-  }, [activeCategoryId]);
+  }, [activeCategoryId, toolsTotal]);
+
+  const handleSearchChange = (value: string) => {
+    if (activeCategoryId === 'tools-technology') setToolsPage(1);
+    setSearchQuery(value);
+  };
+
+  const handleSortChange = (value: SortOption) => {
+    if (activeCategoryId === 'tools-technology') setToolsPage(1);
+    setSortBy(value);
+  };
+
+  const handleClearSearch = () => {
+    if (activeCategoryId === 'tools-technology') setToolsPage(1);
+    setSearchQuery('');
+  };
 
   const totalCatalogueCapacity = useMemo(() => {
     if (activeCategoryId === 'role-based') return 3000;
@@ -251,10 +326,10 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
         <div className="max-w-7xl mx-auto">
           <CatalogueToolbar
             searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            onSearchClear={() => setSearchQuery('')}
+            onSearchChange={handleSearchChange}
+            onSearchClear={handleClearSearch}
             sortBy={sortBy}
-            onSortChange={setSortBy}
+            onSortChange={handleSortChange}
             activeFilterCount={activeChips.length}
             onOpenMobileFilters={() => setIsMobileFiltersOpen(true)}
           />
@@ -262,6 +337,18 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 py-6 sm:py-8">
+        {activeCategoryId === 'tools-technology' && toolsError && (
+          <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
+            <span>Unable to load the Tools catalogue: {toolsError}</span>
+            <button
+              type="button"
+              className="shrink-0 font-semibold underline"
+              onClick={() => setToolsReloadToken((value) => value + 1)}
+            >
+              Retry
+            </button>
+          </div>
+        )}
         {/* MAIN BODY: Dynamic Filter Sidebar + Catalogue Results */}
         <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
           {/* Dynamic Filter Panel (Desktop Sidebar & Mobile Drawer) */}
@@ -273,7 +360,8 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
             activeCount={activeChips.length}
             isMobileOpen={isMobileFiltersOpen}
             onCloseMobile={() => setIsMobileFiltersOpen(false)}
-            totalResultsCount={filteredProgrammes.length}
+            totalResultsCount={activeCategoryId === 'tools-technology' ? toolsTotal : filteredProgrammes.length}
+            groupsOverride={activeCategoryId === 'tools-technology' && toolsFilterGroups.length > 0 ? toolsFilterGroups : undefined}
           />
 
           {/* Results Column (Active Chips + Result Count + Grid or Empty State) */}
@@ -287,10 +375,15 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
             sortBy={sortBy}
             onRemoveChip={handleRemoveChip}
             onClearFilters={handleClearCategoryFilters}
-            onClearSearch={() => setSearchQuery('')}
+            onClearSearch={handleClearSearch}
             hasActiveSearch={hasActiveSearch}
             hasActiveFilters={hasActiveFilters}
             onViewDetail={onViewDetail}
+            totalResultsCount={activeCategoryId === 'tools-technology' ? toolsTotal : undefined}
+            currentPage={activeCategoryId === 'tools-technology' ? toolsPage : undefined}
+            pageSize={activeCategoryId === 'tools-technology' ? CATALOGUE_PAGE_SIZE : undefined}
+            onPageChange={activeCategoryId === 'tools-technology' ? setToolsPage : undefined}
+            isLoading={activeCategoryId === 'tools-technology' ? toolsLoading : undefined}
           />
         </div>
       </div>
