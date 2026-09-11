@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+:root {
+  --color-primary-blue: #0000FF;
+  --color-support-blue: #2196F3;
+
+  --color-alert-background: #FAD4D4;
+  --color-alert-heading: #8B0000;
+  --color-accent-red: #EF4444;
+
+  --color-whatsapp: #25D366;
+
+  --color-text-primary: #000000;
+  --color-background: #FFFFFF;
+
+  --color-text-secondary: rgba(0, 0, 0, 0.70);
+  --color-text-muted: rgba(0, 0, 0, 0.58);
+
+  --color-blue-surface-soft: rgba(33, 150, 243, 0.05);
+  --color-blue-surface: rgba(33, 150, 243, 0.08);
+  --color-blue-surface-strong: rgba(33, 150, 243, 0.13);
+
+  --color-blue-border: rgba(0, 0, 255, 0.14);
+  --color-blue-border-active: rgba(0, 0, 255, 0.42);
+
+  --color-divider: rgba(0, 0, 255, 0.12);
+  --color-shadow: rgba(0, 0, 0, 0.08);
+}
+
+/* Subtle Fade-in-up Entrance Animation for Hero Logo */
+@keyframes hero-logo-fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-logo-entrance {
+  animation: hero-logo-fade-in-up 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  will-change: opacity, transform;
+}
+
+/* 3D Left-Right Flip Animation for Hero TechnoEdge Logo */
+@keyframes technoedge-logo-3d-flip {
+  0% {
+    transform: perspective(900px) rotateY(0deg);
+  }
+  20% {
+    transform: perspective(900px) rotateY(90deg);
+  }
+  80% {
+    transform: perspective(900px) rotateY(-90deg);
+  }
+  100% {
+    transform: perspective(900px) rotateY(0deg);
+  }
+}
+
+.hero-logo-3d-flipper {
+  transform: perspective(900px) rotateY(0deg);
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-logo-3d-flipper.is-flipping {
+      animation: technoedge-logo-3d-flip 1.2s cubic-bezier(0.4, 0, 0.2, 1) 1 normal forwards;
+    }
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .hero-logo-3d-flipper {
+    animation: none !important;
+    transform: perspective(900px) rotateY(0deg) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo-entrance {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hero-logo-3d-flipper {
+    animation: none !important;
+    transform: perspective(900px) rotateY(0deg) !important;
+  }
+}

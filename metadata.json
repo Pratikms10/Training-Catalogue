@@ -1,0 +1,8 @@
+{
+  "name": "Technoedge Corporate Training Catalogue",
+  "description": "Enterprise corporate training catalogue for TechnoEdge Learning Services India Pvt. Ltd. featuring Role-Based Training, People \u0026 Process, and Tools \u0026 Technology programmes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

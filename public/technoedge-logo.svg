@@ -1,0 +1,64 @@
+<svg viewBox="0 0 600 600" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer Vibrant Sky Blue Crescent -->
+  <path 
+    d="M 152 485
+       C 84 402 60 280 102 176
+       C 144 75 220 58 300 58
+       C 380 58 456 75 498 176
+       C 540 280 516 402 448 485
+       C 434 455 412 390 384 316
+       C 364 264 336 205 300 172
+       C 264 205 236 264 216 316
+       C 188 390 166 455 152 485 Z"
+    fill="#3B9EFF"
+  />
+
+  <!-- Inner Light Pastel Blue Crescent Arc -->
+  <path 
+    d="M 148 275
+       C 178 185 232 132 300 132
+       C 368 132 422 185 452 275
+       C 426 215 372 172 300 172
+       C 228 172 174 215 148 275 Z"
+    fill="#96CBFF"
+  />
+
+  <!-- Crescent Taper Tail Lines to Base Dots -->
+  <path d="M 152 485 C 157 490 162 494 167 498" stroke="#3B9EFF" stroke-width="2.5" stroke-linecap="round" />
+  <path d="M 448 485 C 443 490 438 494 433 498" stroke="#3B9EFF" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Arrowhead Left Facet (Vibrant Sky Blue) -->
+  <path 
+    d="M 300 178
+       L 150 312
+       L 228 412
+       L 288 284
+       L 300 545
+       Z"
+    fill="#3B9EFF"
+  />
+
+  <!-- Arrowhead Right Facet (Light Pastel Blue) -->
+  <path 
+    d="M 300 178
+       L 450 312
+       L 372 412
+       L 312 284
+       L 300 545
+       Z"
+    fill="#96CBFF"
+  />
+
+  <!-- 11 Calibrated Base Dots -->
+  <circle cx="168.0" cy="498.0" r="13.0" fill="#3B9EFF" />
+  <circle cx="199.0" cy="524.0" r="10.5" fill="#3B9EFF" />
+  <circle cx="230.0" cy="543.0" r="8.5" fill="#3B9EFF" />
+  <circle cx="258.0" cy="554.0" r="7.0" fill="#3B9EFF" />
+  <circle cx="282.0" cy="560.0" r="5.5" fill="#3B9EFF" />
+  <circle cx="300.0" cy="561.5" r="4.8" fill="#3B9EFF" />
+  <circle cx="318.0" cy="560.0" r="5.5" fill="#3B9EFF" />
+  <circle cx="342.0" cy="554.0" r="7.0" fill="#3B9EFF" />
+  <circle cx="370.0" cy="543.0" r="8.5" fill="#3B9EFF" />
+  <circle cx="401.0" cy="524.0" r="10.5" fill="#3B9EFF" />
+  <circle cx="432.0" cy="498.0" r="13.0" fill="#3B9EFF" />
+</svg>
