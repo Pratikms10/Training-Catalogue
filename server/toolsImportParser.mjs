@@ -273,7 +273,7 @@ function parseStructuredCourseText(text) {
         functionName: cleanString(header.groups.department) || inferDepartmentFromMarkdown(markdown),
         roleTitle: null,
         imageUrl: null,
-        relatedSkills: toolsCovered,
+        relatedSkills: [],
       };
     }
 
@@ -456,8 +456,27 @@ export function validateCourseRecords(records, sourceIssues = []) {
       add('warning', 'VENDOR_INFERRED', sourceRow, courseId, 'vendor', 'Vendor inferred from Tool Name.', vendor);
     } else if (category === 'tools-technology' && !vendor) add('error', 'MISSING_VENDOR', sourceRow, courseId, 'vendor', 'Vendor is required.');
 
-    const list = (value) => splitList(value);
-    const objectives = list(raw.objectives);
+    const list = (value, fieldName) => {
+      const items = splitList(value);
+      const uniqueItems = [...new Set(items)];
+      if (fieldName && uniqueItems.length !== items.length) {
+        add(
+          'warning',
+          'DUPLICATE_LIST_ITEMS_REMOVED',
+          sourceRow,
+          courseId,
+          fieldName,
+          `${items.length - uniqueItems.length} duplicate list item(s) were removed.`,
+        );
+      }
+      return uniqueItems;
+    };
+    const objectives = list(raw.objectives, 'objectives');
+    const toolsCovered = list(raw.toolsCovered, 'toolsCovered');
+    const audiences = list(raw.audiences, 'audiences');
+    const prerequisites = list(raw.prerequisites, 'prerequisites');
+    const relatedSkills = list(raw.relatedSkills, 'relatedSkills');
+    const technologyCategories = list(raw.technologyCategories, 'technologyCategories');
     if (objectives.length === 0) add('error', 'MISSING_OBJECTIVES', sourceRow, courseId, 'objectives', 'At least one objective is required.');
     let summary = cleanString(raw.summary);
     if (!summary && objectives.length > 0) {
@@ -470,8 +489,8 @@ export function validateCourseRecords(records, sourceIssues = []) {
       const rawCode = cleanString(module?.moduleCode) || String(moduleIndex + 1);
       const moduleCode = /^\d+$/.test(rawCode) ? rawCode.padStart(2, '0') : rawCode;
       const moduleTitle = cleanString(module?.title);
-      const concepts = list(module?.concepts);
-      const practicalActivities = list(module?.practicalActivities);
+      const concepts = list(module?.concepts, `modules[${moduleIndex}].concepts`);
+      const practicalActivities = list(module?.practicalActivities, `modules[${moduleIndex}].practicalActivities`);
       if (moduleCodes.has(moduleCode)) add('error', 'DUPLICATE_MODULE_CODE', sourceRow, courseId, `modules[${moduleIndex}].moduleCode`, `Duplicate Module Code ${moduleCode}.`);
       moduleCodes.add(moduleCode);
       if (!moduleTitle) add('error', 'MISSING_MODULE_TITLE', sourceRow, courseId, `modules[${moduleIndex}].title`, 'Module title is required.');
@@ -499,9 +518,9 @@ export function validateCourseRecords(records, sourceIssues = []) {
       delivery: cleanString(raw.delivery),
       summary,
       objectives,
-      toolsCovered: list(raw.toolsCovered),
-      audiences: list(raw.audiences),
-      prerequisites: list(raw.prerequisites),
+      toolsCovered,
+      audiences,
+      prerequisites,
       modules,
       scenarios,
     };
@@ -514,7 +533,7 @@ export function validateCourseRecords(records, sourceIssues = []) {
         functionName: cleanString(raw.functionName) || department,
         roleTitle: cleanString(raw.roleTitle),
         imageUrl: cleanString(raw.imageUrl),
-        relatedSkills: list(raw.relatedSkills).length > 0 ? list(raw.relatedSkills) : list(raw.toolsCovered),
+        relatedSkills: relatedSkills.length > 0 ? relatedSkills : toolsCovered,
       });
     } else {
       normalized.push({
@@ -523,8 +542,8 @@ export function validateCourseRecords(records, sourceIssues = []) {
         vendor,
         toolLogoUrl: cleanString(raw.toolLogoUrl),
         skillArea: cleanString(raw.skillArea) || defaults?.skillArea || null,
-        technologyCategories: list(raw.technologyCategories).length > 0
-          ? list(raw.technologyCategories)
+        technologyCategories: technologyCategories.length > 0
+          ? technologyCategories
           : defaults?.technologyCategories || [],
       });
     }

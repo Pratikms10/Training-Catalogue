@@ -164,7 +164,7 @@ export function createImportCentreRouter(pool) {
         cwd: rootDirectory,
         env: { ...process.env, IMPORT_ACTOR: process.env.IMPORT_ACTOR || 'local-import-centre' },
         maxBuffer: 2 * 1024 * 1024,
-        timeout: 5 * 60 * 1000,
+        timeout: 60 * 60 * 1000,
       });
       preview.status = 'completed';
       return response.json({

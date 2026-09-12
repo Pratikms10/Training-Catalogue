@@ -104,7 +104,7 @@ test('role-based structured text maps department, skills, modules, and scenarios
 **Delivery:** Instructor-Led
 **Level:** Awareness
 **Duration:** 4 Hours
-**Tools Covered:** ChatGPT, Prompting, File Analysis
+**Tools Covered:** ChatGPT, Prompting, File Analysis, File Analysis
 
 ## Programme Objectives
 * Apply ChatGPT to representative HR work.
@@ -137,6 +137,7 @@ Participants create a reviewed employee communication.
   assert.equal(validation.courses[0].department, 'Human Resources');
   assert.equal(validation.courses[0].functionName, 'Human Resources');
   assert.deepEqual(validation.courses[0].relatedSkills, ['ChatGPT', 'Prompting', 'File Analysis']);
+  assert.equal(validation.issues.some((item) => item.code === 'DUPLICATE_LIST_ITEMS_REMOVED'), true);
   assert.equal(validation.courses[0].modules.length, 1);
   assert.equal(validation.courses[0].scenarios.length, 1);
 });

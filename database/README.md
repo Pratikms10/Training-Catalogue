@@ -36,14 +36,22 @@ psql $env:DATABASE_URL -v ON_ERROR_STOP=1 -f database/verification/001_catalogue
 
 ## Load and verify the pilot catalogue
 
-After running the JSONL validator, import the canonical Tools data in one database transaction:
+After running the JSONL validator, import the canonical catalogue data:
 
 ```powershell
 npm run db:import:tools
 npm run db:verify
 ```
 
-The import is an upsert keyed by Course ID. It does not remove courses that are absent from the input. For a matching Tools course it replaces that course's objectives, tools, audiences, prerequisites, modules, learning items, and scenarios inside the same transaction. A failed batch is rolled back and recorded as failed.
+The import is an upsert keyed by Course ID. It does not remove courses that are absent from the input. Each chunk replaces that course's objectives, tools, audiences, prerequisites, modules, learning items, and scenarios in one transaction. New courses remain hidden as drafts until every chunk succeeds, then the batch is published together. `DATABASE_IMPORT_CHUNK_SIZE` controls the chunk size and defaults to 100.
+
+The database importer accepts canonical JSON and JSONL. If a long job is interrupted after committed chunks, resume the same batch without repeating those courses:
+
+```powershell
+node scripts/import-tools-db.mjs "C:\path\to\courses.jsonl" --resume-batch=14
+```
+
+The resume command verifies the batch size and the exact imported Course ID sequence before continuing.
 
 ## Run the API locally
 
