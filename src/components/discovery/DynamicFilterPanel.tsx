@@ -4,7 +4,9 @@ import { CategoryId } from '../../types';
 import {
   ROLE_BASED_FILTER_GROUPS,
   TOOLS_TECHNOLOGY_FILTER_GROUPS,
-  PEOPLE_PROCESS_FILTER_GROUPS,
+  PROCESS_BASED_FILTER_GROUPS,
+  PEOPLE_BEHAVIOURAL_FILTER_GROUPS,
+  CERTIFICATION_FILTER_GROUPS,
 } from '../../data/filterConfig';
 import { FilterGroupConfig } from '../../types/filters';
 import { FilterGroupAccordion } from './FilterGroupAccordion';
@@ -38,10 +40,15 @@ export const DynamicFilterPanel: React.FC<DynamicFilterPanelProps> = ({
     switch (activeCategoryId) {
       case 'role-based':
         return ROLE_BASED_FILTER_GROUPS;
+      case 'ai-tools':
       case 'tools-technology':
         return TOOLS_TECHNOLOGY_FILTER_GROUPS;
-      case 'people-process':
-        return PEOPLE_PROCESS_FILTER_GROUPS;
+      case 'process-based':
+        return PROCESS_BASED_FILTER_GROUPS;
+      case 'people-behavioural':
+        return PEOPLE_BEHAVIOURAL_FILTER_GROUPS;
+      case 'certifications':
+        return CERTIFICATION_FILTER_GROUPS;
       default:
         return [];
     }

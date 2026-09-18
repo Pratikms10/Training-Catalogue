@@ -3,6 +3,7 @@ import { SearchX, ChevronLeft, ChevronRight } from 'lucide-react';
 import {
   CategoryId,
   BaseProgramme,
+  CertificationProgramme,
   RoleBasedProgramme,
   PeopleProcessProgramme,
   ToolsTechProgramme,
@@ -12,11 +13,12 @@ import { ActiveFilterChips } from './ActiveFilterChips';
 import { RoleBasedCard } from '../cards/RoleBasedCard';
 import { PeopleProcessCard } from '../cards/PeopleProcessCard';
 import { ToolsTechnologyCard } from '../cards/ToolsTechnologyCard';
+import { CertificationCard } from '../cards/CertificationCard';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface CatalogueResultsProps {
   activeCategoryId: CategoryId;
-  programmes: (RoleBasedProgramme | PeopleProcessProgramme | ToolsTechProgramme)[];
+  programmes: (RoleBasedProgramme | PeopleProcessProgramme | ToolsTechProgramme | CertificationProgramme)[];
   totalCategoryCount: number;
   totalCatalogueCapacity: number;
   activeChips: ActiveFilterChip[];
@@ -33,6 +35,7 @@ interface CatalogueResultsProps {
   pageSize?: number;
   onPageChange?: (page: number) => void;
   isLoading?: boolean;
+  isCataloguePlanned?: boolean;
 }
 
 const ITEMS_PER_PAGE = 9;
@@ -116,6 +119,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
   pageSize = ITEMS_PER_PAGE,
   onPageChange,
   isLoading,
+  isCataloguePlanned = false,
 }) => {
   const [localPage, setLocalPage] = useState<number>(1);
   const [isSimulatingLoad, setIsSimulatingLoad] = useState<boolean>(false);
@@ -175,7 +179,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
       />
 
       {/* Result Count Status Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-4 mb-6 border-b border-[rgba(0,0,255,0.12)]">
+      {!isCataloguePlanned && <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-4 mb-6 border-b border-[rgba(0,0,255,0.12)]">
         <div>
           <h2 className="text-base font-bold text-[#000000] tracking-tight">
             {showLoading ? 'Updating...' : (resultCount === 1 ? '1 programme found' : `${resultCount.toLocaleString()} programmes found`)}
@@ -190,7 +194,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
             )}
           </p>
         </div>
-      </div>
+      </div>}
 
       {/* Grid or Empty State */}
       <AnimatePresence mode="wait">
@@ -226,7 +230,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
                   />
                 ))}
 
-              {activeCategoryId === 'people-process' &&
+              {(activeCategoryId === 'process-based' || activeCategoryId === 'people-behavioural') &&
                 (visibleProgrammes as PeopleProcessProgramme[]).map((prog) => (
                   <PeopleProcessCard
                     key={prog.id}
@@ -235,9 +239,18 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
                   />
                 ))}
 
-              {activeCategoryId === 'tools-technology' &&
+              {(activeCategoryId === 'ai-tools' || activeCategoryId === 'tools-technology') &&
                 (visibleProgrammes as ToolsTechProgramme[]).map((prog) => (
                   <ToolsTechnologyCard
+                    key={prog.id}
+                    programme={prog}
+                    onViewDetail={() => onViewDetail(prog)}
+                  />
+                ))}
+
+              {activeCategoryId === 'certifications' &&
+                (visibleProgrammes as CertificationProgramme[]).map((prog) => (
+                  <CertificationCard
                     key={prog.id}
                     programme={prog}
                     onViewDetail={() => onViewDetail(prog)}
@@ -336,14 +349,18 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
             </div>
 
             <h3 className="text-lg font-bold text-[#000000] mb-1">
-              No programmes found
+              {isCataloguePlanned ? 'Catalogue structure is ready' : 'No programmes found'}
             </h3>
 
             <p className="text-sm text-[rgba(0,0,0,0.65)] max-w-md mb-6">
-              Try adjusting your search or removing some filters.
+              {isCataloguePlanned
+                ? activeCategoryId === 'certifications'
+                  ? 'Certification programmes from AWS, Cisco, IBM, Microsoft, and Google Cloud will be added here next.'
+                  : 'Data Science, Cloud, DevOps, IoT, Power Platform, and Web Development programmes will be added here next.'
+                : 'Try adjusting your search or removing some filters.'}
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            {!isCataloguePlanned && <div className="flex flex-wrap items-center justify-center gap-3">
               {hasActiveSearch && (
                 <button
                   type="button"
@@ -376,7 +393,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
                   Reset Discovery
                 </button>
               )}
-            </div>
+            </div>}
           </motion.div>
         )}
       </AnimatePresence>

@@ -1,5 +1,5 @@
-const allowedCategories = new Set(['role-based', 'people-process', 'tools-technology']);
-const allowedLevels = new Set(['Awareness', 'Basic', 'Intermediate', 'Advanced', 'Expert']);
+const allowedCategories = new Set(['role-based', 'people-process', 'tools-technology', 'certifications', 'technical-training']);
+const allowedLevels = new Set(['Awareness', 'Beginner', 'Basic', 'Intermediate', 'Advanced', 'Expert']);
 const sortExpressions = {
   Recommended: 'c.published_at DESC NULLS LAST, c.course_id ASC',
   'A–Z': 'c.title ASC, c.course_id ASC',
@@ -16,10 +16,15 @@ function durationLabel(minutes) {
 }
 
 function baseProgramme(row) {
+  const publicCategory = row.category_code === 'tools-technology'
+    ? 'ai-tools'
+    : row.category_code === 'technical-training'
+      ? 'tools-technology'
+      : row.category_code;
   const programme = {
     id: row.course_id,
     title: row.title,
-    category: row.category_code,
+    category: publicCategory,
     level: row.level_code,
     duration: durationLabel(row.duration_minutes),
     format: row.format || undefined,
@@ -44,6 +49,20 @@ function baseProgramme(row) {
     };
   }
 
+  if (row.category_code === 'technical-training') {
+    return {
+      ...programme,
+      categoryBadge: 'Tool or Technology',
+      toolLogoUrl: '',
+      toolName: row.primary_technology,
+      vendor: row.technical_vendor || 'Various',
+      skillArea: row.technical_domain,
+      technologyCategory: row.technology_categories || [],
+      sourceCourseId: row.source_course_id,
+      sourceDuration: row.source_duration,
+    };
+  }
+
   if (row.category_code === 'role-based') {
     return {
       ...programme,
@@ -54,6 +73,18 @@ function baseProgramme(row) {
       department: row.department || undefined,
       functionName: row.function_name || undefined,
       roleTitle: row.role_title || undefined,
+    };
+  }
+
+  if (row.category_code === 'certifications') {
+    return {
+      ...programme,
+      categoryBadge: 'Certification Programme',
+      provider: row.certification_provider,
+      courseCode: row.certification_code,
+      courseUrl: row.certification_url || undefined,
+      productTechnologies: row.product_technologies || [],
+      roles: row.certification_roles || [],
     };
   }
 
@@ -83,9 +114,15 @@ function buildFilters(filters) {
     if (!allowedLevels.has(filters.level)) throw new Error('Invalid level filter.');
     conditions.push(`c.level_code = ${addValue(filters.level)}`);
   }
-  if (filters.tools?.length) conditions.push(`tt.tool_name = ANY(${addValue(filters.tools)}::text[])`);
+  if (filters.tools?.length) {
+    conditions.push(`COALESCE(tt.tool_name, tech.primary_technology) = ANY(${addValue(filters.tools)}::text[])`);
+  }
   if (filters.industries?.length) conditions.push(`rb.industry = ANY(${addValue(filters.industries)}::text[])`);
   if (filters.departments?.length) conditions.push(`rb.department = ANY(${addValue(filters.departments)}::text[])`);
+  if (filters.providers?.length) conditions.push(`cert.provider = ANY(${addValue(filters.providers)}::text[])`);
+  if (filters.productTechnologies?.length) {
+    conditions.push(`cert.product_technologies && ${addValue(filters.productTechnologies)}::text[]`);
+  }
   if (filters.technologyCategories?.length) {
     conditions.push(`EXISTS (
       SELECT 1 FROM catalogue.course_technology_categories filter_ctc
@@ -104,10 +141,19 @@ function buildFilters(filters) {
       OR c.course_id ILIKE '%' || ${queryParameter} || '%'
       OR tt.tool_name ILIKE '%' || ${queryParameter} || '%'
       OR tt.vendor ILIKE '%' || ${queryParameter} || '%'
+      OR tech.primary_technology ILIKE '%' || ${queryParameter} || '%'
+      OR tech.vendor ILIKE '%' || ${queryParameter} || '%'
+      OR tech.domain ILIKE '%' || ${queryParameter} || '%'
       OR rb.industry ILIKE '%' || ${queryParameter} || '%'
       OR rb.department ILIKE '%' || ${queryParameter} || '%'
       OR rb.function_name ILIKE '%' || ${queryParameter} || '%'
       OR rb.role_title ILIKE '%' || ${queryParameter} || '%'
+      OR cert.provider ILIKE '%' || ${queryParameter} || '%'
+      OR cert.course_code ILIKE '%' || ${queryParameter} || '%'
+      OR EXISTS (
+        SELECT 1 FROM unnest(COALESCE(cert.product_technologies, ARRAY[]::text[])) product(value)
+        WHERE product.value ILIKE '%' || ${queryParameter} || '%'
+      )
       OR EXISTS (
         SELECT 1 FROM catalogue.course_related_skills search_skills
         WHERE search_skills.course_id = c.course_id
@@ -130,7 +176,9 @@ const catalogueSelect = `
   FROM catalogue.course_catalogue_view ccv
   JOIN catalogue.courses c ON c.course_id = ccv.course_id
   LEFT JOIN catalogue.tools_technology_details tt ON tt.course_id = c.course_id
+  LEFT JOIN catalogue.technical_training_details tech ON tech.course_id = c.course_id
   LEFT JOIN catalogue.role_based_details rb ON rb.course_id = c.course_id
+  LEFT JOIN catalogue.certification_details cert ON cert.course_id = c.course_id
 `;
 
 export async function listCourses(pool, filters) {
@@ -149,7 +197,9 @@ export async function listCourses(pool, filters) {
     SELECT count(*)::integer AS total
     FROM catalogue.courses c
     LEFT JOIN catalogue.tools_technology_details tt ON tt.course_id = c.course_id
+    LEFT JOIN catalogue.technical_training_details tech ON tech.course_id = c.course_id
     LEFT JOIN catalogue.role_based_details rb ON rb.course_id = c.course_id
+    LEFT JOIN catalogue.certification_details cert ON cert.course_id = c.course_id
     WHERE ${whereSql}
   `;
   const dataSql = `${catalogueSelect}
@@ -188,7 +238,8 @@ export async function getCourseById(pool, courseId) {
     pool.query('SELECT audience FROM catalogue.course_audiences WHERE course_id = $1 ORDER BY display_order', [courseId]),
     pool.query('SELECT prerequisite FROM catalogue.course_prerequisites WHERE course_id = $1 ORDER BY display_order', [courseId]),
     pool.query(
-      `SELECT m.id, m.module_code, m.title, m.duration_minutes, m.applied_exercise_title,
+      `SELECT m.id, m.module_code, m.title, m.description, m.learning_path_title,
+              m.learning_path_description, m.duration_minutes, m.applied_exercise_title,
               m.applied_exercise_content, o.outcome_type, o.outcome, o.display_order AS outcome_order
        FROM catalogue.course_modules m
        LEFT JOIN catalogue.module_learning_outcomes o ON o.module_id = m.id
@@ -205,6 +256,9 @@ export async function getCourseById(pool, courseId) {
       moduleMap.set(row.id, {
         id: row.module_code,
         title: row.title,
+        description: row.description || undefined,
+        learningPathTitle: row.learning_path_title || undefined,
+        learningPathDescription: row.learning_path_description || undefined,
         concepts: [],
         practicalActivities: [],
         learningOutcomes: [],
@@ -219,9 +273,9 @@ export async function getCourseById(pool, courseId) {
     }
     if (row.outcome) {
       const module = moduleMap.get(row.id);
-      module.learningOutcomes.push(row.outcome);
-      if (row.outcome_type === 'concept') module.concepts.push(row.outcome);
-      if (row.outcome_type === 'practical_activity') module.practicalActivities.push(row.outcome);
+      if (row.outcome_type === 'learning_objective') module.learningOutcomes.push(row.outcome);
+      if (row.outcome_type === 'concept' || row.outcome_type === 'topic') module.concepts.push(row.outcome);
+      if (row.outcome_type === 'practical_activity' || row.outcome_type === 'lab') module.practicalActivities.push(row.outcome);
     }
   }
 
@@ -242,12 +296,111 @@ export async function getCourseById(pool, courseId) {
     })),
   };
 
+  if (baseResult.rows[0].category_code === 'certifications') {
+    programme.details = {
+      ...programme.details,
+      provider: baseResult.rows[0].certification_provider,
+      courseCode: baseResult.rows[0].certification_code,
+      courseUrl: baseResult.rows[0].certification_url || undefined,
+      productTechnologies: baseResult.rows[0].product_technologies || [],
+      roles: baseResult.rows[0].certification_roles || [],
+      subjects: baseResult.rows[0].certification_subjects || [],
+      languageCodes: baseResult.rows[0].language_codes || [],
+      certificationInformation: baseResult.rows[0].certification_information || undefined,
+    };
+  }
+
   return programme;
 }
 
 export async function getCatalogueFilters(pool, category) {
   if (!allowedCategories.has(category)) throw new Error('Invalid category filter.');
   if (category === 'people-process') return { groups: [] };
+
+  if (category === 'certifications') {
+    const result = await pool.query(`
+      SELECT 'provider' AS group_id, cert.provider AS value, count(*)::integer AS count
+      FROM catalogue.courses c
+      JOIN catalogue.certification_details cert ON cert.course_id = c.course_id
+      WHERE c.status = 'published' AND c.category_code = 'certifications'
+      GROUP BY cert.provider
+      UNION ALL
+      SELECT 'productTechnology', technology.value, count(*)::integer
+      FROM catalogue.courses c
+      JOIN catalogue.certification_details cert ON cert.course_id = c.course_id
+      CROSS JOIN LATERAL unnest(cert.product_technologies) technology(value)
+      WHERE c.status = 'published' AND c.category_code = 'certifications'
+      GROUP BY technology.value
+      UNION ALL
+      SELECT 'duration', c.duration_minutes::text, count(*)::integer
+      FROM catalogue.courses c
+      WHERE c.status = 'published' AND c.category_code = 'certifications'
+      GROUP BY c.duration_minutes
+    `);
+    const definitions = [
+      { id: 'provider', title: 'Provider' },
+      { id: 'productTechnology', title: 'Product / Technology', initialVisibleCount: 8 },
+      { id: 'duration', title: 'Duration' },
+    ];
+    return {
+      groups: definitions.map((definition) => ({
+        ...definition,
+        allowMultiple: true,
+        options: result.rows
+          .filter((row) => row.group_id === definition.id)
+          .map((row) => ({
+            id: definition.id === 'duration' ? durationLabel(Number(row.value)) : row.value,
+            label: definition.id === 'duration' ? durationLabel(Number(row.value)) : row.value,
+            count: row.count,
+          }))
+          .sort((left, right) => definition.id === 'duration'
+            ? Number.parseInt(left.id, 10) - Number.parseInt(right.id, 10)
+            : left.label.localeCompare(right.label)),
+      })),
+    };
+  }
+
+  if (category === 'technical-training') {
+    const result = await pool.query(`
+      SELECT 'technology' AS group_id, tech.primary_technology AS value, count(*)::integer AS count
+      FROM catalogue.courses c
+      JOIN catalogue.technical_training_details tech ON tech.course_id = c.course_id
+      WHERE c.status = 'published' AND c.category_code = 'technical-training'
+      GROUP BY tech.primary_technology
+      UNION ALL
+      SELECT 'toolCategory', tech.domain, count(*)::integer
+      FROM catalogue.courses c
+      JOIN catalogue.technical_training_details tech ON tech.course_id = c.course_id
+      WHERE c.status = 'published' AND c.category_code = 'technical-training'
+      GROUP BY tech.domain
+      UNION ALL
+      SELECT 'duration', c.duration_minutes::text, count(*)::integer
+      FROM catalogue.courses c
+      WHERE c.status = 'published' AND c.category_code = 'technical-training'
+      GROUP BY c.duration_minutes
+    `);
+    const definitions = [
+      { id: 'technology', title: 'Technology', initialVisibleCount: 8 },
+      { id: 'toolCategory', title: 'Domain' },
+      { id: 'duration', title: 'Duration' },
+    ];
+    return {
+      groups: definitions.map((definition) => ({
+        ...definition,
+        allowMultiple: true,
+        options: result.rows
+          .filter((row) => row.group_id === definition.id)
+          .map((row) => ({
+            id: definition.id === 'duration' ? durationLabel(Number(row.value)) : row.value,
+            label: definition.id === 'duration' ? durationLabel(Number(row.value)) : row.value,
+            count: row.count,
+          }))
+          .sort((left, right) => definition.id === 'duration'
+            ? Number.parseInt(left.id, 10) - Number.parseInt(right.id, 10)
+            : left.label.localeCompare(right.label)),
+      })),
+    };
+  }
 
   if (category === 'role-based') {
     const result = await pool.query(`

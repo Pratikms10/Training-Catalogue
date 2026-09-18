@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDebounce } from '../hooks/useDebounce';
-import { CategoryId, BaseProgramme, RoleBasedProgramme, ToolsTechProgramme } from '../types';
+import {
+  CategoryId,
+  BaseProgramme,
+  CertificationProgramme,
+  PeopleProcessProgramme,
+  RoleBasedProgramme,
+  ToolsTechProgramme,
+} from '../types';
 import {
   peopleProcessProgrammes,
 } from '../data/actualProgrammes';
@@ -10,12 +17,14 @@ import {
   RoleBasedFilterState,
   ToolsTechnologyFilterState,
   PeopleProcessFilterState,
+  CertificationFilterState,
 } from '../types/filters';
 import {
   filterPeopleProcessProgrammes,
   getRoleBasedActiveChips,
   getToolsTechnologyActiveChips,
   getPeopleProcessActiveChips,
+  getCertificationActiveChips,
 } from '../utils/catalogueFiltering';
 import {
   CATALOGUE_PAGE_SIZE,
@@ -23,6 +32,10 @@ import {
   fetchRoleProgrammes,
   fetchToolsFilterGroups,
   fetchToolsProgrammes,
+  fetchTechnicalFilterGroups,
+  fetchTechnicalProgrammes,
+  fetchCertificationFilterGroups,
+  fetchCertificationProgrammes,
 } from '../api/catalogueApi';
 import { CatalogueToolbar } from './discovery/CatalogueToolbar';
 import { DynamicFilterPanel } from './discovery/DynamicFilterPanel';
@@ -51,7 +64,23 @@ const INITIAL_PP_FILTERS: PeopleProcessFilterState = {
   durations: [],
 };
 
+const INITIAL_CERTIFICATION_FILTERS: CertificationFilterState = {
+  providers: [],
+  productTechnologies: [],
+  durations: [],
+};
+
+const processBasedProgrammes: PeopleProcessProgramme[] = peopleProcessProgrammes
+  .filter((programme) => programme.subType === 'Process')
+  .map((programme) => ({ ...programme, category: 'process-based', badge: 'Process Based' }));
+
+const peopleBehaviouralProgrammes: PeopleProcessProgramme[] = peopleProcessProgrammes
+  .filter((programme) => programme.subType === 'People')
+  .map((programme) => ({ ...programme, category: 'people-behavioural', badge: 'People & Behavioural' }));
+
 export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail }) => {
+  const isPeopleCategory = activeCategoryId === 'process-based' || activeCategoryId === 'people-behavioural';
+  const isPlannedCategory = false;
   // Discovery State
   const [searchQuery, setSearchQuery] = useState<string>('');
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
@@ -61,9 +90,11 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
   // Category-Specific Filter States
   const [roleBasedFilters, setRoleBasedFilters] = useState<RoleBasedFilterState>(INITIAL_RB_FILTERS);
   const [toolsTechFilters, setToolsTechFilters] = useState<ToolsTechnologyFilterState>(INITIAL_TT_FILTERS);
+  const [technicalFilters, setTechnicalFilters] = useState<ToolsTechnologyFilterState>(INITIAL_TT_FILTERS);
   const [peopleProcessFilters, setPeopleProcessFilters] = useState<PeopleProcessFilterState>(INITIAL_PP_FILTERS);
+  const [certificationFilters, setCertificationFilters] = useState<CertificationFilterState>(INITIAL_CERTIFICATION_FILTERS);
 
-  // Tools & Technology is database-backed so it can scale beyond a browser bundle.
+  // AI Tools is database-backed so it can scale beyond a browser bundle.
   const [toolsProgrammes, setToolsProgrammes] = useState<ToolsTechProgramme[]>([]);
   const [toolsTotal, setToolsTotal] = useState(0);
   const [toolsPage, setToolsPage] = useState(1);
@@ -71,6 +102,14 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
   const [toolsLoading, setToolsLoading] = useState(false);
   const [toolsError, setToolsError] = useState<string | null>(null);
   const [toolsReloadToken, setToolsReloadToken] = useState(0);
+
+  const [technicalProgrammes, setTechnicalProgrammes] = useState<ToolsTechProgramme[]>([]);
+  const [technicalTotal, setTechnicalTotal] = useState(0);
+  const [technicalPage, setTechnicalPage] = useState(1);
+  const [technicalFilterGroups, setTechnicalFilterGroups] = useState<FilterGroupConfig[]>([]);
+  const [technicalLoading, setTechnicalLoading] = useState(false);
+  const [technicalError, setTechnicalError] = useState<string | null>(null);
+  const [technicalReloadToken, setTechnicalReloadToken] = useState(0);
 
   // Role-Based is also database-backed so departments and future course volumes stay server-side.
   const [roleProgrammes, setRoleProgrammes] = useState<RoleBasedProgramme[]>([]);
@@ -81,20 +120,32 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
   const [roleError, setRoleError] = useState<string | null>(null);
   const [roleReloadToken, setRoleReloadToken] = useState(0);
 
+  const [certificationProgrammes, setCertificationProgrammes] = useState<CertificationProgramme[]>([]);
+  const [certificationTotal, setCertificationTotal] = useState(0);
+  const [certificationPage, setCertificationPage] = useState(1);
+  const [certificationFilterGroups, setCertificationFilterGroups] = useState<FilterGroupConfig[]>([]);
+  const [certificationLoading, setCertificationLoading] = useState(false);
+  const [certificationError, setCertificationError] = useState<string | null>(null);
+  const [certificationReloadToken, setCertificationReloadToken] = useState(0);
+
   // Requirement 20 & 21: Reset filters, search query, and sort on category change
   useEffect(() => {
     setSearchQuery('');
     setSortBy('Recommended');
     setRoleBasedFilters(INITIAL_RB_FILTERS);
     setToolsTechFilters(INITIAL_TT_FILTERS);
+    setTechnicalFilters(INITIAL_TT_FILTERS);
     setPeopleProcessFilters(INITIAL_PP_FILTERS);
+    setCertificationFilters(INITIAL_CERTIFICATION_FILTERS);
     setToolsPage(1);
+    setTechnicalPage(1);
     setRolePage(1);
+    setCertificationPage(1);
     setIsMobileFiltersOpen(false);
   }, [activeCategoryId]);
 
   useEffect(() => {
-    if (activeCategoryId !== 'tools-technology' || toolsFilterGroups.length > 0) return;
+    if (activeCategoryId !== 'ai-tools' || toolsFilterGroups.length > 0) return;
     const controller = new AbortController();
 
     fetchToolsFilterGroups(controller.signal)
@@ -105,6 +156,19 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
 
     return () => controller.abort();
   }, [activeCategoryId, toolsFilterGroups.length, toolsReloadToken]);
+
+  useEffect(() => {
+    if (activeCategoryId !== 'tools-technology' || technicalFilterGroups.length > 0) return;
+    const controller = new AbortController();
+
+    fetchTechnicalFilterGroups(controller.signal)
+      .then(setTechnicalFilterGroups)
+      .catch((error: Error) => {
+        if (error.name !== 'AbortError') setTechnicalError(error.message);
+      });
+
+    return () => controller.abort();
+  }, [activeCategoryId, technicalFilterGroups.length, technicalReloadToken]);
 
   useEffect(() => {
     if (activeCategoryId !== 'role-based' || roleFilterGroups.length > 0) return;
@@ -120,7 +184,20 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
   }, [activeCategoryId, roleFilterGroups.length, roleReloadToken]);
 
   useEffect(() => {
-    if (activeCategoryId !== 'tools-technology') return;
+    if (activeCategoryId !== 'certifications' || certificationFilterGroups.length > 0) return;
+    const controller = new AbortController();
+
+    fetchCertificationFilterGroups(controller.signal)
+      .then(setCertificationFilterGroups)
+      .catch((error: Error) => {
+        if (error.name !== 'AbortError') setCertificationError(error.message);
+      });
+
+    return () => controller.abort();
+  }, [activeCategoryId, certificationFilterGroups.length, certificationReloadToken]);
+
+  useEffect(() => {
+    if (activeCategoryId !== 'ai-tools') return;
     const controller = new AbortController();
     setToolsLoading(true);
     setToolsError(null);
@@ -149,6 +226,37 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
 
     return () => controller.abort();
   }, [activeCategoryId, debouncedSearchQuery, sortBy, toolsTechFilters, toolsPage, toolsReloadToken]);
+
+  useEffect(() => {
+    if (activeCategoryId !== 'tools-technology') return;
+    const controller = new AbortController();
+    setTechnicalLoading(true);
+    setTechnicalError(null);
+
+    fetchTechnicalProgrammes({
+      query: debouncedSearchQuery,
+      filters: technicalFilters,
+      sort: sortBy,
+      page: technicalPage,
+      signal: controller.signal,
+    })
+      .then((response) => {
+        setTechnicalProgrammes(response.data);
+        setTechnicalTotal(response.pagination.total);
+      })
+      .catch((error: Error) => {
+        if (error.name !== 'AbortError') {
+          setTechnicalProgrammes([]);
+          setTechnicalTotal(0);
+          setTechnicalError(error.message);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setTechnicalLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [activeCategoryId, debouncedSearchQuery, sortBy, technicalFilters, technicalPage, technicalReloadToken]);
 
   useEffect(() => {
     if (activeCategoryId !== 'role-based') return;
@@ -181,6 +289,37 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
     return () => controller.abort();
   }, [activeCategoryId, debouncedSearchQuery, sortBy, roleBasedFilters, rolePage, roleReloadToken]);
 
+  useEffect(() => {
+    if (activeCategoryId !== 'certifications') return;
+    const controller = new AbortController();
+    setCertificationLoading(true);
+    setCertificationError(null);
+
+    fetchCertificationProgrammes({
+      query: debouncedSearchQuery,
+      filters: certificationFilters,
+      sort: sortBy,
+      page: certificationPage,
+      signal: controller.signal,
+    })
+      .then((response) => {
+        setCertificationProgrammes(response.data);
+        setCertificationTotal(response.pagination.total);
+      })
+      .catch((error: Error) => {
+        if (error.name !== 'AbortError') {
+          setCertificationProgrammes([]);
+          setCertificationTotal(0);
+          setCertificationError(error.message);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setCertificationLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [activeCategoryId, certificationFilters, certificationPage, certificationReloadToken, debouncedSearchQuery, sortBy]);
+
   // Handle filter toggles dynamically by group ID
   const handleToggleFilter = (groupId: string, value: string) => {
     if (activeCategoryId === 'role-based') {
@@ -209,9 +348,12 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
         }
         return prev;
       });
-    } else if (activeCategoryId === 'tools-technology') {
-      setToolsPage(1);
-      setToolsTechFilters((prev) => {
+    } else if (activeCategoryId === 'ai-tools' || activeCategoryId === 'tools-technology') {
+      const isTechnical = activeCategoryId === 'tools-technology';
+      if (isTechnical) setTechnicalPage(1);
+      else setToolsPage(1);
+      const setFilters = isTechnical ? setTechnicalFilters : setToolsTechFilters;
+      setFilters((prev) => {
         if (groupId === 'technology') {
           const exists = prev.technologies.includes(value);
           return {
@@ -235,7 +377,7 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
         }
         return prev;
       });
-    } else if (activeCategoryId === 'people-process') {
+    } else if (isPeopleCategory) {
       setPeopleProcessFilters((prev) => {
         if (groupId === 'category') {
           const exists = prev.categories.includes(value);
@@ -260,6 +402,17 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
         }
         return prev;
       });
+    } else if (activeCategoryId === 'certifications') {
+      setCertificationPage(1);
+      setCertificationFilters((prev) => {
+        const toggle = (values: string[]) => values.includes(value)
+          ? values.filter((item) => item !== value)
+          : [...values, value];
+        if (groupId === 'provider') return { ...prev, providers: toggle(prev.providers) };
+        if (groupId === 'productTechnology') return { ...prev, productTechnologies: toggle(prev.productTechnologies) };
+        if (groupId === 'duration') return { ...prev, durations: toggle(prev.durations) };
+        return prev;
+      });
     }
   };
 
@@ -268,11 +421,17 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
     if (activeCategoryId === 'role-based') {
       setRolePage(1);
       setRoleBasedFilters(INITIAL_RB_FILTERS);
-    } else if (activeCategoryId === 'tools-technology') {
+    } else if (activeCategoryId === 'ai-tools') {
       setToolsPage(1);
       setToolsTechFilters(INITIAL_TT_FILTERS);
-    } else if (activeCategoryId === 'people-process') {
+    } else if (activeCategoryId === 'tools-technology') {
+      setTechnicalPage(1);
+      setTechnicalFilters(INITIAL_TT_FILTERS);
+    } else if (isPeopleCategory) {
       setPeopleProcessFilters(INITIAL_PP_FILTERS);
+    } else if (activeCategoryId === 'certifications') {
+      setCertificationPage(1);
+      setCertificationFilters(INITIAL_CERTIFICATION_FILTERS);
     }
   };
 
@@ -290,83 +449,122 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
         duration: roleBasedFilters.durations,
       };
     }
-    if (activeCategoryId === 'tools-technology') {
+    if (activeCategoryId === 'ai-tools') {
       return {
         technology: toolsTechFilters.technologies,
         toolCategory: toolsTechFilters.toolCategories,
         duration: toolsTechFilters.durations,
       };
     }
-    if (activeCategoryId === 'people-process') {
+    if (activeCategoryId === 'tools-technology') {
+      return {
+        technology: technicalFilters.technologies,
+        toolCategory: technicalFilters.toolCategories,
+        duration: technicalFilters.durations,
+      };
+    }
+    if (isPeopleCategory) {
       return {
         category: peopleProcessFilters.categories,
         portfolio: peopleProcessFilters.portfolios,
         duration: peopleProcessFilters.durations,
       };
     }
+    if (activeCategoryId === 'certifications') {
+      return {
+        provider: certificationFilters.providers,
+        productTechnology: certificationFilters.productTechnologies,
+        duration: certificationFilters.durations,
+      };
+    }
     return {};
-  }, [activeCategoryId, roleBasedFilters, toolsTechFilters, peopleProcessFilters]);
+  }, [activeCategoryId, certificationFilters, roleBasedFilters, technicalFilters, toolsTechFilters, peopleProcessFilters]);
 
   // Active filter chips
   const activeChips = useMemo(() => {
     if (activeCategoryId === 'role-based') {
       return getRoleBasedActiveChips(roleBasedFilters);
     }
-    if (activeCategoryId === 'tools-technology') {
+    if (activeCategoryId === 'ai-tools') {
       return getToolsTechnologyActiveChips(toolsTechFilters);
     }
-    if (activeCategoryId === 'people-process') {
+    if (activeCategoryId === 'tools-technology') {
+      return getToolsTechnologyActiveChips(technicalFilters);
+    }
+    if (isPeopleCategory) {
       return getPeopleProcessActiveChips(peopleProcessFilters);
     }
+    if (activeCategoryId === 'certifications') {
+      return getCertificationActiveChips(certificationFilters);
+    }
     return [];
-  }, [activeCategoryId, roleBasedFilters, toolsTechFilters, peopleProcessFilters]);
+  }, [activeCategoryId, certificationFilters, roleBasedFilters, technicalFilters, toolsTechFilters, peopleProcessFilters]);
 
   // Filtered programme results based on active category, search, filters and sort
   const filteredProgrammes = useMemo(() => {
     if (activeCategoryId === 'role-based') {
       return roleProgrammes;
     }
-    if (activeCategoryId === 'tools-technology') {
+    if (activeCategoryId === 'ai-tools') {
       return toolsProgrammes;
     }
-    if (activeCategoryId === 'people-process') {
-      return filterPeopleProcessProgrammes(peopleProcessProgrammes, debouncedSearchQuery, peopleProcessFilters, sortBy);
+    if (activeCategoryId === 'tools-technology') {
+      return technicalProgrammes;
     }
+    if (activeCategoryId === 'process-based') {
+      return filterPeopleProcessProgrammes(processBasedProgrammes, debouncedSearchQuery, peopleProcessFilters, sortBy);
+    }
+    if (activeCategoryId === 'people-behavioural') {
+      return filterPeopleProcessProgrammes(peopleBehaviouralProgrammes, debouncedSearchQuery, peopleProcessFilters, sortBy);
+    }
+    if (activeCategoryId === 'certifications') return certificationProgrammes;
     return [];
-  }, [activeCategoryId, debouncedSearchQuery, sortBy, roleBasedFilters, peopleProcessFilters, roleProgrammes, toolsProgrammes]);
+  }, [activeCategoryId, certificationProgrammes, debouncedSearchQuery, sortBy, roleBasedFilters, peopleProcessFilters, roleProgrammes, technicalProgrammes, toolsProgrammes]);
 
   // Category Total Metadata
   const totalCategoryCount = useMemo(() => {
     if (activeCategoryId === 'role-based') return roleTotal;
-    if (activeCategoryId === 'tools-technology') return toolsTotal;
-    if (activeCategoryId === 'people-process') return peopleProcessProgrammes.length;
+    if (activeCategoryId === 'ai-tools') return toolsTotal;
+    if (activeCategoryId === 'tools-technology') return technicalTotal;
+    if (activeCategoryId === 'process-based') return processBasedProgrammes.length;
+    if (activeCategoryId === 'people-behavioural') return peopleBehaviouralProgrammes.length;
+    if (activeCategoryId === 'certifications') return certificationTotal;
     return 0;
-  }, [activeCategoryId, roleTotal, toolsTotal]);
+  }, [activeCategoryId, certificationTotal, roleTotal, technicalTotal, toolsTotal]);
 
   const handleSearchChange = (value: string) => {
-    if (activeCategoryId === 'tools-technology') setToolsPage(1);
+    if (activeCategoryId === 'ai-tools') setToolsPage(1);
+    if (activeCategoryId === 'tools-technology') setTechnicalPage(1);
     if (activeCategoryId === 'role-based') setRolePage(1);
+    if (activeCategoryId === 'certifications') setCertificationPage(1);
     setSearchQuery(value);
   };
 
   const handleSortChange = (value: SortOption) => {
-    if (activeCategoryId === 'tools-technology') setToolsPage(1);
+    if (activeCategoryId === 'ai-tools') setToolsPage(1);
+    if (activeCategoryId === 'tools-technology') setTechnicalPage(1);
     if (activeCategoryId === 'role-based') setRolePage(1);
+    if (activeCategoryId === 'certifications') setCertificationPage(1);
     setSortBy(value);
   };
 
   const handleClearSearch = () => {
-    if (activeCategoryId === 'tools-technology') setToolsPage(1);
+    if (activeCategoryId === 'ai-tools') setToolsPage(1);
+    if (activeCategoryId === 'tools-technology') setTechnicalPage(1);
     if (activeCategoryId === 'role-based') setRolePage(1);
+    if (activeCategoryId === 'certifications') setCertificationPage(1);
     setSearchQuery('');
   };
 
   const totalCatalogueCapacity = useMemo(() => {
     if (activeCategoryId === 'role-based') return 3000;
-    if (activeCategoryId === 'tools-technology') return 400;
-    if (activeCategoryId === 'people-process') return 100;
+    if (activeCategoryId === 'ai-tools') return 188;
+    if (activeCategoryId === 'tools-technology') return technicalTotal;
+    if (activeCategoryId === 'process-based') return processBasedProgrammes.length;
+    if (activeCategoryId === 'people-behavioural') return peopleBehaviouralProgrammes.length;
+    if (activeCategoryId === 'certifications') return certificationTotal;
     return 0;
-  }, [activeCategoryId]);
+  }, [activeCategoryId, certificationTotal, technicalTotal]);
 
   const hasActiveSearch = searchQuery.trim().length > 0;
   const hasActiveFilters = activeChips.length > 0;
@@ -378,31 +576,45 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
       aria-label="Programme catalogue discovery"
     >
       {/* CONSTANT STICKY SEARCH & DISCOVERY BAR AT TOP OF CATALOGUE */}
-      <div 
-        id="sticky-catalogue-search-bar-wrapper" 
-        className="sticky top-[64px] z-30 w-full bg-white/95 backdrop-blur-md border-b border-[rgba(0,0,255,0.12)] shadow-[0_4px_16px_rgba(0,0,0,0.04)] px-4 sm:px-8 lg:px-10 py-3 sm:py-3.5 transition-all"
-      >
-        <div className="max-w-7xl mx-auto">
-          <CatalogueToolbar
-            searchQuery={searchQuery}
-            onSearchChange={handleSearchChange}
-            onSearchClear={handleClearSearch}
-            sortBy={sortBy}
-            onSortChange={handleSortChange}
-            activeFilterCount={activeChips.length}
-            onOpenMobileFilters={() => setIsMobileFiltersOpen(true)}
-          />
+      {!isPlannedCategory && (
+        <div
+          id="sticky-catalogue-search-bar-wrapper"
+          className="sticky top-[64px] z-30 w-full bg-white/95 backdrop-blur-md border-b border-[rgba(0,0,255,0.12)] shadow-[0_4px_16px_rgba(0,0,0,0.04)] px-4 sm:px-8 lg:px-10 py-3 sm:py-3.5 transition-all"
+        >
+          <div className="max-w-7xl mx-auto">
+            <CatalogueToolbar
+              searchQuery={searchQuery}
+              onSearchChange={handleSearchChange}
+              onSearchClear={handleClearSearch}
+              sortBy={sortBy}
+              onSortChange={handleSortChange}
+              activeFilterCount={activeChips.length}
+              onOpenMobileFilters={() => setIsMobileFiltersOpen(true)}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 py-6 sm:py-8">
-        {activeCategoryId === 'tools-technology' && toolsError && (
+        {activeCategoryId === 'ai-tools' && toolsError && (
           <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
-            <span>Unable to load the Tools catalogue: {toolsError}</span>
+            <span>Unable to load the AI Tools catalogue: {toolsError}</span>
             <button
               type="button"
               className="shrink-0 font-semibold underline"
               onClick={() => setToolsReloadToken((value) => value + 1)}
+            >
+              Retry
+            </button>
+          </div>
+        )}
+        {activeCategoryId === 'tools-technology' && technicalError && (
+          <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
+            <span>Unable to load the Tools &amp; Technology catalogue: {technicalError}</span>
+            <button
+              type="button"
+              className="shrink-0 font-semibold underline"
+              onClick={() => setTechnicalReloadToken((value) => value + 1)}
             >
               Retry
             </button>
@@ -420,24 +632,50 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
             </button>
           </div>
         )}
+        {activeCategoryId === 'certifications' && certificationError && (
+          <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
+            <span>Unable to load the Certifications catalogue: {certificationError}</span>
+            <button
+              type="button"
+              className="shrink-0 font-semibold underline"
+              onClick={() => setCertificationReloadToken((value) => value + 1)}
+            >
+              Retry
+            </button>
+          </div>
+        )}
         {/* MAIN BODY: Dynamic Filter Sidebar + Catalogue Results */}
         <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
           {/* Dynamic Filter Panel (Desktop Sidebar & Mobile Drawer) */}
-          <DynamicFilterPanel
-            activeCategoryId={activeCategoryId}
-            selectedFilters={selectedFiltersMap}
-            onToggleFilter={handleToggleFilter}
-            onClearAll={handleClearCategoryFilters}
-            activeCount={activeChips.length}
-            isMobileOpen={isMobileFiltersOpen}
-            onCloseMobile={() => setIsMobileFiltersOpen(false)}
-            totalResultsCount={activeCategoryId === 'tools-technology' ? toolsTotal : activeCategoryId === 'role-based' ? roleTotal : filteredProgrammes.length}
-            groupsOverride={activeCategoryId === 'tools-technology' && toolsFilterGroups.length > 0
-              ? toolsFilterGroups
-              : activeCategoryId === 'role-based' && roleFilterGroups.length > 0
-                ? roleFilterGroups
-                : undefined}
-          />
+          {!isPlannedCategory && (
+            <DynamicFilterPanel
+              activeCategoryId={activeCategoryId}
+              selectedFilters={selectedFiltersMap}
+              onToggleFilter={handleToggleFilter}
+              onClearAll={handleClearCategoryFilters}
+              activeCount={activeChips.length}
+              isMobileOpen={isMobileFiltersOpen}
+              onCloseMobile={() => setIsMobileFiltersOpen(false)}
+              totalResultsCount={activeCategoryId === 'ai-tools'
+                ? toolsTotal
+                : activeCategoryId === 'tools-technology'
+                  ? technicalTotal
+                : activeCategoryId === 'role-based'
+                  ? roleTotal
+                  : activeCategoryId === 'certifications'
+                    ? certificationTotal
+                    : filteredProgrammes.length}
+              groupsOverride={activeCategoryId === 'ai-tools' && toolsFilterGroups.length > 0
+                ? toolsFilterGroups
+                : activeCategoryId === 'tools-technology' && technicalFilterGroups.length > 0
+                  ? technicalFilterGroups
+                : activeCategoryId === 'role-based' && roleFilterGroups.length > 0
+                  ? roleFilterGroups
+                  : activeCategoryId === 'certifications' && certificationFilterGroups.length > 0
+                    ? certificationFilterGroups
+                    : undefined}
+            />
+          )}
 
           {/* Results Column (Active Chips + Result Count + Grid or Empty State) */}
           <CatalogueResults
@@ -454,11 +692,44 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
             hasActiveSearch={hasActiveSearch}
             hasActiveFilters={hasActiveFilters}
             onViewDetail={onViewDetail}
-            totalResultsCount={activeCategoryId === 'tools-technology' ? toolsTotal : activeCategoryId === 'role-based' ? roleTotal : undefined}
-            currentPage={activeCategoryId === 'tools-technology' ? toolsPage : activeCategoryId === 'role-based' ? rolePage : undefined}
-            pageSize={activeCategoryId === 'tools-technology' || activeCategoryId === 'role-based' ? CATALOGUE_PAGE_SIZE : undefined}
-            onPageChange={activeCategoryId === 'tools-technology' ? setToolsPage : activeCategoryId === 'role-based' ? setRolePage : undefined}
-            isLoading={activeCategoryId === 'tools-technology' ? toolsLoading : activeCategoryId === 'role-based' ? roleLoading : undefined}
+            totalResultsCount={activeCategoryId === 'ai-tools'
+              ? toolsTotal
+              : activeCategoryId === 'tools-technology'
+                ? technicalTotal
+              : activeCategoryId === 'role-based'
+                ? roleTotal
+                : activeCategoryId === 'certifications'
+                  ? certificationTotal
+                  : undefined}
+            currentPage={activeCategoryId === 'ai-tools'
+              ? toolsPage
+              : activeCategoryId === 'tools-technology'
+                ? technicalPage
+              : activeCategoryId === 'role-based'
+                ? rolePage
+                : activeCategoryId === 'certifications'
+                  ? certificationPage
+                  : undefined}
+            pageSize={['ai-tools', 'tools-technology', 'role-based', 'certifications'].includes(activeCategoryId) ? CATALOGUE_PAGE_SIZE : undefined}
+            onPageChange={activeCategoryId === 'ai-tools'
+              ? setToolsPage
+              : activeCategoryId === 'tools-technology'
+                ? setTechnicalPage
+              : activeCategoryId === 'role-based'
+                ? setRolePage
+                : activeCategoryId === 'certifications'
+                  ? setCertificationPage
+                  : undefined}
+            isLoading={activeCategoryId === 'ai-tools'
+              ? toolsLoading
+              : activeCategoryId === 'tools-technology'
+                ? technicalLoading
+              : activeCategoryId === 'role-based'
+                ? roleLoading
+                : activeCategoryId === 'certifications'
+                  ? certificationLoading
+                  : undefined}
+            isCataloguePlanned={isPlannedCategory}
           />
         </div>
       </div>

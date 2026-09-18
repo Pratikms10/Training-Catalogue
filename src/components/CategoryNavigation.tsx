@@ -1,6 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import { CategoryArchitecture, CategoryId } from '../types';
-import { Briefcase, Users, Laptop, CheckCircle2 } from 'lucide-react';
+import {
+  Award,
+  Bot,
+  Briefcase,
+  CheckCircle2,
+  CircuitBoard,
+  HeartHandshake,
+  Workflow,
+} from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface Props {
@@ -45,8 +53,11 @@ export const CategoryNavigation: React.FC<Props> = ({ categories, activeCategory
   const getCategoryIcon = (id: CategoryId) => {
     switch (id) {
       case 'role-based': return <Briefcase className="w-6 h-6" />;
-      case 'people-process': return <Users className="w-6 h-6" />;
-      case 'tools-technology': return <Laptop className="w-6 h-6" />;
+      case 'tools-technology': return <CircuitBoard className="w-6 h-6" />;
+      case 'process-based': return <Workflow className="w-6 h-6" />;
+      case 'certifications': return <Award className="w-6 h-6" />;
+      case 'ai-tools': return <Bot className="w-6 h-6" />;
+      case 'people-behavioural': return <HeartHandshake className="w-6 h-6" />;
     }
   };
 
@@ -61,7 +72,7 @@ export const CategoryNavigation: React.FC<Props> = ({ categories, activeCategory
         </div>
 
         {/* Tablist for categories */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6" role="tablist">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6" role="tablist">
           {categories.map((cat) => {
             const isActive = cat.id === activeCategoryId;
             const originData = activeTabOrigin[cat.id];
@@ -117,10 +128,10 @@ export const CategoryNavigation: React.FC<Props> = ({ categories, activeCategory
                       <span className={`block text-3xl font-bold tracking-tight transition-colors duration-200 ${
                         isActive ? 'text-[#0000FF]' : isHovered ? 'text-[#0000FF]/70' : 'text-[rgba(0,0,0,0.65)]'
                       }`}>
-                        {cat.count.toLocaleString()}+
+                        {cat.count > 0 ? cat.count.toLocaleString() : 'New'}
                       </span>
                       <span className="text-[10px] font-bold uppercase tracking-wider text-[rgba(0,0,0,0.58)]">
-                        Programmes
+                        {cat.count > 0 ? 'Programmes' : 'Catalogue'}
                       </span>
                     </div>
                   </div>

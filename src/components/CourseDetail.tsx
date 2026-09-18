@@ -16,7 +16,8 @@ import {
   Lightbulb, 
   Check, 
   Compass,
-  Layers
+  Layers,
+  Award,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { RfqModal } from './RfqModal';
@@ -86,8 +87,14 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
     }
     if (programme.id.startsWith('PP')) {
       return {
-        label: 'People and Process',
+        label: programme.category === 'process-based' ? 'Process Based' : 'People & Behavioural',
         icon: <Target className="w-3.5 h-3.5 text-[#0000FF]" />,
+      };
+    }
+    if (programme.category === 'certifications') {
+      return {
+        label: `${details.provider || 'Certification'} Programme`,
+        icon: <Award className="w-3.5 h-3.5 text-[#0000FF]" />,
       };
     }
     return {
@@ -180,7 +187,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
               {/* Programme ID Tag */}
               <div className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white border border-[rgba(0,0,255,0.14)] font-mono font-bold text-xs tracking-wider text-[#000000] shadow-2xs">
-                <span>{programme.id}</span>
+                <span>{details.courseCode || programme.id}</span>
               </div>
             </div>
 
@@ -216,14 +223,18 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                 <img 
                   src={((programme as any).imageUrl || (programme as any).toolLogoUrl)}
                   alt={programme.title}
-                  className={programme.id.startsWith('TT') ? 'w-2/3 h-2/3 object-contain rounded-xl' : 'w-full h-full object-cover rounded-xl'}
+                  className={['ai-tools', 'tools-technology'].includes(programme.category) ? 'w-2/3 h-2/3 object-contain rounded-xl' : 'w-full h-full object-cover rounded-xl'}
                   onError={(e) => {
                     (e.target as HTMLImageElement).style.display = 'none';
                   }}
                 />
               ) : (
                 <div className="w-full h-full bg-[rgba(33,150,243,0.03)] rounded-xl flex items-center justify-center text-[10px] font-bold text-[rgba(0,0,0,0.3)] tracking-widest uppercase border border-dashed border-[rgba(0,0,255,0.15)] text-center leading-relaxed">
-                  {programme.id.startsWith('TT') ? <>LOGO<br/>REQD</> : 'IMAGE REQUIRED'}
+                  {programme.category === 'certifications'
+                    ? <div className="flex flex-col items-center gap-3 text-[#0000FF]"><Award className="h-16 w-16"/><span>{details.provider || 'Certification'}</span></div>
+                    : ['ai-tools', 'tools-technology'].includes(programme.category)
+                      ? <div className="flex flex-col items-center gap-3 text-[#0000FF]"><Cpu className="h-16 w-16"/><span>{(programme as any).toolName || 'Technology'}</span></div>
+                      : 'IMAGE REQUIRED'}
                 </div>
               )}
             </div>
@@ -283,7 +294,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                   Delivery
                 </div>
                 <div className="font-bold text-[#000000] text-sm sm:text-base">
-                  {details.delivery || programme.format || 'Instructor-Led'}
+                  {details.delivery || programme.format || (programme.category === 'certifications' ? 'Provider-aligned' : 'Instructor-Led')}
                 </div>
               </div>
             </div>
@@ -298,7 +309,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                   Format
                 </div>
                 <div id="course-metadata-approach-value" className="font-bold text-[#000000] text-sm sm:text-base">
-                  {details.format || programme.format || 'Programme'}
+                  {details.format || programme.format || (programme.category === 'certifications' ? 'Certification Course' : 'Programme')}
                 </div>
               </div>
             </div>
@@ -365,12 +376,27 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                       </div>
                     )}
 
+                    {programme.category === 'certifications' && details.courseUrl && (
+                      <div className="rounded-xl border border-[rgba(0,0,255,0.08)] bg-[rgba(33,150,243,0.06)] p-5 sm:p-6">
+                        <h4 className="mb-2 text-sm font-bold text-[#000000]">Official provider reference</h4>
+                        <a
+                          href={details.courseUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0000FF] hover:underline"
+                        >
+                          View {details.courseCode || programme.id} on Microsoft Learn
+                          <ArrowRight className="h-4 w-4" />
+                        </a>
+                      </div>
+                    )}
+
                     {/* 12 & 13. Light-Blue Content Panel: Tools Covered */}
                     {details.toolsCovered && details.toolsCovered.length > 0 && (
                       <div className="bg-[rgba(33,150,243,0.06)] p-5 sm:p-6 rounded-xl border border-[rgba(0,0,255,0.08)]">
                         <h4 className="text-sm font-bold text-[#000000] mb-3 flex items-center gap-2">
                           <Wrench className="w-4 h-4 text-[#0000FF]" />
-                          <span>{programme.id.startsWith('TT') ? 'Technology covered' : 'Tools covered'}</span>
+                          <span>{programme.category === 'certifications' ? 'Products & technologies' : programme.id.startsWith('TT') ? 'Technology covered' : 'Tools covered'}</span>
                         </h4>
                         <div className="flex flex-wrap gap-2">
                           {details.toolsCovered.map((tool: string, idx: number) => (
@@ -577,6 +603,31 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                                   className="border-t border-[rgba(0,0,255,0.10)] bg-[rgba(33,150,243,0.05)]"
                                 >
                                   <div className="p-5 pl-16 sm:pl-20 pr-6">
+                                    {module.learningPathTitle && (
+                                      <div className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-[#0000FF]">
+                                        Learning Path: {module.learningPathTitle}
+                                      </div>
+                                    )}
+                                    {module.description && (
+                                      <p className="mb-4 text-xs sm:text-sm leading-relaxed text-[rgba(0,0,0,0.72)]">
+                                        {module.description}
+                                      </p>
+                                    )}
+                                    {module.learningOutcomes && module.learningOutcomes.length > 0 && (
+                                      <div className="mb-4 rounded-lg border border-[rgba(0,0,255,0.08)] bg-white/80 p-4">
+                                        <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-[rgba(0,0,0,0.58)]">
+                                          Learning objectives
+                                        </div>
+                                        <ul className="space-y-1.5 text-xs sm:text-sm text-[rgba(0,0,0,0.72)]">
+                                          {module.learningOutcomes.map((outcome, outcomeIndex) => (
+                                            <li key={outcomeIndex} className="flex items-start gap-2 leading-relaxed">
+                                              <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#0000FF]" />
+                                              <span>{outcome}</span>
+                                            </li>
+                                          ))}
+                                        </ul>
+                                      </div>
+                                    )}
                                     
                                     {/* Structured concepts and practical activities */}
                                     {hasStructuredLearning ? (
@@ -585,7 +636,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                                           <div className="bg-white/80 p-4 rounded-lg border border-[rgba(0,0,255,0.08)]">
                                             <div className="text-[11px] font-semibold text-[rgba(0,0,0,0.58)] uppercase tracking-wider mb-2 flex items-center gap-1.5">
                                               <Lightbulb className="w-3.5 h-3.5 text-[#0000FF]" />
-                                              <span>Concepts</span>
+                                              <span>{programme.category === 'certifications' ? 'Topics / units' : 'Concepts'}</span>
                                             </div>
                                             <ul className="list-disc pl-4 space-y-1.5 text-xs sm:text-sm text-[rgba(0,0,0,0.72)]">
                                               {module.concepts.map((concept, conceptIndex) => (

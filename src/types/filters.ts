@@ -47,10 +47,18 @@ export interface PeopleProcessFilterState {
   durations: string[];
 }
 
+export interface CertificationFilterState {
+  providers: string[];
+  productTechnologies: string[];
+  durations: string[];
+}
+
 export type CategoryFilterState =
   | { type: 'role-based'; state: RoleBasedFilterState }
-  | { type: 'tools-technology'; state: ToolsTechnologyFilterState }
-  | { type: 'people-process'; state: PeopleProcessFilterState };
+  | { type: 'ai-tools'; state: ToolsTechnologyFilterState }
+  | { type: 'certifications'; state: CertificationFilterState }
+  | { type: 'process-based'; state: PeopleProcessFilterState }
+  | { type: 'people-behavioural'; state: PeopleProcessFilterState };
 
 export interface ActiveFilterChip {
   groupId: string;

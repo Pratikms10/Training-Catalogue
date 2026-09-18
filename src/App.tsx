@@ -31,9 +31,16 @@ export default function App() {
         const id = decodeURIComponent(path.replace('/programmes/', '')).toUpperCase();
         setProgrammeLoadError(null);
 
-        if (id.startsWith('TT') || id.startsWith('RB')) {
-          const databaseCategory: CategoryId = id.startsWith('TT') ? 'tools-technology' : 'role-based';
-          setActiveCategoryId(databaseCategory);
+        const isCertificationCode = /^[A-Z0-9]{2,12}-[A-Z0-9][A-Z0-9-]{1,30}$/.test(id) && /\d/.test(id);
+        if (id.startsWith('TT') || id.startsWith('TC') || id.startsWith('RB') || isCertificationCode) {
+          const displayCategory: CategoryId = id.startsWith('TT')
+            ? 'ai-tools'
+            : id.startsWith('TC')
+              ? 'tools-technology'
+            : id.startsWith('RB')
+              ? 'role-based'
+              : 'certifications';
+          setActiveCategoryId(displayCategory);
           setSelectedProgramme(null);
           setIsProgrammeLoading(true);
           const controller = new AbortController();
@@ -47,7 +54,7 @@ export default function App() {
               setSelectedProgramme({
                 id: 'NOT_FOUND',
                 title: 'Programme Not Found',
-                category: databaseCategory,
+                category: displayCategory,
                 level: 'Awareness',
               });
             })
@@ -62,13 +69,24 @@ export default function App() {
 
         setIsProgrammeLoading(false);
         if (prog) {
-          if (id.startsWith('PP')) setActiveCategoryId('people-process');
-          setSelectedProgramme(prog);
+          if (id.startsWith('PP')) {
+            const category: CategoryId = prog && 'subType' in prog && prog.subType === 'Process'
+              ? 'process-based'
+              : 'people-behavioural';
+            setActiveCategoryId(category);
+            setSelectedProgramme({
+              ...prog,
+              category,
+              badge: category === 'process-based' ? 'Process Based' : 'People & Behavioural',
+            });
+          } else {
+            setSelectedProgramme(prog);
+          }
         } else {
           setSelectedProgramme({
             id: 'NOT_FOUND',
             title: 'Programme Not Found',
-            category: id.startsWith('PP') ? 'people-process' : 'role-based',
+            category: id.startsWith('PP') ? 'people-behavioural' : 'role-based',
             level: 'Awareness',
           });
         }

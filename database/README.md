@@ -53,6 +53,18 @@ node scripts/import-tools-db.mjs "C:\path\to\courses.jsonl" --resume-batch=14
 
 The resume command verifies the batch size and the exact imported Course ID sequence before continuing.
 
+## Bulk Tools & Technology workbook import
+
+The technical-training converter accepts the four-sheet course workbook (`Course index`, `Course details`, `Curriculum`, and `Source checks`). It maps the workbook source IDs to catalogue IDs `TC0001`, `TC0002`, and so on, while retaining each original source ID for traceability. Python 3 with `openpyxl` is required for workbook extraction.
+
+```powershell
+npm run db:convert:technical -- "C:\path\TechnoEdge_Course_Content.xlsx"
+npm run db:import:tools -- "data\normalized\technical-training.json"
+npm run db:verify
+```
+
+The generated JSON records the duration-normalization rule and source issues for every course. The importer uses upsert semantics, so rerunning a corrected workbook updates matching `TC` records without deleting other categories.
+
 ## Run the API locally
 
 Start the API and Vite in separate terminals:
@@ -69,6 +81,8 @@ Read endpoints:
 - `GET /api/health`
 - `GET /api/courses?page=1&pageSize=24&category=tools-technology`
 - `GET /api/courses?page=1&pageSize=24&category=role-based`
+- `GET /api/courses?page=1&pageSize=24&category=certifications`
+- `GET /api/courses?page=1&pageSize=24&category=technical-training`
 - `GET /api/courses?q=chatgpt&level=Intermediate`
 - `GET /api/courses/TT0003`
 - `GET /api/courses/RB0001`
@@ -91,12 +105,25 @@ The import routes are available only from the local machine during development. 
 ## Data model
 
 - `courses` contains the common catalogue fields and publication state.
-- `role_based_details`, `people_process_details`, and `tools_technology_details` contain category-specific fields.
+- `role_based_details`, `people_process_details`, `tools_technology_details`, `technical_training_details`, and `certification_details` contain category-specific fields.
 - Modules, outcomes, audiences, prerequisites, scenarios, skills, tools, and technology categories use related tables so lists remain searchable and ordered.
 - `import_batches` and `import_rows` preserve upload history, staging payloads, validation errors, and row-level outcomes.
 - `course_catalogue_view` returns the common and category-specific fields needed by catalogue cards and filters.
 
-Course IDs must use the category prefix followed by at least four digits: `RB`, `PP`, or `TT`. The database rejects a prefix that does not match the selected category.
+Role-Based, People/Process, and AI Tool Course IDs use the category prefix followed by at least four digits: `RB`, `PP`, or `TT`. Tools & Technology courses use `TC` IDs and the database category `technical-training`, keeping them separate from the existing AI Tools records. Certification records preserve the provider-issued course code, such as `AB-6002`; the scraper sequence in a source filename is retained only as metadata.
+
+## Microsoft certification Markdown import
+
+The certification importer accepts one or more Markdown files or a folder containing Markdown files. A filename such as `0053_AB-6002.md` is interpreted as source sequence `0053` and provider course code `AB-6002`. The code is cross-checked against the document H1 before any database write.
+
+```powershell
+npm run db:import:certifications -- "C:\path\0053_AB-6002.md" "C:\path\0092_AB-6005.md"
+
+# Import every Markdown file in a folder while leaving existing course codes untouched.
+npm run db:import:certifications -- "C:\path\microsoft-courses" --skip-existing
+```
+
+The import is a non-destructive upsert. It preserves learning paths, module descriptions, module learning objectives, topics/units, and available labs, while leaving absent optional sections empty. Use `--skip-existing` for an add-only batch: matching course codes are reported and excluded rather than updated. Validation normally stops the entire batch and reports every malformed file; add `--skip-invalid` only when valid courses should proceed while malformed files remain unimported for correction.
 
 ## Import modes
 

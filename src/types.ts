@@ -2,9 +2,17 @@
  * TechnoEdge Corporate Training Catalogue - Information Architecture Types & Contracts
  */
 
-export type CategoryId = 'role-based' | 'people-process' | 'tools-technology';
+export type CategoryId =
+  | 'role-based'
+  | 'tools-technology'
+  | 'process-based'
+  | 'certifications'
+  | 'ai-tools'
+  | 'people-behavioural';
 
-export type ProgrammePrefix = 'RB' | 'PP' | 'TT';
+export type LegacyCategoryId = 'people-process';
+
+export type ProgrammePrefix = 'RB' | 'PP' | 'TT' | 'TC';
 
 export type ProficiencyLevel = 'Awareness' | 'Basic' | 'Intermediate' | 'Advanced' | 'Expert';
 
@@ -12,7 +20,7 @@ export interface CategoryArchitecture {
   id: CategoryId;
   name: string;
   count: number;
-  idPrefix: ProgrammePrefix;
+  idPrefix: string;
   idFormatExample: string;
   templateName: string;
   referenceImage: string;
@@ -33,6 +41,9 @@ export interface CategoryArchitecture {
 export interface ProgrammeModule {
   id: string;
   title: string;
+  description?: string;
+  learningPathTitle?: string;
+  learningPathDescription?: string;
   learningOutcomes?: string[];
   concepts?: string[];
   practicalActivities?: string[];
@@ -60,6 +71,14 @@ export interface ProgrammeDetails {
   approach?: string;
   format?: string;
   toolsCovered?: string[];
+  provider?: string;
+  courseCode?: string;
+  courseUrl?: string;
+  productTechnologies?: string[];
+  roles?: string[];
+  subjects?: string[];
+  languageCodes?: string[];
+  certificationInformation?: string;
   modules?: ProgrammeModule[];
   scenarios?: ProgrammeScenario[];
   [key: string]: any; // Allow flexible payload for future details
@@ -68,7 +87,7 @@ export interface ProgrammeDetails {
 export interface BaseProgramme {
   id: string; // Must match prefix: RBxxxx, PPxxxx, or TTxxxx
   title: string;
-  category: CategoryId;
+  category: CategoryId | LegacyCategoryId;
   level: ProficiencyLevel | string;
   duration?: string;
   format?: 'Instructor-Led' | 'Virtual Class' | 'Self-Paced' | 'Blended' | string;
@@ -87,8 +106,8 @@ export interface RoleBasedProgramme extends BaseProgramme {
 }
 
 export interface PeopleProcessProgramme extends BaseProgramme {
-  category: 'people-process';
-  badge: 'People and Process';
+  category: 'people-process' | 'process-based' | 'people-behavioural';
+  badge: 'People and Process' | 'Process Based' | 'People & Behavioural';
   topicCategory: string; // e.g. "People & Communication Skills"
   imageUrl: string;
   subType?: 'People' | 'Process';
@@ -97,7 +116,7 @@ export interface PeopleProcessProgramme extends BaseProgramme {
 }
 
 export interface ToolsTechProgramme extends BaseProgramme {
-  category: 'tools-technology';
+  category: 'tools-technology' | 'ai-tools';
   toolLogoUrl: string;
   toolName: string; // Official brand name e.g. "ChatGPT", "Microsoft Copilot", "Power BI"
   vendor: string; // e.g. "OpenAI", "Microsoft", "Databricks", "AWS"
@@ -106,7 +125,17 @@ export interface ToolsTechProgramme extends BaseProgramme {
   technologyCategory?: string[];
 }
 
-export type AnyProgramme = RoleBasedProgramme | PeopleProcessProgramme | ToolsTechProgramme;
+export interface CertificationProgramme extends BaseProgramme {
+  category: 'certifications';
+  categoryBadge: 'Certification Programme';
+  provider: string;
+  courseCode: string;
+  courseUrl?: string;
+  productTechnologies: string[];
+  roles: string[];
+}
+
+export type AnyProgramme = RoleBasedProgramme | PeopleProcessProgramme | ToolsTechProgramme | CertificationProgramme;
 
 export interface PageSectionInfo {
   id: string;

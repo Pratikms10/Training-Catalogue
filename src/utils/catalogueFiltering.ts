@@ -5,6 +5,7 @@ import {
   ToolsTechnologyFilterState,
   PeopleProcessFilterState,
   ActiveFilterChip,
+  CertificationFilterState,
 } from '../types/filters';
 
 /**
@@ -305,6 +306,22 @@ export function getPeopleProcessActiveChips(
   );
   filters.durations.forEach((val) =>
     chips.push({ groupId: 'duration', groupTitle: 'Duration', value: val, label: val })
+  );
+  return chips;
+}
+
+export function getCertificationActiveChips(
+  filters: CertificationFilterState
+): ActiveFilterChip[] {
+  const chips: ActiveFilterChip[] = [];
+  filters.providers.forEach((value) =>
+    chips.push({ groupId: 'provider', groupTitle: 'Provider', value, label: value })
+  );
+  filters.productTechnologies.forEach((value) =>
+    chips.push({ groupId: 'productTechnology', groupTitle: 'Product / Technology', value, label: value })
+  );
+  filters.durations.forEach((value) =>
+    chips.push({ groupId: 'duration', groupTitle: 'Duration', value, label: value })
   );
   return chips;
 }

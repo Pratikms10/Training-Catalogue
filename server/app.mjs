@@ -54,6 +54,8 @@ export function createApp(pool) {
         tools: stringValues(request.query.tool),
         industries: stringValues(request.query.industry),
         departments: stringValues(request.query.department),
+        providers: stringValues(request.query.provider),
+        productTechnologies: stringValues(request.query.productTechnology),
         technologyCategories: stringValues(request.query.technologyCategory),
         durationMinutes: positiveIntegerValues(request.query.durationMinutes),
         sort: request.query.sort?.toString(),
@@ -78,7 +80,8 @@ export function createApp(pool) {
   app.get('/api/courses/:courseId', async (request, response, next) => {
     try {
       const courseId = request.params.courseId.trim().toUpperCase();
-      if (!/^(RB|PP|TT)\d{4,}$/.test(courseId)) {
+      const isCertificationCode = /^[A-Z0-9]{2,12}-[A-Z0-9][A-Z0-9-]{1,30}$/.test(courseId) && /\d/.test(courseId);
+      if (!(/^(RB|PP|TT|TC)\d{4,}$/.test(courseId) || isCertificationCode)) {
         return response.status(400).json({ error: 'Invalid course ID.' });
       }
       const course = await getCourseById(pool, courseId);

@@ -88,6 +88,27 @@ export const TOOLS_TECHNOLOGY_FILTER_GROUPS: FilterGroupConfig[] = [
   },
 ];
 
+export const CERTIFICATION_FILTER_GROUPS: FilterGroupConfig[] = [
+  {
+    id: 'provider',
+    title: 'Provider',
+    allowMultiple: true,
+    options: [{ id: 'Microsoft', label: 'Microsoft' }],
+  },
+  {
+    id: 'productTechnology',
+    title: 'Product / Technology',
+    allowMultiple: true,
+    options: [],
+  },
+  {
+    id: 'duration',
+    title: 'Duration',
+    allowMultiple: true,
+    options: [],
+  },
+];
+
 export const PEOPLE_PROCESS_FILTER_GROUPS: FilterGroupConfig[] = [
   {
     id: 'category',
@@ -121,3 +142,30 @@ export const PEOPLE_PROCESS_FILTER_GROUPS: FilterGroupConfig[] = [
     ],
   },
 ];
+
+export const PROCESS_BASED_FILTER_GROUPS: FilterGroupConfig[] = PEOPLE_PROCESS_FILTER_GROUPS
+  .filter((group) => group.id !== 'category')
+  .map((group) => group.id === 'portfolio'
+    ? {
+        ...group,
+        options: group.options.filter((option) => [
+          'Project & Program Management',
+          'Agile & Ways of Working',
+          'Business Process & Operations',
+          'Other',
+        ].includes(option.id)),
+      }
+    : group);
+
+export const PEOPLE_BEHAVIOURAL_FILTER_GROUPS: FilterGroupConfig[] = PEOPLE_PROCESS_FILTER_GROUPS
+  .filter((group) => group.id !== 'category')
+  .map((group) => group.id === 'portfolio'
+    ? {
+        ...group,
+        options: group.options.filter((option) => [
+          'People & Communication Skills',
+          'Leadership & Managerial Skills',
+          'Other',
+        ].includes(option.id)),
+      }
+    : group);

@@ -84,7 +84,7 @@ export const PeopleProcessCard: React.FC<Props> = ({ programme, onViewDetail }) 
         <div className="flex flex-wrap items-start justify-between mb-3 gap-2">
            {/* Badge */}
            <span className="text-[10px] font-semibold bg-[rgba(33,150,243,0.10)] text-[#0000FF] px-2.5 py-1 rounded border border-[rgba(0,0,255,0.14)] inline-block">
-             People and Process
+             {programme.badge}
            </span>
            {/* Topic Category */}
            {(programme.topicCategory || programme.portfolio) && (

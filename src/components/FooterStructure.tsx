@@ -105,19 +105,46 @@ export const FooterStructure: React.FC<FooterStructureProps> = ({
               <li>
                 <button
                   type="button"
-                  onClick={(e) => handleCategoryClick(e, 'people-process')}
+                  onClick={(e) => handleCategoryClick(e, 'tools-technology')}
                   className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
                 >
-                  People & Process
+                  Tools & Technology
                 </button>
               </li>
               <li>
                 <button
                   type="button"
-                  onClick={(e) => handleCategoryClick(e, 'tools-technology')}
+                  onClick={(e) => handleCategoryClick(e, 'process-based')}
                   className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
                 >
-                  Tools & Technologies
+                  Process Based
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={(e) => handleCategoryClick(e, 'certifications')}
+                  className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
+                >
+                  Certifications
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={(e) => handleCategoryClick(e, 'ai-tools')}
+                  className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
+                >
+                  AI Tools
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={(e) => handleCategoryClick(e, 'people-behavioural')}
+                  className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
+                >
+                  People &amp; Behavioural
                 </button>
               </li>
             </ul>

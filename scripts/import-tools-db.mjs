@@ -14,7 +14,7 @@ const canonicalText = await fs.readFile(canonicalPath, 'utf8');
 const courses = path.extname(canonicalPath).toLowerCase() === '.jsonl'
   ? canonicalText.split(/\r?\n/).filter((line) => line.trim()).map((line) => JSON.parse(line))
   : JSON.parse(canonicalText).courses;
-const supportedCategories = new Set(['tools-technology', 'role-based']);
+const supportedCategories = new Set(['tools-technology', 'role-based', 'technical-training']);
 const category = courses?.[0]?.category;
 
 if (!Array.isArray(courses) || courses.length === 0) {
@@ -185,6 +185,33 @@ try {
          SELECT course
          FROM jsonb_array_elements($1::jsonb) AS item(course)
        )
+       INSERT INTO catalogue.technical_training_details
+         (course_id, domain, primary_technology, vendor, source_course_id, source_duration, source_pdf)
+       SELECT
+         course->>'courseId',
+         course->>'domain',
+         course->>'primaryTechnology',
+         NULLIF(course->>'vendor', ''),
+         course->>'sourceCourseId',
+         NULLIF(course->>'sourceDuration', ''),
+         NULLIF(course->>'sourcePdf', '')
+       FROM incoming
+       WHERE course->>'category' = 'technical-training'
+       ON CONFLICT (course_id) DO UPDATE SET
+         domain = EXCLUDED.domain,
+         primary_technology = EXCLUDED.primary_technology,
+         vendor = EXCLUDED.vendor,
+         source_course_id = EXCLUDED.source_course_id,
+         source_duration = EXCLUDED.source_duration,
+         source_pdf = EXCLUDED.source_pdf`,
+      [coursePayload],
+    );
+
+      await client.query(
+      `WITH incoming AS (
+         SELECT course
+         FROM jsonb_array_elements($1::jsonb) AS item(course)
+       )
        INSERT INTO catalogue.role_based_details
          (course_id, industry, department, function_name, role_title)
        SELECT
@@ -331,6 +358,12 @@ try {
          CROSS JOIN LATERAL jsonb_array_elements(COALESCE(course->'modules', '[]'::jsonb))
            AS module_item(module_payload)
        ), outcome_source AS (
+         SELECT course_id, module_code, 'learning_objective'::catalogue.learning_item_type AS outcome_type,
+                value AS outcome, display_order
+         FROM module_source
+         CROSS JOIN LATERAL jsonb_array_elements_text(COALESCE(module_payload->'learningObjectives', '[]'::jsonb))
+           WITH ORDINALITY AS item(value, display_order)
+         UNION ALL
          SELECT course_id, module_code, 'concept'::catalogue.learning_item_type AS outcome_type,
                 value AS outcome, display_order
          FROM module_source
