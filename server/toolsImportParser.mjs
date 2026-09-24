@@ -156,6 +156,8 @@ function inferTechnologyCategories(toolName) {
 }
 
 function inferDepartmentFromMarkdown(markdown) {
+  const explicitDepartment = field(markdown, 'Department');
+  if (explicitDepartment) return explicitDepartment;
   const title = field(markdown, 'Title') || '';
   return cleanString(title.match(/\bfor\s+(.+?):/i)?.[1]);
 }
@@ -163,9 +165,14 @@ function inferDepartmentFromMarkdown(markdown) {
 function parseStructuredCourseText(text) {
   const toolsRowHeader = /^(?<tool>[^\t\r\n]+)\t(?<duration>[^\t\r\n]+)\t"(?=\*\*Course ID:\*\*)/gm;
   const roleRowHeader = /^(?<headerCourseId>RB\d{4,})\t(?<tool>[^\t\r\n]+)\t(?<department>[^\t\r\n]+)\t(?<duration>[^\t\r\n]+)\t"(?=\*\*Course ID:\*\*)/gm;
+  const roleAudienceRowHeader = /^(?<headerCourseId>RB\d{4,})\t(?<tool>[^\t\r\n]*)\t(?<department>[^\t\r\n]+)\t(?<role>[^\t\r\n]*)\t(?<duration>[^\t\r\n]+)\t"(?=\*\*Course ID:\*\*)/gm;
   let normalizedText = text;
-  let rowHeader = roleRowHeader;
+  let rowHeader = roleAudienceRowHeader;
   let headers = [...normalizedText.matchAll(rowHeader)];
+  if (headers.length === 0) {
+    rowHeader = roleRowHeader;
+    headers = [...normalizedText.matchAll(rowHeader)];
+  }
   if (headers.length === 0) {
     rowHeader = toolsRowHeader;
     headers = [...normalizedText.matchAll(rowHeader)];
@@ -173,16 +180,17 @@ function parseStructuredCourseText(text) {
   const standaloneMarkdown = text.trimStart().replace(/^"/, '');
   if (headers.length === 0 && field(standaloneMarkdown, 'Course ID')) {
     const courseId = field(standaloneMarkdown, 'Course ID').toUpperCase();
-    const toolName = inferToolNameFromMarkdown(standaloneMarkdown);
     const duration = field(standaloneMarkdown, 'Duration');
-    if (!toolName) throw new Error('Could not infer the tool name from the standalone course title or tools covered.');
     if (!duration) throw new Error('The standalone course is missing a duration.');
     if (courseId.startsWith('RB')) {
       const department = inferDepartmentFromMarkdown(standaloneMarkdown);
       if (!department) throw new Error('Could not infer the department from the standalone Role-Based course title.');
-      rowHeader = roleRowHeader;
-      normalizedText = `${courseId}\t${toolName}\t${department}\t${duration}\t"${standaloneMarkdown}`;
+      const role = field(standaloneMarkdown, 'Role') || '';
+      rowHeader = roleAudienceRowHeader;
+      normalizedText = `${courseId}\t\t${department}\t${role}\t${duration}\t"${standaloneMarkdown}`;
     } else {
+      const toolName = inferToolNameFromMarkdown(standaloneMarkdown);
+      if (!toolName) throw new Error('Could not infer the tool name from the standalone course title or tools covered.');
       rowHeader = toolsRowHeader;
       normalizedText = `${toolName}\t${duration}\t"${standaloneMarkdown}`;
     }
@@ -266,12 +274,13 @@ function parseStructuredCourseText(text) {
     };
 
     if (category === 'role-based') {
+      const department = field(markdown, 'Department') || cleanString(header.groups.department) || inferDepartmentFromMarkdown(markdown);
       return {
         ...record,
         industry: null,
-        department: cleanString(header.groups.department) || inferDepartmentFromMarkdown(markdown),
-        functionName: cleanString(header.groups.department) || inferDepartmentFromMarkdown(markdown),
-        roleTitle: null,
+        department,
+        functionName: department,
+        roleTitle: field(markdown, 'Role') || cleanString(header.groups.role),
         imageUrl: null,
         relatedSkills: [],
       };

@@ -83,16 +83,17 @@ let skippedExistingCodes = [];
 
 if (skipExisting) {
   const existingResult = await pool.query(
-    `SELECT course_id
-     FROM catalogue.courses
-     WHERE course_id = ANY($1::text[])`,
-    [validatedCourses.map((course) => course.courseId)],
+    `SELECT course_code
+     FROM catalogue.certification_details
+     WHERE provider = 'Microsoft'
+       AND course_code = ANY($1::text[])`,
+    [validatedCourses.map((course) => course.providerCourseCode)],
   );
-  const existingCodes = new Set(existingResult.rows.map((row) => row.course_id));
+  const existingCodes = new Set(existingResult.rows.map((row) => row.course_code));
   skippedExistingCodes = validatedCourses
-    .filter((course) => existingCodes.has(course.courseId))
-    .map((course) => course.courseId);
-  courses = validatedCourses.filter((course) => !existingCodes.has(course.courseId));
+    .filter((course) => existingCodes.has(course.providerCourseCode))
+    .map((course) => course.providerCourseCode);
+  courses = validatedCourses.filter((course) => !existingCodes.has(course.providerCourseCode));
 }
 
 if (skippedExistingCodes.length > 0) {
@@ -145,6 +146,36 @@ try {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
+
+    // Prevent concurrent certification imports from allocating the same CER number.
+    await client.query("SELECT pg_advisory_xact_lock(hashtext('catalogue.certification.course-id'))");
+    const existingMappingsResult = await client.query(
+      `SELECT course_id, provider, course_code
+       FROM catalogue.certification_details
+       WHERE provider = ANY($1::text[])
+         AND course_code = ANY($2::text[])`,
+      [
+        [...new Set(courses.map((course) => course.provider))],
+        courses.map((course) => course.providerCourseCode),
+      ],
+    );
+    const existingCourseIds = new Map(existingMappingsResult.rows.map((row) => (
+      [`${row.provider}\u0000${row.course_code}`, row.course_id]
+    )));
+    const maxSequenceResult = await client.query(
+      `SELECT COALESCE(max(substring(course_id FROM 4)::integer), 0)::integer AS max_sequence
+       FROM catalogue.courses
+       WHERE category_code = 'certifications'
+         AND course_id ~ '^CER[0-9]{4,}$'`,
+    );
+    let nextSequence = maxSequenceResult.rows[0].max_sequence;
+    courses = courses.map((course) => {
+      const identity = `${course.provider}\u0000${course.providerCourseCode}`;
+      const existingCourseId = existingCourseIds.get(identity);
+      if (existingCourseId) return { ...course, courseId: existingCourseId };
+      nextSequence += 1;
+      return { ...course, courseId: `CER${String(nextSequence).padStart(4, '0')}` };
+    });
 
     for (let index = 0; index < courses.length; index += 1) {
       const course = courses[index];
@@ -209,7 +240,7 @@ try {
         [
           course.courseId,
           course.provider,
-          course.courseCode,
+          course.providerCourseCode,
           course.courseUrl,
           course.sourceSequence,
           course.productTechnologies,
@@ -362,7 +393,7 @@ try {
     await client.query('COMMIT');
     console.log(`Imported ${courses.length} Microsoft certification courses in batch ${batchId}.`);
     for (const course of courses) {
-      console.log(`${course.courseCode}: ${course.title} (${course.modules.length} modules)`);
+      console.log(`${course.courseId} · ${course.providerCourseCode}: ${course.title} (${course.modules.length} modules)`);
     }
   } catch (error) {
     await client.query('ROLLBACK');

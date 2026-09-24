@@ -568,6 +568,14 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
 
   const hasActiveSearch = searchQuery.trim().length > 0;
   const hasActiveFilters = activeChips.length > 0;
+  const activeCategoryLabel = useMemo(() => {
+    if (activeCategoryId === 'role-based') return 'Role-Based';
+    if (activeCategoryId === 'tools-technology') return 'Tools & Technology';
+    if (activeCategoryId === 'process-based') return 'Process-Based';
+    if (activeCategoryId === 'certifications') return 'Certification';
+    if (activeCategoryId === 'ai-tools') return 'AI Tools';
+    return 'People & Behavioural';
+  }, [activeCategoryId]);
 
   return (
     <section
@@ -579,7 +587,7 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
       {!isPlannedCategory && (
         <div
           id="sticky-catalogue-search-bar-wrapper"
-          className="sticky top-[64px] z-30 w-full bg-white/95 backdrop-blur-md border-b border-[rgba(0,0,255,0.12)] shadow-[0_4px_16px_rgba(0,0,0,0.04)] px-4 sm:px-8 lg:px-10 py-3 sm:py-3.5 transition-all"
+          className="sticky top-[64px] z-30 w-full bg-white/95 backdrop-blur-md border-b border-[rgba(0,0,255,0.12)] shadow-[0_6px_22px_rgba(0,0,255,0.07)] px-4 sm:px-8 lg:px-10 py-3 sm:py-4 transition-all"
         >
           <div className="max-w-7xl mx-auto">
             <CatalogueToolbar
@@ -590,6 +598,8 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
               onSortChange={handleSortChange}
               activeFilterCount={activeChips.length}
               onOpenMobileFilters={() => setIsMobileFiltersOpen(true)}
+              resultCount={totalCategoryCount}
+              categoryLabel={activeCategoryLabel}
             />
           </div>
         </div>

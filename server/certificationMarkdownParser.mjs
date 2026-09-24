@@ -134,8 +134,7 @@ export function parseMicrosoftCertificationMarkdown(markdown, fileName) {
   if (modules.length === 0) throw new Error(`${name} contains no syllabus modules.`);
 
   return {
-    courseId: courseCode,
-    courseCode,
+    providerCourseCode: courseCode,
     category: 'certifications',
     provider: 'Microsoft',
     sourceSequence,
@@ -165,11 +164,12 @@ export function parseMicrosoftCertificationMarkdown(markdown, fileName) {
 export function validateCertificationBatch(courses) {
   const seen = new Set();
   for (const course of courses) {
-    if (seen.has(course.courseId)) throw new Error(`Duplicate certification code ${course.courseId}.`);
-    seen.add(course.courseId);
+    const identity = `${course.provider}\u0000${course.providerCourseCode}`;
+    if (seen.has(identity)) throw new Error(`Duplicate certification code ${course.providerCourseCode}.`);
+    seen.add(identity);
     if (course.provider !== 'Microsoft') throw new Error(`Unsupported provider ${course.provider}.`);
     if (!['Beginner', 'Intermediate', 'Advanced', 'Expert'].includes(course.level)) {
-      throw new Error(`${course.courseId} has unsupported level ${course.level}.`);
+      throw new Error(`${course.providerCourseCode} has unsupported level ${course.level}.`);
     }
   }
   return courses;

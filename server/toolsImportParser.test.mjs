@@ -141,3 +141,48 @@ Participants create a reviewed employee communication.
   assert.equal(validation.courses[0].modules.length, 1);
   assert.equal(validation.courses[0].scenarios.length, 1);
 });
+
+test('role-based structured text accepts a department and role header without a tool name', async () => {
+  const source = `RB1024\t\tSenior Leadership / Leadership Team\tC-Suite Executives\t4 hours\t"**Course ID:** RB1024
+**Department:** Senior Leadership / Leadership Team
+**Role:** C-Suite Executives
+**Title:** AI-Powered Leadership for C-Suite Executives
+**Format:**
+**Delivery:** Instructor-Led
+**Level:** Awareness
+**Duration:** 4 Hours
+**Tools Covered:** Generative AI, Executive Prompting, Decision Support
+
+## Programme Objectives
+* Apply AI to executive decision preparation.
+
+## Who Should Attend
+* **C-Suite Executives**
+
+## Prerequisites
+* Senior leadership experience
+
+## Modules
+
+### Module 1: AI Foundations for Leadership
+* 🔴 Understand AI from an executive perspective
+* 🟢 Map executive responsibilities to AI-assisted workflows
+
+## Applied Business Scenario
+
+### Scenario 1: Executive decision brief
+**Challenge → Evidence → Options → Decision**
+
+Participants prepare an executive decision brief.
+"`;
+
+  const parsed = await parseImportSource(Buffer.from(source), 'role-audience-sample.txt');
+  const validation = validateCourseRecords(parsed.records, parsed.sourceIssues);
+
+  assert.equal(validation.valid, true);
+  assert.equal(validation.courses[0].courseId, 'RB1024');
+  assert.equal(validation.courses[0].department, 'Senior Leadership / Leadership Team');
+  assert.equal(validation.courses[0].functionName, 'Senior Leadership / Leadership Team');
+  assert.equal(validation.courses[0].roleTitle, 'C-Suite Executives');
+  assert.deepEqual(validation.courses[0].relatedSkills, ['Generative AI', 'Executive Prompting', 'Decision Support']);
+});

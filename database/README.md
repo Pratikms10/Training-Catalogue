@@ -110,11 +110,11 @@ The import routes are available only from the local machine during development. 
 - `import_batches` and `import_rows` preserve upload history, staging payloads, validation errors, and row-level outcomes.
 - `course_catalogue_view` returns the common and category-specific fields needed by catalogue cards and filters.
 
-Role-Based, People/Process, and AI Tool Course IDs use the category prefix followed by at least four digits: `RB`, `PP`, or `TT`. Tools & Technology courses use `TC` IDs and the database category `technical-training`, keeping them separate from the existing AI Tools records. Certification records preserve the provider-issued course code, such as `AB-6002`; the scraper sequence in a source filename is retained only as metadata.
+Role-Based, People/Process, and AI Tool Course IDs use the category prefix followed by at least four digits: `RB`, `PP`, or `TT`. Tools & Technology courses use `TC` IDs and the database category `technical-training`, keeping them separate from the existing AI Tools records. Certifications use permanent TechnoEdge IDs such as `CER0001`. Provider-issued course codes such as `AB-6002` remain separate, searchable metadata; the scraper sequence in a source filename is retained only as traceability metadata.
 
 ## Microsoft certification Markdown import
 
-The certification importer accepts one or more Markdown files or a folder containing Markdown files. A filename such as `0053_AB-6002.md` is interpreted as source sequence `0053` and provider course code `AB-6002`. The code is cross-checked against the document H1 before any database write.
+The certification importer accepts one or more Markdown files or a folder containing Markdown files. A filename such as `0053_AB-6002.md` is interpreted as source sequence `0053` and official provider course code `AB-6002`. The code is cross-checked against the document H1 before any database write. Existing provider codes retain their assigned `CER` ID; new provider codes receive the next available `CER` number.
 
 ```powershell
 npm run db:import:certifications -- "C:\path\0053_AB-6002.md" "C:\path\0092_AB-6005.md"
@@ -123,7 +123,22 @@ npm run db:import:certifications -- "C:\path\0053_AB-6002.md" "C:\path\0092_AB-6
 npm run db:import:certifications -- "C:\path\microsoft-courses" --skip-existing
 ```
 
-The import is a non-destructive upsert. It preserves learning paths, module descriptions, module learning objectives, topics/units, and available labs, while leaving absent optional sections empty. Use `--skip-existing` for an add-only batch: matching course codes are reported and excluded rather than updated. Validation normally stops the entire batch and reports every malformed file; add `--skip-invalid` only when valid courses should proceed while malformed files remain unimported for correction.
+The import is a non-destructive upsert keyed by provider plus official course code. It preserves learning paths, module descriptions, module learning objectives, topics/units, and available labs, while leaving absent optional sections empty. Use `--skip-existing` for an add-only batch: matching provider codes are reported and excluded rather than updated. Validation normally stops the entire batch and reports every malformed file; add `--skip-invalid` only when valid courses should proceed while malformed files remain unimported for correction.
+
+## Multi-provider certification workbook import
+
+The certification workbook importer accepts either the structured multi-provider `.xlsx` model containing `Certification_Master` plus its supporting sheets, or the Oracle master model containing `Catalog_Master`, `Exam_Details`, `Exam_Blueprint`, `Training`, `Requirements`, `Flexible_Details`, and `QC`.
+
+```powershell
+npm run db:import:certifications:xlsx -- "C:\path\final Certification.xlsx"
+npm run db:verify
+```
+
+Physical duplicate rows are collapsed by workbook `Global ID`. Stable workbook identities and provider certification IDs retain their assigned `CER` ID on later imports; new credentials receive the next available number. Provider exam codes remain separate because one exam can support multiple credentials. Customer-facing fields are normalized into certification-specific tables, while the original structured rows remain in the import payload for audit and future remapping.
+
+For Oracle workbooks, repeated records with the same provider and credential title are merged into one customer-facing card. Distinct exams, blueprints, learning resources, and eligibility requirements are combined under that credential. Delta assessments remain separate catalogue records and are labelled as assessments. Generic test-session logistics and flexible extraction details remain in the audit payload instead of crowding the public requirements section.
+
+The website uses an adaptive credential page. It always displays the provider, credential title, `CER` ID, overview, type, and available audience information. Exam details, objectives, requirements, official learning resources, lifecycle, price, languages, and renewal information appear only when the source supplies them. Internal source batches, QC flags, attention notes, synthetic provider IDs, duplicate logs, and extraction rules are never exposed in the public interface.
 
 ## Import modes
 

@@ -15,6 +15,7 @@
     "db:migrate": "node scripts/migrate-db.mjs",
     "db:import:tools": "node scripts/import-tools-db.mjs",
     "db:import:certifications": "node scripts/import-certifications-md.mjs",
+    "db:import:certifications:xlsx": "node scripts/import-certifications-xlsx.mjs",
     "db:convert:technical": "node scripts/convert-technical-training-xlsx.mjs",
     "db:verify": "node scripts/verify-db.mjs",
     "test": "node --test server/*.test.mjs"

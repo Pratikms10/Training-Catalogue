@@ -12,7 +12,7 @@ export type CategoryId =
 
 export type LegacyCategoryId = 'people-process';
 
-export type ProgrammePrefix = 'RB' | 'PP' | 'TT' | 'TC';
+export type ProgrammePrefix = 'RB' | 'PP' | 'TT' | 'TC' | 'CER';
 
 export type ProficiencyLevel = 'Awareness' | 'Basic' | 'Intermediate' | 'Advanced' | 'Expert';
 
@@ -72,13 +72,32 @@ export interface ProgrammeDetails {
   format?: string;
   toolsCovered?: string[];
   provider?: string;
-  courseCode?: string;
+  providerCourseCode?: string;
+  examCode?: string;
   courseUrl?: string;
   productTechnologies?: string[];
   roles?: string[];
   subjects?: string[];
   languageCodes?: string[];
   certificationInformation?: string;
+  recordKind?: 'training-course' | 'credential';
+  credentialType?: string;
+  credentialClassification?: string;
+  credentialStatus?: string;
+  credentialLevel?: string;
+  categoryTrack?: string;
+  examFormatDelivery?: string;
+  examDuration?: string;
+  timeLimit?: string;
+  price?: string;
+  retakeFee?: string;
+  validityRenewal?: string;
+  requiredExamPathway?: string;
+  exams?: CertificationExam[];
+  certificationObjectives?: CertificationObjective[];
+  certificationRequirements?: CertificationRequirement[];
+  trainingResources?: CertificationTrainingResource[];
+  lifecycle?: CertificationLifecycleItem[];
   modules?: ProgrammeModule[];
   scenarios?: ProgrammeScenario[];
   [key: string]: any; // Allow flexible payload for future details
@@ -129,10 +148,74 @@ export interface CertificationProgramme extends BaseProgramme {
   category: 'certifications';
   categoryBadge: 'Certification Programme';
   provider: string;
-  courseCode: string;
+  providerCourseCode?: string;
+  examCode?: string;
   courseUrl?: string;
   productTechnologies: string[];
   roles: string[];
+  recordKind?: 'training-course' | 'credential';
+  credentialType?: string;
+  credentialClassification?: string;
+  credentialStatus?: string;
+  credentialLevel?: string;
+  examDuration?: string;
+  validityRenewal?: string;
+}
+
+export interface CertificationExam {
+  examCode?: string;
+  examName?: string;
+  status?: string;
+  requirementType?: string;
+  duration?: string;
+  deliveryFormat?: string;
+  deliveryProvider?: string;
+  proctored?: string;
+  languages: string[];
+  price?: string;
+  currency?: string;
+  passingScore?: string;
+  url?: string;
+  notes?: string;
+}
+
+export interface CertificationObjective {
+  groupTitle?: string;
+  objective: string;
+  weight?: string;
+  level?: string;
+  code?: string;
+}
+
+export interface CertificationRequirement {
+  type?: string;
+  group?: string;
+  requirement: string;
+  url?: string;
+  qualifier?: string;
+  notes?: string;
+}
+
+export interface CertificationTrainingResource {
+  type?: string;
+  title: string;
+  url?: string;
+  duration?: string;
+  itemCount?: string;
+  relationship?: string;
+  notes?: string;
+}
+
+export interface CertificationLifecycleItem {
+  recordType?: string;
+  status?: string;
+  validityRenewal?: string;
+  retirementTransition?: string;
+  details?: string;
+  scenario?: string;
+  option?: string;
+  action?: string;
+  outcome?: string;
 }
 
 export type AnyProgramme = RoleBasedProgramme | PeopleProcessProgramme | ToolsTechProgramme | CertificationProgramme;

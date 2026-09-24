@@ -17,6 +17,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
     company: '',
     phone: '',
     learners: '10–25 Participants',
+    customLearners: '',
     preferredDelivery: programme?.details?.delivery || 'Instructor-Led Classroom / Virtual',
     trackInterest: programme ? programme.category : 'Multi-Track Enterprise Cohort',
     notes: '',
@@ -62,7 +63,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
                 {isSpecificProgramme ? `${programme?.id} · ${programme?.duration || 'Corporate Training'}` : 'Enterprise Corporate Consultation'}
               </div>
               <h2 className="text-xl font-bold text-[#000000]">
-                {isSpecificProgramme ? 'Request for Quotation' : 'Corporate Training Enquiry'}
+                {isSpecificProgramme ? 'Get Corporate Training Proposal' : 'Corporate Training Enquiry'}
               </h2>
               <p className="text-xs sm:text-sm text-[rgba(0,0,0,0.70)] mt-0.5">
                 {isSpecificProgramme ? programme?.title : 'Discuss custom cohorts, curriculum tailoring, or multi-programme enterprise licensing.'}
@@ -83,7 +84,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
               <div className="w-16 h-16 rounded-full bg-[rgba(33,150,243,0.10)] text-[#0000FF] mx-auto flex items-center justify-center mb-4">
                 <CheckCircle2 className="w-9 h-9 text-[#0000FF]" />
               </div>
-              <h3 className="text-2xl font-bold text-[#000000] mb-2">Quotation Request Received</h3>
+              <h3 className="text-2xl font-bold text-[#000000] mb-2">Proposal Request Received</h3>
               <p className="text-sm text-[rgba(0,0,0,0.70)] max-w-md mx-auto mb-6">
                 Thank you, <strong className="text-[#000000]">{formData.name || 'Corporate Partner'}</strong>. Your commercial enquiry {isSpecificProgramme ? <>for <strong className="text-[#000000]">{programme?.id}</strong></> : 'for enterprise corporate training'} has been logged. Our solutions advisor will reach out within 24 business hours.
               </p>
@@ -99,7 +100,11 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[rgba(0,0,0,0.58)] font-medium">Target Learners:</span>
-                  <span className="font-medium text-[#000000]">{formData.learners}</span>
+                  <span className="font-medium text-[#000000]">
+                    {formData.learners === 'Custom cohort size'
+                      ? `${formData.customLearners} Participants`
+                      : formData.learners}
+                  </span>
                 </div>
               </div>
 
@@ -170,11 +175,12 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
 
                 <div>
                   <label className="block text-xs font-semibold text-[#000000] mb-1.5">
-                    Contact Phone / WhatsApp
+                    Contact Phone / WhatsApp *
                   </label>
                   <div className="relative">
                     <Phone className="w-4 h-4 text-[rgba(0,0,0,0.40)] absolute left-3 top-3" />
                     <input
+                      required
                       type="tel"
                       placeholder="+91 98765 43210"
                       value={formData.phone}
@@ -201,6 +207,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
                       <option>10–25 Participants</option>
                       <option>25–50 Participants</option>
                       <option>50+ Enterprise Cohort</option>
+                      <option>Custom cohort size</option>
                     </select>
                   </div>
                 </div>
@@ -225,15 +232,39 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
                 </div>
               </div>
 
+              {formData.learners === 'Custom cohort size' && (
+                <div className="rounded-lg border border-[rgba(0,0,255,0.12)] bg-[rgba(33,150,243,0.05)] p-3.5">
+                  <label className="block text-xs font-semibold text-[#000000] mb-1.5">
+                    Custom number of learners *
+                  </label>
+                  <div className="relative max-w-xs">
+                    <Users2 className="w-4 h-4 text-[rgba(0,0,0,0.40)] absolute left-3 top-3" />
+                    <input
+                      required
+                      min="1"
+                      type="number"
+                      inputMode="numeric"
+                      placeholder="e.g. 75"
+                      value={formData.customLearners}
+                      onChange={e => setFormData({ ...formData, customLearners: e.target.value })}
+                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(0,0,255,0.14)] focus:outline-none focus:ring-2 focus:ring-[#0000FF] focus:border-transparent bg-white text-[#000000]"
+                    />
+                  </div>
+                </div>
+              )}
+
               <div>
                 <label className="block text-xs font-semibold text-[#000000] mb-1.5">
-                  Specific Learning Objectives / Dates
+                  Tell us what your team needs
                 </label>
+                <p className="mb-2 text-xs leading-relaxed text-[rgba(0,0,0,0.58)]">
+                  Share your priority skills, business challenges, preferred timeline or any specific requirements.
+                </p>
                 <div className="relative">
                   <FileText className="w-4 h-4 text-[rgba(0,0,0,0.40)] absolute left-3 top-3" />
                   <textarea
-                    rows={2}
-                    placeholder="Provide any specific customisation requests or target training dates..."
+                    rows={3}
+                    placeholder="For example: We need a two-day programme for 30 managers focused on AI-assisted reporting and decision-making, preferably in October..."
                     value={formData.notes}
                     onChange={e => setFormData({ ...formData, notes: e.target.value })}
                     className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(0,0,255,0.14)] focus:outline-none focus:ring-2 focus:ring-[#0000FF] focus:border-transparent bg-white text-[#000000]"
@@ -253,7 +284,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
                   type="submit"
                   className="bg-[#0000FF] hover:opacity-90 active:opacity-100 text-white font-semibold text-sm px-6 py-2.5 rounded-lg inline-flex items-center gap-2 shadow-xs transition-all hover:shadow-[0_4px_12px_rgba(0,0,255,0.2)]"
                 >
-                  Submit Quotation Request
+                  Request Training Proposal
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>

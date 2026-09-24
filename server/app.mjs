@@ -80,8 +80,8 @@ export function createApp(pool) {
   app.get('/api/courses/:courseId', async (request, response, next) => {
     try {
       const courseId = request.params.courseId.trim().toUpperCase();
-      const isCertificationCode = /^[A-Z0-9]{2,12}-[A-Z0-9][A-Z0-9-]{1,30}$/.test(courseId) && /\d/.test(courseId);
-      if (!(/^(RB|PP|TT|TC)\d{4,}$/.test(courseId) || isCertificationCode)) {
+      const isLegacyCertificationCode = /^[A-Z0-9]{2,12}-[A-Z0-9][A-Z0-9-]{1,30}$/.test(courseId) && /\d/.test(courseId);
+      if (!(/^(RB|PP|TT|TC|CER)\d{4,}$/.test(courseId) || isLegacyCertificationCode)) {
         return response.status(400).json({ error: 'Invalid course ID.' });
       }
       const course = await getCourseById(pool, courseId);

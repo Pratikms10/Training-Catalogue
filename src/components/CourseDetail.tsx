@@ -22,6 +22,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { RfqModal } from './RfqModal';
 import { OriginButton } from '@/components/ui/origin-button';
+import { CertificationDetail } from './CertificationDetail';
 
 interface Props {
   programme: BaseProgramme;
@@ -104,6 +105,13 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
   };
 
   const badgeInfo = getBadgeInfo();
+  const titleSeparatorIndex = programme.title.indexOf(':');
+  const primaryTitle = titleSeparatorIndex > 0
+    ? programme.title.slice(0, titleSeparatorIndex).trim()
+    : programme.title;
+  const titleQualifier = titleSeparatorIndex > 0
+    ? programme.title.slice(titleSeparatorIndex + 1).trim()
+    : null;
 
   // Approved alternating module tile colors: Primary Blue (#0000FF) / Support Blue (#2196F3)
   const getModuleTileStyle = (index: number) => {
@@ -126,6 +134,10 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
       </p>
     ));
   };
+
+  if (programme.category === 'certifications' && details.recordKind === 'credential') {
+    return <CertificationDetail programme={programme} onBack={onBack} />;
+  }
 
   return (
     <div className="w-full bg-white min-h-screen pb-24 font-sans antialiased text-[#000000]">
@@ -187,21 +199,23 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
               {/* Programme ID Tag */}
               <div className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white border border-[rgba(0,0,255,0.14)] font-mono font-bold text-xs tracking-wider text-[#000000] shadow-2xs">
-                <span>{details.courseCode || programme.id}</span>
+                <span>{programme.id}</span>
               </div>
             </div>
 
-            {/* Large Course Title */}
-            <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#000000] leading-[1.18] tracking-tight mb-4 text-balance">
-              {programme.title}
-            </h1>
+            {/* Short, scannable title hierarchy. The detailed objective remains in About. */}
+            <div className="mb-8 max-w-2xl">
+              <h1 className="text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#000000] leading-[1.12] tracking-tight text-balance">
+                {primaryTitle}
+              </h1>
+              {titleQualifier && (
+                <p className="mt-3 text-lg sm:text-xl lg:text-2xl font-medium leading-snug text-[rgba(0,0,0,0.64)] text-balance">
+                  {titleQualifier}
+                </p>
+              )}
+            </div>
 
-            {/* Short Programme Description */}
-            <p className="text-[rgba(0,0,0,0.72)] text-base sm:text-lg leading-relaxed mb-8 max-w-2xl font-normal">
-              {details.summary}
-            </p>
-
-            {/* Request for Quotation Button */}
+            {/* Corporate training proposal button */}
             <div>
               <OriginButton 
                 id="hero-rfq-button"
@@ -209,7 +223,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                 fillClassName="bg-[#22c55e]"
                 className="bg-[#0000FF] border-none text-white font-semibold text-sm sm:text-base py-3.5 px-7 rounded-lg inline-flex items-center gap-2.5 shadow-xs transition-all hover:shadow-[0_6px_22px_rgba(0,0,255,0.40)] hover:ring-2 hover:ring-[#2196F3]/70 hover:-translate-y-0.5 focus:outline-none focus:ring-3 focus:ring-[#0000FF]/25 text-white hover:text-white cursor-pointer"
               >
-                <span>Request for Quotation</span>
+                <span>Get Corporate Training Proposal</span>
                 <ArrowRight className="w-4 h-4 text-white" />
               </OriginButton>
             </div>
@@ -376,18 +390,24 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                       </div>
                     )}
 
-                    {programme.category === 'certifications' && details.courseUrl && (
+                    {programme.category === 'certifications' && details.providerCourseCode && (
                       <div className="rounded-xl border border-[rgba(0,0,255,0.08)] bg-[rgba(33,150,243,0.06)] p-5 sm:p-6">
                         <h4 className="mb-2 text-sm font-bold text-[#000000]">Official provider reference</h4>
-                        <a
-                          href={details.courseUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0000FF] hover:underline"
-                        >
-                          View {details.courseCode || programme.id} on Microsoft Learn
-                          <ArrowRight className="h-4 w-4" />
-                        </a>
+                        <p className="mb-2 font-mono text-sm font-semibold text-[#000000]">
+                          {details.provider || 'Provider'} course code: {details.providerCourseCode}
+                          {details.examCode ? ` · Exam code: ${details.examCode}` : ''}
+                        </p>
+                        {details.courseUrl && (
+                          <a
+                            href={details.courseUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0000FF] hover:underline"
+                          >
+                            View official provider page
+                            <ArrowRight className="h-4 w-4" />
+                          </a>
+                        )}
                       </div>
                     )}
 
@@ -718,6 +738,27 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                         </p>
                       )}
                     </div>
+
+                    {/* Conversion prompt belongs to the Modules journey and follows the final module. */}
+                    <button
+                      id="custom-training-plan-button"
+                      type="button"
+                      onClick={() => setIsRfqOpen(true)}
+                      className="group mt-6 flex w-full flex-col items-start justify-between gap-4 overflow-hidden rounded-xl border border-[#0000FF] bg-[linear-gradient(135deg,#0000FF_0%,#075DEB_60%,#2196F3_100%)] px-5 py-5 text-left shadow-[0_10px_28px_rgba(0,0,255,0.20)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(0,0,255,0.28)] focus:outline-none focus:ring-3 focus:ring-[#2196F3]/35 sm:flex-row sm:items-center sm:px-6"
+                    >
+                      <div>
+                        <h3 className="text-lg font-bold tracking-tight text-white sm:text-xl">
+                          Need a Customised Training Plan?
+                        </h3>
+                        <p className="mt-1 text-sm leading-relaxed text-white/85">
+                          Adapt the modules, duration and delivery format to your team&apos;s requirements.
+                        </p>
+                      </div>
+                      <span className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-bold text-[#0000FF] shadow-sm transition-transform group-hover:translate-x-0.5">
+                        Get a proposal
+                        <ArrowRight className="h-4 w-4 text-[#0000FF]" />
+                      </span>
+                    </button>
 
                   </div>
                 </motion.div>

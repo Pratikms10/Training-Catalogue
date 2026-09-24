@@ -24,7 +24,7 @@ const sampleRow = {
 };
 
 const sampleCertificationRow = {
-  course_id: 'AB-6002',
+  course_id: 'CER0005',
   category_code: 'certifications',
   title: 'Introduction to finance in Dynamics 365',
   level_code: 'Beginner',
@@ -36,6 +36,7 @@ const sampleCertificationRow = {
   image_url: null,
   certification_provider: 'Microsoft',
   certification_code: 'AB-6002',
+  certification_exam_code: null,
   certification_url: 'https://learn.microsoft.com/training/courses/ab-6002',
   product_technologies: ['dynamics-365', 'dynamics-finance'],
   certification_roles: ['business-user'],
@@ -189,12 +190,12 @@ test('catalogue filters endpoint returns database-derived Role-Based filters', a
   assert.equal(body.groups[2].options[0].label, '4 Hours');
 });
 
-test('catalogue endpoint returns provider certification codes and metadata', async () => {
+test('catalogue endpoint separates the TechnoEdge certification ID from the provider course code', async () => {
   const response = await fetch(`${baseUrl}/api/courses?category=certifications&page=1&pageSize=24`);
   assert.equal(response.status, 200);
   const body = await response.json();
-  assert.equal(body.data[0].id, 'AB-6002');
-  assert.equal(body.data[0].courseCode, 'AB-6002');
+  assert.equal(body.data[0].id, 'CER0005');
+  assert.equal(body.data[0].providerCourseCode, 'AB-6002');
   assert.equal(body.data[0].provider, 'Microsoft');
   assert.deepEqual(body.data[0].productTechnologies, ['dynamics-365', 'dynamics-finance']);
 });

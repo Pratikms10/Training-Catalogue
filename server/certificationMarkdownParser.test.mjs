@@ -77,9 +77,10 @@ Explore the core application.
 ## Certification / Exam information
 `;
 
-test('Microsoft certification parser uses the filename course code, not the scraper sequence', () => {
+test('Microsoft certification parser preserves the provider course code independently of the catalogue ID', () => {
   const course = parseMicrosoftCertificationMarkdown(sample, '0053_AB-6002.md');
-  assert.equal(course.courseId, 'AB-6002');
+  assert.equal(course.providerCourseCode, 'AB-6002');
+  assert.equal(course.courseId, undefined);
   assert.equal(course.sourceSequence, 53);
   assert.equal(course.level, 'Beginner');
   assert.equal(course.durationMinutes, 1440);

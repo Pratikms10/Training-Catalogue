@@ -78,7 +78,7 @@ export const CatalogueSort: React.FC<CatalogueSortProps> = ({
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-label={`Sort options: currently sorted by ${selectedOption.label}`}
-        className="w-full sm:w-auto h-[46px] flex items-center justify-between gap-3 px-4 bg-white text-sm font-medium border border-[rgba(0,0,255,0.18)] hover:border-[#0000FF]/30 rounded-lg shadow-2xs transition-all focus:outline-none focus:border-[#0000FF]/30 focus:ring-3 focus:ring-[rgba(33,150,243,0.14)] cursor-pointer select-none"
+        className="w-full sm:w-auto h-14 sm:h-[60px] flex items-center justify-between gap-3 px-4 bg-white text-sm font-medium border-2 border-[rgba(0,0,255,0.18)] hover:border-[#0000FF]/40 rounded-xl shadow-2xs transition-all focus:outline-none focus:border-[#0000FF]/40 focus:ring-3 focus:ring-[rgba(33,150,243,0.14)] cursor-pointer select-none"
       >
         <div className="flex items-center gap-2 text-left">
           <ArrowUpDown className="w-4 h-4 text-[#0000FF] shrink-0" aria-hidden="true" />

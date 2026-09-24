@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryId, BaseProgramme } from './types';
 import { CATEGORIES_ARCHITECTURE } from './data/architectureData';
 import { HeaderStructure } from './components/HeaderStructure';
@@ -12,9 +13,23 @@ import { FloatingActions } from './components/FloatingActions';
 import { peopleProcessProgrammes } from './data/actualProgrammes';
 import { fetchCourseById } from './api/catalogueApi';
 import { ImportCentre } from './components/admin/ImportCentre';
+import { CareersPage } from './components/careers/CareersPage';
+import { CareerRolePage } from './components/careers/CareerRolePage';
+import { InsightsPage } from './components/insights/InsightsPage';
+import { InsightArticlePage } from './components/insights/InsightArticlePage';
 
 export default function App() {
-  const isImportCentre = window.location.pathname === '/admin/import';
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isImportCentre = location.pathname === '/admin/import';
+  const isInsightsPage = location.pathname === '/insights';
+  const insightArticleSlug = location.pathname.startsWith('/insights/')
+    ? decodeURIComponent(location.pathname.replace('/insights/', ''))
+    : null;
+  const isCareersPage = location.pathname === '/careers';
+  const careerRoleSlug = location.pathname.startsWith('/careers/')
+    ? decodeURIComponent(location.pathname.replace('/careers/', ''))
+    : null;
   const [activeCategoryId, setActiveCategoryId] = useState<CategoryId>('role-based');
   const [selectedProgramme, setSelectedProgramme] = useState<BaseProgramme | null>(null);
   const [isProgrammeLoading, setIsProgrammeLoading] = useState(false);
@@ -23,16 +38,14 @@ export default function App() {
 
   useEffect(() => {
     let activeController: AbortController | null = null;
-
-    const handlePathChange = () => {
-      activeController?.abort();
-      const path = window.location.pathname;
+    const path = location.pathname;
+    activeController?.abort();
       if (path.startsWith('/programmes/')) {
         const id = decodeURIComponent(path.replace('/programmes/', '')).toUpperCase();
         setProgrammeLoadError(null);
 
-        const isCertificationCode = /^[A-Z0-9]{2,12}-[A-Z0-9][A-Z0-9-]{1,30}$/.test(id) && /\d/.test(id);
-        if (id.startsWith('TT') || id.startsWith('TC') || id.startsWith('RB') || isCertificationCode) {
+        const isLegacyCertificationCode = /^[A-Z0-9]{2,12}-[A-Z0-9][A-Z0-9-]{1,30}$/.test(id) && /\d/.test(id);
+        if (id.startsWith('TT') || id.startsWith('TC') || id.startsWith('RB') || id.startsWith('CER') || isLegacyCertificationCode) {
           const displayCategory: CategoryId = id.startsWith('TT')
             ? 'ai-tools'
             : id.startsWith('TC')
@@ -47,7 +60,12 @@ export default function App() {
           activeController = controller;
 
           fetchCourseById(id, controller.signal)
-            .then((programme) => setSelectedProgramme(programme))
+            .then((programme) => {
+              if (programme.id !== id) {
+                navigate(`/programmes/${programme.id}`, { replace: true });
+              }
+              setSelectedProgramme(programme);
+            })
             .catch((error: Error) => {
               if (error.name === 'AbortError') return;
               setProgrammeLoadError(error.message);
@@ -61,7 +79,7 @@ export default function App() {
             .finally(() => {
               if (!controller.signal.aborted) setIsProgrammeLoading(false);
             });
-          return;
+          return () => controller.abort();
         }
 
         let prog: BaseProgramme | undefined;
@@ -95,32 +113,24 @@ export default function App() {
         setProgrammeLoadError(null);
         setSelectedProgramme(null);
       }
-    };
-
-    window.addEventListener('popstate', handlePathChange);
-    handlePathChange(); // Initial check
 
     return () => {
       activeController?.abort();
-      window.removeEventListener('popstate', handlePathChange);
     };
-  }, []);
+  }, [location.pathname, navigate]);
 
   const handleSelectProgramme = (programme: BaseProgramme) => {
-    window.history.pushState({}, '', `/programmes/${programme.id}`);
-    const navEvent = new PopStateEvent('popstate');
-    window.dispatchEvent(navEvent);
+    navigate(`/programmes/${programme.id}`);
   };
 
   const handleBack = () => {
-    window.history.pushState({}, '', '/');
-    const navEvent = new PopStateEvent('popstate');
-    window.dispatchEvent(navEvent);
+    navigate('/');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleQuickSearchClick = () => {
-    if (selectedProgramme) {
-      handleBack();
+    if (location.pathname !== '/') {
+      navigate('/');
     }
     setTimeout(() => {
       const searchInput = document.getElementById('catalogue-search-input');
@@ -156,8 +166,8 @@ export default function App() {
 
   const handleFooterCategorySelect = (catId: CategoryId) => {
     setActiveCategoryId(catId);
-    if (selectedProgramme) {
-      handleBack();
+    if (location.pathname !== '/') {
+      navigate('/');
     }
     setTimeout(() => {
       const catalogueSection = document.getElementById('programme-catalogue-section');
@@ -178,10 +188,23 @@ export default function App() {
         onHomeClick={handleBack}
         onQuickSearchClick={handleQuickSearchClick}
         onEnterpriseInquiryClick={() => setIsEnterpriseInquiryOpen(true)}
+        onNavigate={(path) => {
+          navigate(path);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        currentPath={location.pathname}
       />
       <main id="main-catalogue-content" className="flex-1 flex flex-col">
         {isImportCentre ? (
           <ImportCentre />
+        ) : isInsightsPage ? (
+          <InsightsPage />
+        ) : insightArticleSlug ? (
+          <InsightArticlePage slug={insightArticleSlug} onBack={() => navigate('/insights')} />
+        ) : isCareersPage ? (
+          <CareersPage onViewRole={(slug) => navigate(`/careers/${slug}`)} />
+        ) : careerRoleSlug ? (
+          <CareerRolePage slug={careerRoleSlug} onBack={() => navigate('/careers')} />
         ) : (
           <>
         {isProgrammeLoading && (

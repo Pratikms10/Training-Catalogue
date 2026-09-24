@@ -8,6 +8,7 @@ const sortExpressions = {
 };
 
 function durationLabel(minutes) {
+  if (!Number.isFinite(minutes) || minutes <= 0) return undefined;
   if (minutes % 60 === 0) {
     const hours = minutes / 60;
     return `${hours} ${hours === 1 ? 'Hour' : 'Hours'}`;
@@ -81,10 +82,18 @@ function baseProgramme(row) {
       ...programme,
       categoryBadge: 'Certification Programme',
       provider: row.certification_provider,
-      courseCode: row.certification_code,
+      providerCourseCode: row.course_code_public === false ? undefined : row.certification_code,
+      examCode: row.certification_exam_code || undefined,
       courseUrl: row.certification_url || undefined,
       productTechnologies: row.product_technologies || [],
       roles: row.certification_roles || [],
+      recordKind: row.certification_record_kind || 'training-course',
+      credentialType: row.credential_type || undefined,
+      credentialClassification: row.credential_classification || undefined,
+      credentialStatus: row.credential_status || undefined,
+      credentialLevel: row.credential_level || undefined,
+      examDuration: row.exam_duration_text || undefined,
+      validityRenewal: row.validity_renewal || undefined,
     };
   }
 
@@ -150,6 +159,18 @@ function buildFilters(filters) {
       OR rb.role_title ILIKE '%' || ${queryParameter} || '%'
       OR cert.provider ILIKE '%' || ${queryParameter} || '%'
       OR cert.course_code ILIKE '%' || ${queryParameter} || '%'
+      OR cert.exam_code ILIKE '%' || ${queryParameter} || '%'
+      OR cert.credential_type ILIKE '%' || ${queryParameter} || '%'
+      OR cert.credential_classification ILIKE '%' || ${queryParameter} || '%'
+      OR cert.credential_level ILIKE '%' || ${queryParameter} || '%'
+      OR EXISTS (
+        SELECT 1 FROM catalogue.certification_exams search_exams
+        WHERE search_exams.course_id = c.course_id
+          AND (
+            search_exams.exam_code ILIKE '%' || ${queryParameter} || '%'
+            OR search_exams.exam_name ILIKE '%' || ${queryParameter} || '%'
+          )
+      )
       OR EXISTS (
         SELECT 1 FROM unnest(COALESCE(cert.product_technologies, ARRAY[]::text[])) product(value)
         WHERE product.value ILIKE '%' || ${queryParameter} || '%'
@@ -228,15 +249,23 @@ export async function listCourses(pool, filters) {
 
 export async function getCourseById(pool, courseId) {
   const baseResult = await pool.query(
-    `${catalogueSelect} WHERE c.status = 'published' AND c.course_id = $1`,
+    `${catalogueSelect}
+     WHERE c.status = 'published'
+       AND c.course_id = COALESCE(
+         (SELECT mapping.new_course_id
+          FROM catalogue.certification_id_mappings mapping
+          WHERE mapping.old_course_id = $1),
+         $1
+       )`,
     [courseId],
   );
   if (baseResult.rowCount === 0) return null;
+  const resolvedCourseId = baseResult.rows[0].course_id;
 
   const [objectives, audiences, prerequisites, modules, scenarios] = await Promise.all([
-    pool.query('SELECT objective FROM catalogue.course_objectives WHERE course_id = $1 ORDER BY display_order', [courseId]),
-    pool.query('SELECT audience FROM catalogue.course_audiences WHERE course_id = $1 ORDER BY display_order', [courseId]),
-    pool.query('SELECT prerequisite FROM catalogue.course_prerequisites WHERE course_id = $1 ORDER BY display_order', [courseId]),
+    pool.query('SELECT objective FROM catalogue.course_objectives WHERE course_id = $1 ORDER BY display_order', [resolvedCourseId]),
+    pool.query('SELECT audience FROM catalogue.course_audiences WHERE course_id = $1 ORDER BY display_order', [resolvedCourseId]),
+    pool.query('SELECT prerequisite FROM catalogue.course_prerequisites WHERE course_id = $1 ORDER BY display_order', [resolvedCourseId]),
     pool.query(
       `SELECT m.id, m.module_code, m.title, m.description, m.learning_path_title,
               m.learning_path_description, m.duration_minutes, m.applied_exercise_title,
@@ -245,9 +274,9 @@ export async function getCourseById(pool, courseId) {
        LEFT JOIN catalogue.module_learning_outcomes o ON o.module_id = m.id
        WHERE m.course_id = $1
        ORDER BY m.display_order, o.outcome_type, o.display_order`,
-      [courseId],
+      [resolvedCourseId],
     ),
-    pool.query('SELECT title, workflow, content FROM catalogue.course_scenarios WHERE course_id = $1 ORDER BY display_order', [courseId]),
+    pool.query('SELECT title, workflow, content FROM catalogue.course_scenarios WHERE course_id = $1 ORDER BY display_order', [resolvedCourseId]),
   ]);
 
   const moduleMap = new Map();
@@ -297,16 +326,126 @@ export async function getCourseById(pool, courseId) {
   };
 
   if (baseResult.rows[0].category_code === 'certifications') {
+    const [certificationExams, certificationObjectives, certificationRequirements,
+      certificationResources, certificationLifecycle] = await Promise.all([
+      pool.query(
+        `SELECT exam_code, exam_name, exam_status, requirement_type, duration_minutes,
+                duration_text, delivery_format, delivery_provider, proctored, languages,
+                price, currency, passing_score, exam_url, notes
+         FROM catalogue.certification_exams
+         WHERE course_id = $1
+         ORDER BY display_order`,
+        [resolvedCourseId],
+      ),
+      pool.query(
+        `SELECT group_title, objective, weight, objective_level, objective_code
+         FROM catalogue.certification_objectives
+         WHERE course_id = $1
+         ORDER BY display_order`,
+        [resolvedCourseId],
+      ),
+      pool.query(
+        `SELECT requirement_type, requirement_group, requirement, requirement_url,
+                qualifier, notes
+         FROM catalogue.certification_requirements
+         WHERE course_id = $1
+         ORDER BY display_order`,
+        [resolvedCourseId],
+      ),
+      pool.query(
+        `SELECT resource_type, title, resource_url, duration_text, item_count,
+                relationship, notes
+         FROM catalogue.certification_training_resources
+         WHERE course_id = $1
+         ORDER BY display_order`,
+        [resolvedCourseId],
+      ),
+      pool.query(
+        `SELECT record_type, status, validity_renewal, retirement_transition, details,
+                scenario, option_text, action_text, outcome
+         FROM catalogue.certification_lifecycle_items
+         WHERE course_id = $1
+         ORDER BY display_order`,
+        [resolvedCourseId],
+      ),
+    ]);
     programme.details = {
       ...programme.details,
       provider: baseResult.rows[0].certification_provider,
-      courseCode: baseResult.rows[0].certification_code,
+      providerCourseCode: baseResult.rows[0].course_code_public === false
+        ? undefined
+        : baseResult.rows[0].certification_code,
+      examCode: baseResult.rows[0].certification_exam_code || undefined,
       courseUrl: baseResult.rows[0].certification_url || undefined,
       productTechnologies: baseResult.rows[0].product_technologies || [],
       roles: baseResult.rows[0].certification_roles || [],
       subjects: baseResult.rows[0].certification_subjects || [],
       languageCodes: baseResult.rows[0].language_codes || [],
       certificationInformation: baseResult.rows[0].certification_information || undefined,
+      recordKind: baseResult.rows[0].certification_record_kind || 'training-course',
+      credentialType: baseResult.rows[0].credential_type || undefined,
+      credentialClassification: baseResult.rows[0].credential_classification || undefined,
+      credentialStatus: baseResult.rows[0].credential_status || undefined,
+      credentialLevel: baseResult.rows[0].credential_level || undefined,
+      categoryTrack: baseResult.rows[0].certification_category_track || undefined,
+      examFormatDelivery: baseResult.rows[0].exam_format_delivery || undefined,
+      examDuration: baseResult.rows[0].exam_duration_text || undefined,
+      timeLimit: baseResult.rows[0].time_limit_text || undefined,
+      price: baseResult.rows[0].price_text || undefined,
+      retakeFee: baseResult.rows[0].retake_fee_text || undefined,
+      validityRenewal: baseResult.rows[0].validity_renewal || undefined,
+      requiredExamPathway: baseResult.rows[0].required_exam_pathway || undefined,
+      exams: certificationExams.rows.map((row) => ({
+        examCode: row.exam_code || undefined,
+        examName: row.exam_name || undefined,
+        status: row.exam_status || undefined,
+        requirementType: row.requirement_type || undefined,
+        duration: row.duration_text || durationLabel(row.duration_minutes),
+        deliveryFormat: row.delivery_format || undefined,
+        deliveryProvider: row.delivery_provider || undefined,
+        proctored: row.proctored || undefined,
+        languages: row.languages || [],
+        price: row.price || undefined,
+        currency: row.currency || undefined,
+        passingScore: row.passing_score || undefined,
+        url: row.exam_url || undefined,
+        notes: row.notes || undefined,
+      })),
+      certificationObjectives: certificationObjectives.rows.map((row) => ({
+        groupTitle: row.group_title || undefined,
+        objective: row.objective,
+        weight: row.weight || undefined,
+        level: row.objective_level || undefined,
+        code: row.objective_code || undefined,
+      })),
+      certificationRequirements: certificationRequirements.rows.map((row) => ({
+        type: row.requirement_type || undefined,
+        group: row.requirement_group || undefined,
+        requirement: row.requirement,
+        url: row.requirement_url || undefined,
+        qualifier: row.qualifier || undefined,
+        notes: row.notes || undefined,
+      })),
+      trainingResources: certificationResources.rows.map((row) => ({
+        type: row.resource_type || undefined,
+        title: row.title,
+        url: row.resource_url || undefined,
+        duration: row.duration_text || undefined,
+        itemCount: row.item_count || undefined,
+        relationship: row.relationship || undefined,
+        notes: row.notes || undefined,
+      })),
+      lifecycle: certificationLifecycle.rows.map((row) => ({
+        recordType: row.record_type || undefined,
+        status: row.status || undefined,
+        validityRenewal: row.validity_renewal || undefined,
+        retirementTransition: row.retirement_transition || undefined,
+        details: row.details || undefined,
+        scenario: row.scenario || undefined,
+        option: row.option_text || undefined,
+        action: row.action_text || undefined,
+        outcome: row.outcome || undefined,
+      })),
     };
   }
 
@@ -335,6 +474,7 @@ export async function getCatalogueFilters(pool, category) {
       SELECT 'duration', c.duration_minutes::text, count(*)::integer
       FROM catalogue.courses c
       WHERE c.status = 'published' AND c.category_code = 'certifications'
+        AND c.duration_minutes IS NOT NULL
       GROUP BY c.duration_minutes
     `);
     const definitions = [
