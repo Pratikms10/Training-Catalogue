@@ -11,3 +11,4 @@ __pycache__/
 data/import-staging/
 data/import-reports/*-preview.json
 .runtime/
+.vercel/

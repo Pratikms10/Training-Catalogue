@@ -27,7 +27,7 @@ function positiveIntegerValues(value) {
   return stringValues(value).map((item) => positiveInteger(item, undefined));
 }
 
-export function createApp(pool) {
+export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'production' || process.env.SERVE_STATIC === 'true' } = {}) {
   const app = express();
   app.disable('x-powered-by');
   app.use(express.json({ limit: '1mb' }));
@@ -92,7 +92,7 @@ export function createApp(pool) {
     }
   });
 
-  if (process.env.NODE_ENV === 'production' || process.env.SERVE_STATIC === 'true') {
+  if (serveStatic) {
     if (!fs.existsSync(distDirectory)) {
       throw new Error(`Static build directory not found: ${distDirectory}. Run npm run build first.`);
     }

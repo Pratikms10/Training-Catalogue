@@ -105,14 +105,6 @@ export default function TEAI360Section() {
   }, []);
 
   const current = stages[active];
-  const scrollToStage = (index: number) => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const header = window.innerWidth <= 1050 ? 76 : 92;
-    const travel = Math.max(1, section.offsetHeight - window.innerHeight + header);
-    const top = window.scrollY + section.getBoundingClientRect().top - header + travel * ((index + .5) / stages.length);
-    window.scrollTo({ top, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-  };
 
   return (
     <section className="teai360" id="ai-journey" ref={sectionRef} data-active={active} aria-labelledby="teai360-title">
@@ -124,7 +116,6 @@ export default function TEAI360Section() {
               <div className="teai360-heading">
                 <span className="teai360-eyebrow">AI CAPABILITY FRAMEWORK</span>
                 <h2 id="teai360-title">TE-AI360 <em>Ascension</em></h2>
-                <p>Five levels of AI maturity.</p>
               </div>
               <div className="teai360-stage-copy" key={active}>
                 <StageContent stage={current} index={active} />
@@ -170,21 +161,11 @@ export default function TEAI360Section() {
               </div>
             </div>
           </div>
-          <ol className="teai360-track" aria-label="AI maturity progress">
-            {stages.map((stage, index) => (
-              <li key={stage.name} className={index < active ? 'is-complete' : index === active ? 'is-active' : ''} style={{ '--step-accent': stage.color } as CSSProperties}>
-                <button type="button" className="teai360-track-button" onClick={() => scrollToStage(index)} aria-current={index === active ? 'step' : undefined} aria-label={`Go to level ${index + 1}: ${stage.name}`}>
-                  <span className="teai360-track-name">{String(index + 1).padStart(2, '0')} <b>{stage.name}</b></span>
-                  <span className="teai360-track-line" />
-                </button>
-              </li>
-            ))}
-          </ol>
         </div>
       </div>
 
       <div className="teai360-mobile" aria-label="Five AI capability levels">
-        <div className="teai360-mobile-heading"><span>TE-AI360 / ASCENSION</span><h2>Five levels of AI maturity.</h2></div>
+        <div className="teai360-mobile-heading"><span>AI CAPABILITY FRAMEWORK</span><h2>TE-AI360 Ascension</h2></div>
         <div className="teai360-mobile-steps">
           {stages.map((stage, index) => (
             <article className="teai360-mobile-step" key={stage.name} style={{ '--step-accent': stage.color } as CSSProperties}>
