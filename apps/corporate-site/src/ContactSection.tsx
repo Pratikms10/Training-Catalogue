@@ -84,7 +84,6 @@ export default function ContactSection() {
           <div className="contact-direct">
             <span>Prefer a direct conversation?</span>
             <div>
-              <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer"><MessageCircle size={18} aria-hidden="true" /> WhatsApp <ArrowUpRight size={15} aria-hidden="true" /></a>
               <a href="tel:+917400068614"><Phone size={17} aria-hidden="true" /> Call our team <ArrowUpRight size={15} aria-hidden="true" /></a>
             </div>
           </div>

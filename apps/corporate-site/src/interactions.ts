@@ -26,10 +26,10 @@ const mediaCompositions: Layout[][] = [
     { x: .16, y: .43, w: .27, max: 350, layer: 1 },
   ],
   [
-    { x: .25, y: .48, w: .31, max: 390, layer: 3 },
-    { x: .60, y: .42, w: .29, max: 360, layer: 4 },
-    { x: .82, y: .64, w: .27, max: 340, layer: 2 },
-    { x: .31, y: .65, w: .28, max: 350, layer: 1 },
+    { x: .13, y: .54, w: .215, max: 340, layer: 4 },
+    { x: .375, y: .54, w: .215, max: 340, layer: 3 },
+    { x: .625, y: .54, w: .215, max: 340, layer: 2 },
+    { x: .87, y: .54, w: .215, max: 340, layer: 1 },
   ],
 ];
 
