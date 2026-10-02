@@ -105,10 +105,14 @@
 .contact-field input:focus,
 .contact-field select:focus,
 .contact-field textarea:focus { border-color: #2c77c5; box-shadow: 0 0 0 3px rgba(44, 119, 197, .13); }
-.contact-submit { display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; min-height: 54px; margin-top: 1.4rem; padding: .8rem 1.1rem; border: 0; border-radius: 11px; background: #172967; color: #fff; font: inherit; font-size: .92rem; font-weight: 850; cursor: pointer; transition: background .2s ease, transform .2s ease, box-shadow .2s ease; }
+.contact-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin-top: 1.4rem; }
+.contact-submit { display: flex; align-items: center; justify-content: space-between; gap: .7rem; width: 100%; min-height: 58px; padding: .8rem 1rem; border: 1px solid #172967; border-radius: 11px; background: #172967; color: #fff; font: inherit; font-size: .85rem; font-weight: 850; text-align: left; cursor: pointer; transition: background .2s ease, transform .2s ease, box-shadow .2s ease; }
+.contact-submit > span { display: inline-flex; align-items: center; gap: .55rem; }
+.contact-submit > svg { flex: none; }
 .contact-submit:hover { background: #2451a2; transform: translateY(-2px); box-shadow: 0 12px 25px rgba(24, 60, 136, .2); }
+.contact-submit-email { border-color: #a7bdd7; background: #f3f8ff; color: #173268; }
+.contact-submit-email:hover { background: #e3effe; box-shadow: 0 12px 25px rgba(24, 60, 136, .1); }
 .contact-submit:focus-visible { outline: 3px solid #78b4f0; outline-offset: 3px; }
-.contact-form-note { margin: .7rem 0 0; color: #748198; font-size: .75rem; line-height: 1.5; }
 .contact-draft-status { margin: .85rem 0 0; padding: .75rem .9rem; border: 1px solid #b7dfcd; border-radius: 10px; background: #eefaf4; color: #225946; font-size: .82rem; line-height: 1.4; }
 .contact-draft-status a { color: #12684d; font-weight: 850; text-decoration: underline; }
 
@@ -129,6 +133,7 @@
   .contact-panel { padding: 2.5rem; }
 }
 @media (max-width: 700px) {
+  .contact-actions { grid-template-columns: 1fr; }
   .contact-redesign.section { padding: 2rem .8rem 3rem; }
   .contact-shell { border-radius: 22px; }
   .contact-story { display: block; padding: 2rem 1.5rem; }

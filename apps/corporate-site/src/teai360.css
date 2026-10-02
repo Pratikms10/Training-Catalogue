@@ -114,8 +114,6 @@
 .teai360-capabilities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem .8rem; max-width: 450px; margin: 1.1rem 0 0; padding: .8rem 0 0; border-top: 1px solid rgba(70,104,159,.18); list-style: none; }
 .teai360-capabilities li { color: #596a88; font-size: .67rem; font-weight: 850; letter-spacing: .05em; text-transform: uppercase; }
 .teai360-capabilities li::before { content: ""; display: inline-block; width: 5px; height: 5px; margin: 0 .5rem .1rem 0; border-radius: 50%; background: var(--teai-accent); }
-.teai360-scroll-cue { display: flex; align-items: center; gap: .7rem; margin-top: auto; color: #62718d; font-size: .65rem; letter-spacing: .2em; font-weight: 850; }
-.teai360-scroll-cue span { display: block; width: 31px; height: 2px; background: #ab65d9; box-shadow: 0 0 12px rgba(171,101,217,.32); }
 
 .teai360-scene { display: grid; place-items: center; min-width: 0; min-height: 0; perspective: 1100px; }
 .teai360-scene-inner {

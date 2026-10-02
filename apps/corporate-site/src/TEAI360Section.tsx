@@ -129,7 +129,6 @@ export default function TEAI360Section() {
               <div className="teai360-stage-copy" key={active}>
                 <StageContent stage={current} index={active} />
               </div>
-              <div className="teai360-scroll-cue" aria-hidden="true"><span /> SCROLL TO ASCEND</div>
             </div>
 
             <div className="teai360-scene" aria-hidden="true">

@@ -19,6 +19,15 @@
 .home-insights-card-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.35rem; }
 .home-insights-index { color: #9fb3c8; font-size: .72rem; font-weight: 850; letter-spacing: .12em; }
 .home-insights-category { padding: .35rem .6rem; border-radius: 999px; background: #eff5fa; color: #26699e; font-size: .7rem; font-weight: 800; white-space: nowrap; }
+.home-insights-media { position: relative; width: 100%; aspect-ratio: 1.8; margin-bottom: 1.3rem; overflow: hidden; border-radius: 14px; background: #eaf1f8; }
+.home-insights-media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.home-insights-media-fallback { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; width: 100%; height: 100%; padding: 1.2rem; overflow: hidden; background: radial-gradient(circle at 75% 30%, rgba(255, 255, 255, .42), transparent 32%), linear-gradient(135deg, #14315f, #3588b9); color: #fff; }
+.home-insights-media-fallback::before { content: ""; position: absolute; top: -48%; right: -18%; width: 76%; aspect-ratio: 1; border: 1px solid rgba(255, 255, 255, .55); border-radius: 50%; box-shadow: 0 0 0 36px rgba(255, 255, 255, .08), 0 0 0 74px rgba(255, 255, 255, .055); }
+.home-insights-card:nth-child(2) .home-insights-media-fallback { background: radial-gradient(circle at 75% 30%, rgba(255, 255, 255, .4), transparent 32%), linear-gradient(135deg, #313366, #9574bc); }
+.home-insights-card:nth-child(3) .home-insights-media-fallback { background: radial-gradient(circle at 75% 30%, rgba(255, 255, 255, .4), transparent 32%), linear-gradient(135deg, #145d70, #53b2aa); }
+.home-insights-media-monogram, .home-insights-media-caption { position: relative; z-index: 1; }
+.home-insights-media-monogram { font-family: News706, Georgia, serif; font-size: clamp(2.5rem, 5vw, 4rem); line-height: .85; letter-spacing: -.09em; }
+.home-insights-media-caption { font-size: .68rem; font-weight: 850; letter-spacing: .16em; text-align: right; white-space: nowrap; }
 .home-insights-card h3 { margin: 0 0 1.4rem; font-family: Inter, Segoe UI, Arial, sans-serif; font-size: clamp(1.08rem, 1.42vw, 1.35rem); font-weight: 750; line-height: 1.38; letter-spacing: -.028em; }
 .home-insights-card h3 a:hover { color: #1a6da8; }
 .home-insights-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid #edf0f2; }

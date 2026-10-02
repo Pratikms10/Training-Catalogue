@@ -22,6 +22,16 @@ export default function HomeInsightsSection() {
                 <span className="home-insights-index">{String(index + 1).padStart(2, '0')}</span>
                 <span className="home-insights-category">{article.category}</span>
               </div>
+              <div className="home-insights-media">
+                {article.image ? (
+                  <img src={article.image} alt="" loading="lazy" />
+                ) : (
+                  <div className="home-insights-media-fallback" aria-hidden="true">
+                    <span className="home-insights-media-monogram">TE.</span>
+                    <span className="home-insights-media-caption">INSIGHTS / {String(index + 1).padStart(2, '0')}</span>
+                  </div>
+                )}
+              </div>
               <h3><a href={article.url}>{article.title}</a></h3>
               <div className="home-insights-card-bottom">
                 <span className="home-insights-date"><CalendarDays size={15} aria-hidden="true" />{article.date}</span>

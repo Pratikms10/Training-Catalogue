@@ -136,11 +136,6 @@ function CorporateHome() {
           <figcaption>Microsoft Training Skilling Partner</figcaption>
         </figure>
       </div>
-      <div className="why-unified-values" aria-label="How we work">
-        <p><strong>Expert-led</strong><span>Programs matched to your teams and technology.</span></p>
-        <p><strong>Practice-driven</strong><span>Hands-on learning that reveals real readiness.</span></p>
-        <p><strong>Beyond training</strong><span>Support for adoption and implementation.</span></p>
-      </div>
     </section>
 
     <HomeInsightsSection />
@@ -254,11 +249,6 @@ function CorporateHome() {
           </div>
         </div>
 
-        <div className="media-universe-hud" aria-hidden="true">
-          <span>SCROLL TO EXPLORE <small>SELECT A MOMENT TO VIEW</small></span>
-          <i><b></b></i>
-          <strong><span data-media-chapter>01 / 05</span> TRAINING MOMENTS</strong>
-        </div>
       </div>
 
       <dialog className="media-lightbox" aria-label="Training moments gallery">

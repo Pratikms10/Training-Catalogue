@@ -1,16 +1,18 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
-import { ArrowUpRight, Building2, GraduationCap, MessageCircle, Phone } from 'lucide-react';
+import { ArrowUpRight, Building2, GraduationCap, Mail, MessageCircle, Phone } from 'lucide-react';
 
 type ContactPath = 'organisation' | 'trainer';
 type ContactValues = Record<string, string>;
 
 const whatsappNumber = '917400068614';
+const contactEmail = 'info@technoedgels.com';
 
 export default function ContactSection() {
   const [path, setPath] = useState<ContactPath>('organisation');
   const [organisationValues, setOrganisationValues] = useState<ContactValues>({});
   const [trainerValues, setTrainerValues] = useState<ContactValues>({});
   const [draftUrl, setDraftUrl] = useState('');
+  const [draftChannel, setDraftChannel] = useState<'whatsapp' | 'email'>('whatsapp');
   const values = path === 'organisation' ? organisationValues : trainerValues;
 
   const updateField = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -25,8 +27,10 @@ export default function ContactSection() {
     setDraftUrl('');
   };
 
-  const prepareWhatsAppDraft = (event: FormEvent<HTMLFormElement>) => {
+  const prepareContactDraft = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
+    const channel = submitter?.value === 'email' ? 'email' : 'whatsapp';
     const form = new FormData(event.currentTarget);
     const read = (name: string) => String(form.get(name) || '').trim();
     const lines = path === 'organisation'
@@ -48,9 +52,19 @@ export default function ContactSection() {
           ...(read('profile') ? [`Profile: ${read('profile')}`] : []),
           `What I teach: ${read('message')}`,
         ];
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
+    const subject = path === 'organisation'
+      ? `TechnoEdge enquiry — ${read('service')}`
+      : `TechnoEdge trainer application — ${read('name')}`;
+    const url = channel === 'email'
+      ? `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`
+      : `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
     setDraftUrl(url);
-    window.open(url, '_blank', 'noopener,noreferrer');
+    setDraftChannel(channel);
+    if (channel === 'email') {
+      window.location.assign(url);
+    } else {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
   };
 
   return (
@@ -95,7 +109,7 @@ export default function ContactSection() {
             </label>
           </fieldset>
 
-          <form className="contact-form" id="enquiry-form" onSubmit={prepareWhatsAppDraft}>
+          <form className="contact-form" id="enquiry-form" onSubmit={prepareContactDraft}>
             {path === 'organisation' ? (
               <div className="contact-form-grid">
                 <label className="contact-field contact-field-wide"><span>What can we help with? <b>*</b></span><select name="service" value={values.service || ''} onChange={updateField} required><option value="">Select a service</option><option>Corporate Training Solution</option><option>E-Learning Solution</option><option>AI &amp; Automation Consulting</option><option>Content Processing &amp; Language Services</option><option>Data &amp; AI Support</option></select></label>
@@ -115,9 +129,11 @@ export default function ContactSection() {
                 <label className="contact-field contact-field-wide"><span>What subjects and formats do you teach? <b>*</b></span><textarea name="message" rows={4} value={values.message || ''} onChange={updateField} placeholder="Share your topics, audiences, and teaching approach." required /></label>
               </div>
             )}
-            <button className="contact-submit" type="submit">{path === 'organisation' ? 'Review enquiry on WhatsApp' : 'Review application on WhatsApp'} <ArrowUpRight size={20} aria-hidden="true" /></button>
-            <p className="contact-form-note">A WhatsApp draft will open. Nothing is sent until you review and send it.</p>
-            {draftUrl && <p className="contact-draft-status" role="status">Draft ready. If it did not open, <a href={draftUrl} target="_blank" rel="noopener noreferrer">open it in WhatsApp</a>.</p>}
+            <div className="contact-actions">
+              <button className="contact-submit" type="submit" name="contact-channel" value="whatsapp"><span><MessageCircle size={18} aria-hidden="true" />{path === 'organisation' ? 'Review enquiry on WhatsApp' : 'Review application on WhatsApp'}</span><ArrowUpRight size={20} aria-hidden="true" /></button>
+              <button className="contact-submit contact-submit-email" type="submit" name="contact-channel" value="email"><span><Mail size={18} aria-hidden="true" />{path === 'organisation' ? 'Review enquiry by email' : 'Review application by email'}</span><ArrowUpRight size={20} aria-hidden="true" /></button>
+            </div>
+            {draftUrl && <p className="contact-draft-status" role="status">Draft ready. If it did not open, <a href={draftUrl} {...(draftChannel === 'whatsapp' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>open it in {draftChannel === 'email' ? 'your email app' : 'WhatsApp'}</a>.</p>}
           </form>
         </div>
       </div>

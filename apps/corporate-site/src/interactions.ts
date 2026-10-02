@@ -159,8 +159,6 @@ export function mountCorporateInteractions(): () => void {
   const mediaWorld = root.querySelector<HTMLElement>('.media-world');
   const mediaNodes = [...root.querySelectorAll<HTMLElement>('.media-node')];
   const mediaIntro = root.querySelector<HTMLElement>('.media-universe-intro');
-  const mediaProgress = root.querySelector<HTMLElement>('.media-universe-hud i b');
-  const mediaChapter = root.querySelector<HTMLElement>('[data-media-chapter]');
   const mediaDialog = root.querySelector<HTMLDialogElement>('.media-lightbox');
   const lightboxImage = mediaDialog?.querySelector<HTMLImageElement>('.media-lightbox-visual img');
   const lightboxQuote = mediaDialog?.querySelector<HTMLElement>('.media-lightbox-visual blockquote');
@@ -306,8 +304,6 @@ export function mountCorporateInteractions(): () => void {
     const offset = innerWidth <= 1050 ? 76 : 92;
     targetProgress = clamp((offset - rect.top) / Math.max(1, rect.height - innerHeight + offset));
     if (mediaIntro) mediaIntro.style.opacity = String(Math.max(0, 1 - targetProgress * 13));
-    if (mediaProgress) mediaProgress.style.transform = `scaleX(${Math.max(.025, targetProgress)})`;
-    if (mediaChapter) mediaChapter.textContent = `${String(Math.min(mediaCompositions.length, Math.floor(targetProgress * mediaCompositions.length) + 1)).padStart(2, '0')} / 05`;
     if (!mediaFrame) mediaFrame = frame(drawMedia);
   };
   observe(window, 'scroll', updateMedia, { passive: true });
