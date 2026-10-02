@@ -96,6 +96,7 @@ export function createApp(pool) {
     if (!fs.existsSync(distDirectory)) {
       throw new Error(`Static build directory not found: ${distDirectory}. Run npm run build first.`);
     }
+    app.get('/', (_request, response) => response.redirect(302, '/website/'));
     app.use(express.static(distDirectory));
     app.use((request, response, next) => {
       if (request.method !== 'GET' || request.path.startsWith('/api/') || !request.accepts('html')) {

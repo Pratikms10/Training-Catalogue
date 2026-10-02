@@ -1,0 +1,123 @@
+.f1-learning-universe {
+  min-height: 100svh;
+  padding-top: clamp(88px, 10vh, 120px);
+  padding-bottom: clamp(44px, 7vh, 84px);
+  scroll-margin-top: 66px;
+  background: var(--cream);
+}
+
+.f1-learning-universe > div.relative {
+  width: 100%;
+}
+
+.f1-learning-universe > div.relative > div {
+  border-color: rgba(34, 111, 167, .12);
+  background: rgba(255, 252, 247, .72);
+  box-shadow: 0 24px 70px rgba(38, 70, 89, .09);
+}
+
+#root .f1-learning-universe h2 {
+  color: var(--ink);
+  font-family: "Geist Variable", Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(36px, 4.1vw, 62px);
+  font-weight: 560;
+  line-height: .98;
+  letter-spacing: -.055em;
+}
+
+#root .f1-learning-universe h2 span {
+  color: var(--blue);
+  font-family: var(--serif);
+  font-size: 1.08em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -.025em;
+}
+
+.f1-learning-universe .format-description {
+  display: grid;
+  gap: 14px;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.f1-learning-universe .format-description p {
+  margin: 0;
+}
+
+.f1-learning-universe .format-description .format-promise {
+  color: var(--blue-deep);
+  font-weight: 720;
+}
+
+.f1-learning-universe .grid.items-stretch > div:nth-child(2) {
+  padding: 14px;
+}
+
+.f1-learning-universe .grid.items-stretch > div:nth-child(2) .aspect-video {
+  height: clamp(260px, 42svh, 440px);
+  aspect-ratio: auto;
+}
+
+.f1-learning-universe .grid.items-stretch > div:nth-child(2) img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: contain !important;
+}
+
+.f1-learning-universe .format-showcase-card {
+  width: 100%;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.f1-learning-universe .format-showcase-card__image {
+  display: block;
+  width: 100%;
+  height: min(58svh, 620px);
+  object-fit: cover;
+  object-position: left center;
+  border-radius: 18px;
+}
+
+@media (max-height: 700px) and (min-width: 761px) {
+  .f1-learning-universe .grid.items-stretch > div:nth-child(2) .aspect-video {
+    height: 38svh;
+  }
+}
+
+@media (max-width: 760px) {
+  .f1-learning-universe {
+    padding-top: 90px;
+  }
+
+  .f1-learning-universe > div.relative > div {
+    padding: 22px;
+    border-radius: 26px;
+  }
+
+  .f1-learning-universe .format-description {
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  .f1-learning-universe .grid.items-stretch > div:nth-child(2) .aspect-video {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .f1-learning-universe .format-showcase-card {
+    border-radius: 0;
+  }
+
+  .f1-learning-universe .format-showcase-card__image {
+    height: clamp(360px, 58svh, 480px);
+    object-fit: cover;
+    object-position: left center;
+    border-radius: 14px;
+  }
+}

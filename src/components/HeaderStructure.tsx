@@ -11,7 +11,9 @@ interface HeaderStructureProps {
 }
 
 const primaryNavigation = [
-  { label: 'Catalogue', path: '/', enabled: true },
+  { label: 'Home', path: '/website/', enabled: true },
+  { label: 'E-Learning', path: '/e-learning/', enabled: true },
+  { label: 'Catalogue', path: '/catalogue', enabled: true },
   { label: 'Insights', path: '/insights', enabled: true },
   { label: 'Careers', path: '/careers', enabled: true },
 ];
@@ -21,7 +23,7 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
   onQuickSearchClick,
   onEnterpriseInquiryClick,
   onNavigate,
-  currentPath = '/',
+  currentPath = '/catalogue',
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const visibleNavigation = primaryNavigation.filter((item) => item.enabled);
@@ -46,7 +48,7 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
           }}
           tabIndex={0}
           role="button"
-          aria-label="TechnoEdge Corporate Training Catalogue Home"
+          aria-label="TechnoEdge Home"
           className="flex items-center gap-3 cursor-pointer group select-none outline-none focus-visible:ring-2 focus-visible:ring-[#0000FF] focus-visible:ring-offset-2 rounded-lg p-0.5"
         >
           <div className="w-9 h-9 flex items-center justify-center shrink-0">
@@ -64,7 +66,9 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
 
         <nav className="hidden lg:flex items-center justify-center gap-7" aria-label="Primary navigation">
           {visibleNavigation.map((item) => {
-            const isActive = item.path === '/' ? currentPath === '/' : currentPath.startsWith(item.path);
+            const isActive = item.path === '/catalogue'
+              ? currentPath === '/catalogue' || currentPath.startsWith('/programmes/')
+              : currentPath.startsWith(item.path);
             return (
               <button
                 key={item.path}
@@ -121,7 +125,9 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
         <div id="mobile-site-navigation" className="lg:hidden border-t border-[rgba(0,0,255,0.12)] bg-white px-4 sm:px-8 py-5 shadow-[0_18px_35px_rgba(15,23,42,0.10)]">
           <nav className="flex flex-col" aria-label="Mobile navigation">
             {visibleNavigation.map((item) => {
-              const isActive = item.path === '/' ? currentPath === '/' : currentPath.startsWith(item.path);
+              const isActive = item.path === '/catalogue'
+                ? currentPath === '/catalogue' || currentPath.startsWith('/programmes/')
+                : currentPath.startsWith(item.path);
               return (
                 <button
                   key={item.path}

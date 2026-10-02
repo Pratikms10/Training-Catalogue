@@ -1,0 +1,340 @@
+.level-matrix-section {
+  position: relative;
+  padding: clamp(34px, 4vw, 58px) 5% clamp(90px, 9vw, 130px);
+  overflow: hidden;
+  scroll-margin-top: 66px;
+  background: #fbfcfe;
+}
+
+.level-matrix-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 38% 32% at 7% 13%, rgba(176, 226, 255, .42), transparent 72%),
+    radial-gradient(ellipse 34% 34% at 94% 4%, rgba(208, 197, 255, .48), transparent 72%),
+    radial-gradient(ellipse 30% 28% at 48% 4%, rgba(200, 245, 235, .35), transparent 74%);
+}
+
+.level-matrix-shell {
+  position: relative;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.level-matrix-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, .85fr);
+  align-items: end;
+  gap: 72px;
+  margin: 0 auto 24px;
+  padding: 0 116px;
+}
+
+.level-matrix-intro > div > span {
+  color: #355c95;
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: .17em;
+}
+
+#root .level-matrix-intro h2 {
+  max-width: 590px;
+  margin: 9px 0 0;
+  color: #090b10;
+  font-family: "Geist Variable", Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(38px, 3.65vw, 52px);
+  font-weight: 830;
+  line-height: .96;
+  letter-spacing: -.058em;
+}
+
+#root .level-matrix-intro > p {
+  max-width: 380px;
+  margin: 0 0 3px;
+  color: #435173;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.level-matrix-scroll {
+  overflow: auto;
+  border: 1px solid #d7e0eb;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 22px 55px rgba(37, 67, 104, .12);
+  scrollbar-color: #8aa0ba transparent;
+  overscroll-behavior-inline: contain;
+}
+
+.level-matrix-scroll:focus-visible {
+  outline: 3px solid #2b71d8;
+  outline-offset: 4px;
+}
+
+.level-matrix-table {
+  width: 100%;
+  min-width: 1040px;
+  border-spacing: 0;
+  border-collapse: separate;
+  table-layout: fixed;
+  color: #1f2e49;
+}
+
+.level-matrix-table th,
+.level-matrix-table td {
+  border-right: 1px solid #d7e0eb;
+  border-bottom: 1px solid #d7e0eb;
+}
+
+.level-matrix-table tr > *:last-child { border-right: 0; }
+.level-matrix-table tbody tr:last-child > * { border-bottom: 0; }
+
+.level-matrix-table thead th {
+  height: 130px;
+  padding: 14px 12px;
+  vertical-align: middle;
+  text-align: center;
+  color: #fff;
+}
+
+.level-matrix-table thead .matrix-feature-heading {
+  width: 304px;
+  padding: 26px;
+  text-align: left;
+  background: linear-gradient(135deg, #183c63, #102a48);
+}
+
+.matrix-feature-heading > span {
+  display: block;
+  font-size: 22px;
+  font-weight: 850;
+  letter-spacing: .025em;
+}
+
+.matrix-feature-heading > small {
+  display: block;
+  margin-top: 6px;
+  color: #e3edf7;
+  font-size: 12px;
+  font-weight: 520;
+}
+
+.matrix-level-heading {
+  position: relative;
+  overflow: hidden;
+}
+
+.matrix-level-heading::before,
+.matrix-level-heading::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .13);
+  pointer-events: none;
+}
+
+.matrix-level-heading::before {
+  width: 120px;
+  height: 120px;
+  top: -65px;
+  left: -34px;
+}
+
+.matrix-level-heading::after {
+  width: 160px;
+  height: 90px;
+  right: -56px;
+  bottom: -54px;
+  transform: rotate(-13deg);
+}
+
+.matrix-level-heading--1 { background: linear-gradient(140deg, #258eff, #0068e8); }
+.matrix-level-heading--2 { background: linear-gradient(140deg, #19a98f, #07826f); }
+.matrix-level-heading--3 { background: linear-gradient(140deg, #9a56f3, #6f31d9); }
+.matrix-level-heading--4 { background: linear-gradient(140deg, #f06b36, #c84618); }
+
+.matrix-level-icon {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  margin: 0 auto 8px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(14, 31, 56, .22);
+}
+
+.matrix-level-heading--1 .matrix-level-icon { color: #0877ed; }
+.matrix-level-heading--2 .matrix-level-icon { color: #078a74; }
+.matrix-level-heading--3 .matrix-level-icon { color: #7a38e3; }
+.matrix-level-heading--4 .matrix-level-icon { color: #cf4619; }
+.matrix-level-icon svg { width: 21px; height: 21px; stroke-width: 2.2; }
+
+.matrix-level-heading small,
+.matrix-level-heading strong,
+.matrix-level-heading em {
+  position: relative;
+  z-index: 1;
+  display: block;
+  color: #fff;
+}
+
+.matrix-level-heading small {
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .1em;
+}
+
+.matrix-level-heading strong {
+  margin: 5px 0 3px;
+  font-size: 19px;
+  font-weight: 820;
+  line-height: 1;
+}
+
+.matrix-level-heading em {
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.level-matrix-table tbody th {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  padding: 0;
+  vertical-align: middle;
+  text-align: left;
+  background: #fff;
+}
+
+.matrix-best-fit-row th,
+.matrix-best-fit-row td {
+  height: 43px;
+  background: #fff;
+}
+
+.matrix-best-fit-row td {
+  padding: 9px 12px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.matrix-best-fit-row td[data-level="1"] { color: #1269c7; background: #edf6ff; }
+.matrix-best-fit-row td[data-level="2"] { color: #147362; background: #eaf8f4; }
+.matrix-best-fit-row td[data-level="3"] { color: #55328d; background: #f4eefe; }
+.matrix-best-fit-row td[data-level="4"] { color: #91401f; background: #fff0e9; }
+
+.matrix-group-row th {
+  position: static !important;
+  height: 28px;
+  padding: 8px 18px 5px !important;
+  border-right: 0;
+  color: #47638f;
+  background: #fbfcfe !important;
+  font-size: 9px;
+  font-weight: 820;
+  line-height: 1;
+  letter-spacing: .2em;
+}
+
+.matrix-feature-content {
+  min-height: 42px;
+  padding: 6px 17px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.matrix-feature-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 25px;
+  width: 25px;
+  height: 25px;
+  color: #1884ff;
+}
+
+.matrix-feature-icon svg { width: 18px; height: 18px; stroke-width: 2; }
+.matrix-feature-content > span:last-child { min-width: 0; }
+
+.level-matrix-table tbody th strong {
+  display: block;
+  color: #20314d;
+  font-size: 11.5px;
+  font-weight: 760;
+  line-height: 1.15;
+}
+
+.level-matrix-table tbody th small {
+  display: block;
+  margin-top: 2px;
+  color: #718099;
+  font-size: 9px;
+  font-weight: 450;
+  line-height: 1.2;
+}
+
+.matrix-data-row td {
+  height: 42px;
+  padding: 5px 11px;
+  text-align: center;
+}
+
+.matrix-data-row td:nth-child(2) { background: #f1f7fd; }
+.matrix-data-row td:nth-child(3) { background: #eef9f5; }
+.matrix-data-row td:nth-child(4) { background: #f6f0fd; }
+.matrix-data-row td:nth-child(5) { background: #fff2ec; }
+
+.matrix-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #40516c;
+  font-size: 10px;
+  font-weight: 560;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.matrix-status__coin {
+  display: grid;
+  place-items: center;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: var(--coin-ink);
+  background: var(--coin-bg);
+  box-shadow: inset 0 0 0 1px rgba(23, 49, 78, .05);
+}
+
+.matrix-status__coin svg { width: 11px; height: 11px; stroke-width: 2.5; }
+.matrix-status--included { --coin-bg: #c9f0d9; --coin-ink: #177348; }
+.matrix-status--optional { --coin-bg: #ffe5a7; --coin-ink: #9b6500; }
+.matrix-status--excluded { --coin-bg: #e6ebf1; --coin-ink: #78869a; }
+.matrix-status--graded[data-level="1"] { --coin-bg: #dbeeff; --coin-ink: #1574d2; }
+.matrix-status--graded[data-level="2"] { --coin-bg: #d5f1e7; --coin-ink: #147561; }
+.matrix-status--graded[data-level="3"] { --coin-bg: #eadcff; --coin-ink: #7540d5; }
+.matrix-status--graded[data-level="4"] { --coin-bg: #ffd9c7; --coin-ink: #d65420; }
+
+@media (max-width: 1100px) {
+  .level-matrix-intro { padding-inline: 20px; }
+}
+
+@media (max-width: 800px) {
+  .level-matrix-section { padding-inline: 18px; }
+  .level-matrix-intro { grid-template-columns: 1fr; gap: 14px; padding-inline: 0; }
+  .level-matrix-intro > p { max-width: 620px; }
+  .level-matrix-scroll { border-radius: 16px; }
+  .level-matrix-table { min-width: 980px; }
+  .level-matrix-table thead .matrix-feature-heading { width: 270px; }
+}

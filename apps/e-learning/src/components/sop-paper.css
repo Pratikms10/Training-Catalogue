@@ -1,0 +1,36 @@
+/* Paper-only refinement. Original hero, portraits, course and scroll path are retained. */
+.sop-paper-stack{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+.sop-under-sheet{position:absolute;inset:0;border:1px solid #babebc;border-radius:1px;pointer-events:none;background:linear-gradient(100deg,#f0f0e9,#fffefa 20%,#f7f8f3 92%,#e2e6e3);box-shadow:0 1px 2px #18323d26;transform-origin:12% 75%}
+.sop-under-sheet--third{transform:translate(10px,8px) rotate(2.4deg) translateZ(-3px);box-shadow:5px 17px 24px -9px #19374740}
+.sop-under-sheet--second{transform:translate(5px,4px) rotate(-1.5deg) translateZ(-1px)}
+.learning-journey .sop-document.sop-readable{position:relative;inset:auto;height:100%;width:100%;padding:26px 24px 44px;border:1px solid #d1d6d3;border-radius:1px;background:linear-gradient(100deg,#f5f6f0 0%,#fffefa 12%,#fffefa 82%,#eef2ef 100%);color:#213039;box-shadow:1px 2px 3px #1e364b15,inset 5px 0 8px -7px #20352d70;font-family:Arial,Helvetica,sans-serif;overflow:hidden;filter:none;text-shadow:none;backface-visibility:hidden;-webkit-font-smoothing:auto;text-rendering:optimizeLegibility}
+.learning-journey .sop-readable::after{display:none}
+.learning-journey .sop-readable .sop-mast span{font-size:10px;letter-spacing:.055em;font-weight:600;color:#344953;line-height:1.4}
+.learning-journey .sop-readable .sop-rule{height:1px;background:#788b90;margin:14px 0 20px}
+.learning-journey .sop-readable .sop-title{font-family:Georgia,'Times New Roman',serif;font-size:60px;line-height:1;letter-spacing:-.035em;color:#223944;margin:0 0 16px}
+.learning-journey .sop-readable h3{font-family:Arial,Helvetica,sans-serif;font-size:18px!important;font-weight:600;line-height:1.25;letter-spacing:-.025em;color:#203740;margin:0 0 12px}
+.learning-journey .sop-readable .sop-summary{font-size:12px!important;line-height:1.5!important;color:#354a52;margin:0;max-width:245px}
+.learning-journey .sop-readable .sop-steps{display:grid;gap:12px;list-style:none;padding:20px 0 0;margin:0;font-size:12px;line-height:1.4;color:#253d46}
+.learning-journey .sop-readable .sop-steps li{display:grid;grid-template-columns:20px 1fr;align-items:start;gap:8px}
+.learning-journey .sop-readable .sop-steps span{font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#253d46;line-height:1.4}
+.learning-journey .sop-readable .sop-steps li>span:first-child{font-size:10px;line-height:1.7;color:#49616a;font-variant-numeric:tabular-nums}
+.learning-journey .sop-readable footer{position:absolute;bottom:16px;left:24px;right:24px;border-top:1px solid #c2cdce;padding-top:10px;margin:0;font-size:10px;font-weight:500;letter-spacing:.025em;color:#344e58}
+/* Avoid filtering/compositing all the live type merely to cast a shadow. */
+.learning-journey .journey-traveller{filter:none}
+.learning-journey .journey-paper-face{filter:none}
+@media(max-width:1000px){
+  .learning-journey .journey-mobile-paper{width:260px;height:415px;right:calc(50% - 130px);top:550px}
+  .learning-journey .sop-document.sop-readable{padding:20px 19px 43px}
+  .learning-journey .sop-readable .sop-mast span{font-size:10px;letter-spacing:0}
+  .learning-journey .sop-readable .sop-rule{margin:10px 0 13px}
+  .learning-journey .sop-readable .sop-title{font-size:48px;margin-bottom:12px}
+  .learning-journey .sop-readable h3{font-size:17px!important;margin-bottom:10px}
+  .learning-journey .sop-readable .sop-summary{font-size:12px!important}
+  .learning-journey .sop-readable .sop-steps{padding-top:15px;gap:10px}
+  .learning-journey .sop-readable footer{left:19px;right:19px;bottom:13px;font-size:10px}
+}
+.learning-journey .hero-paper-slot{width:330px;height:470px;left:auto;right:6%;top:225px}
+.learning-journey .before-paper-slot{width:320px;height:460px}
+.learning-journey .journey-static-paper{height:435px;width:280px}
+@media(min-width:1001px) and (max-width:1150px){.learning-journey .hero-paper-slot{width:270px;height:455px;right:5%;top:245px}.learning-journey .before-paper-slot{width:280px;height:450px}}
+@media(max-width:1000px){.learning-journey .journey-first .studio-hero{height:1050px;min-height:1050px}}

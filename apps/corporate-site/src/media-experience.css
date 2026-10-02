@@ -1,0 +1,157 @@
+.media-universe-intro p { max-width: 30ch; line-height: 1.5; }
+
+.media-world .media-node.is-active { cursor: zoom-in; }
+.media-world .media-node.is-active:focus-visible {
+  outline: 3px solid #1576f2;
+  outline-offset: 5px;
+}
+.media-world .media-photo img { transition: transform .4s ease, filter .4s ease; }
+.media-world .media-photo.is-active:hover img,
+.media-world .media-photo.is-active:focus-visible img { transform: scale(1.035); filter: saturate(1.08); }
+.media-world .media-photo::before {
+  content: "↗";
+  position: absolute;
+  top: .85rem;
+  right: .85rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 50%;
+  background: rgba(11,28,59,.7);
+  color: white;
+  font-size: 1.2rem;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity .25s ease, transform .25s ease;
+  pointer-events: none;
+}
+.media-world .media-photo.is-active:hover::before,
+.media-world .media-photo.is-active:focus-visible::before { opacity: 1; transform: none; }
+.media-world .media-photo figcaption {
+  left: .9rem;
+  right: .9rem;
+  bottom: .9rem;
+  padding: .6rem .75rem;
+  border-left: 3px solid #79ceff;
+  border-radius: 0 8px 8px 0;
+  background: linear-gradient(90deg, rgba(8,23,52,.86), rgba(8,23,52,.48));
+  color: #fff;
+  font-size: clamp(1rem, 1.55vw, 1.2rem);
+  font-weight: 850;
+  letter-spacing: .015em;
+  line-height: 1.2;
+  text-transform: none;
+  text-shadow: 0 2px 10px rgba(0,0,0,.32);
+  opacity: 1;
+  transform: none;
+  backdrop-filter: blur(7px);
+}
+.media-world .media-photo.is-focus figcaption { font-size: clamp(1.2rem, 2vw, 1.5rem); }
+.media-world .media-recognition figcaption {
+  position: static;
+  padding: .85rem .9rem .7rem;
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+  color: #1d3152;
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  letter-spacing: .01em;
+  line-height: 1.3;
+  text-shadow: none;
+  backdrop-filter: none;
+}
+.media-universe-hud { font-size: .68rem; }
+.media-universe-hud > span { display: grid; gap: .22rem; }
+.media-universe-hud small { color: #5a6e8d; font-size: .58rem; letter-spacing: .13em; }
+.media-universe-hud strong { display: flex; align-items: center; gap: .55rem; }
+.media-universe-hud strong span { color: #1576f2; font-size: .73rem; }
+
+.media-lightbox {
+  width: min(1100px, calc(100vw - 2rem));
+  max-width: none;
+  max-height: min(82svh, 780px);
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: 24px;
+  background: #fbfaf6;
+  color: #17243e;
+  box-shadow: 0 35px 120px rgba(5,19,45,.38);
+}
+.media-lightbox[open] { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(285px, .65fr); }
+.media-lightbox::backdrop { background: rgba(5,18,42,.78); backdrop-filter: blur(10px); }
+.media-lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(33,55,95,.18);
+  border-radius: 50%;
+  background: rgba(255,255,255,.92);
+  color: #17243e;
+  cursor: pointer;
+}
+.media-lightbox-close:hover,
+.media-lightbox-controls button:hover { background: #e9f2fc; border-color: #99bbe6; }
+.media-lightbox-visual {
+  display: grid;
+  place-items: center;
+  min-height: min(68svh, 620px);
+  overflow: hidden;
+  background: #152540;
+}
+.media-lightbox-visual [hidden] { display: none !important; }
+.media-lightbox-visual img { display: block; width: 100%; height: 100%; max-height: min(68svh, 620px); object-fit: contain; }
+.media-lightbox-visual blockquote {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: clamp(2rem, 5vw, 4.5rem);
+  background: radial-gradient(circle at 100% 0, #dbeaff, transparent 40%), #f1f6ff;
+  color: #152a4e;
+}
+.media-lightbox-visual blockquote span { color: #286fc0; font-size: .75rem; font-weight: 900; letter-spacing: .18em; }
+.media-lightbox-visual blockquote p { margin: 1.5rem 0; font-family: News706, Georgia, serif; font-size: clamp(2rem, 3vw, 3.35rem); line-height: 1.12; }
+.media-lightbox-visual blockquote footer { color: #466b9e; font-size: .94rem; font-weight: 800; }
+.media-lightbox-details { display: flex; flex-direction: column; align-items: flex-start; padding: clamp(2rem, 3vw, 3.5rem); }
+.media-lightbox-eyebrow { margin-top: 2rem; color: #286fc0; font-size: .69rem; font-weight: 900; letter-spacing: .17em; }
+.media-lightbox-details h3 { margin: 1.1rem 0 .7rem; font-family: News706, Georgia, serif; font-size: clamp(2rem, 3vw, 3.5rem); line-height: 1.04; }
+.media-lightbox-details > p { color: #64738a; font-size: 1rem; line-height: 1.5; }
+.media-lightbox-controls { display: flex; align-items: center; gap: 1rem; width: 100%; margin-top: auto; padding-top: 2rem; }
+.media-lightbox-controls button { width: 3rem; height: 3rem; border: 1px solid #cbd8e8; border-radius: 50%; background: white; color: #20426f; font-size: 1.4rem; cursor: pointer; }
+.media-lightbox-controls span { flex: 1; color: #42618a; font-size: .8rem; font-weight: 850; letter-spacing: .13em; text-align: center; }
+
+@media (max-width: 760px) {
+  .media-world .media-photo figcaption { font-size: clamp(1rem, 4vw, 1.3rem); }
+  .media-world .media-photo.is-focus figcaption { font-size: clamp(1rem, 4vw, 1.3rem); }
+  .media-world .media-node { cursor: zoom-in; }
+  .media-lightbox { width: calc(100vw - 1rem); max-height: 92svh; overflow-y: auto; border-radius: 16px; }
+  .media-lightbox[open] { display: block; }
+  .media-lightbox-visual { min-height: 0; height: min(52svh, 450px); }
+  .media-lightbox-visual img { max-height: min(52svh, 450px); }
+  .media-lightbox-visual blockquote { padding: 2rem; }
+  .media-lightbox-visual blockquote p { font-size: clamp(1.55rem, 6vw, 2.5rem); }
+  .media-lightbox-details { padding: 1.5rem; }
+  .media-lightbox-eyebrow { margin-top: 0; }
+  .media-lightbox-controls { padding-top: 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-world .media-photo img,
+  .media-world .media-photo::before { transition: none; }
+}
+
+@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+  .media-world .media-node { pointer-events: auto; }
+}

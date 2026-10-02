@@ -1,0 +1,35 @@
+.media-world .media-recognition {
+  background: #fff;
+}
+
+.media-world .media-recognition::after {
+  display: none;
+}
+
+.media-world .media-recognition img {
+  width: 100%;
+  max-height: min(57vh, 430px);
+  aspect-ratio: 3 / 4;
+  object-fit: contain;
+  background: #efede9;
+  border-radius: 11px 11px 0 0;
+}
+
+.media-world .media-recognition figcaption {
+  position: static;
+  padding: .7rem .8rem .55rem;
+  color: #213251;
+  background: #fff;
+  font-size: .65rem;
+  letter-spacing: .03em;
+  text-transform: none;
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+  .media-world .media-recognition img {
+    max-height: min(70vh, 520px);
+    aspect-ratio: 3 / 4;
+  }
+}

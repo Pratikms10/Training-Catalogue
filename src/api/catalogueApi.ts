@@ -8,6 +8,7 @@ import {
 } from '../types/filters';
 
 export const CATALOGUE_PAGE_SIZE = 9;
+const TRANSIENT_RETRY_DELAYS_MS = [250, 750];
 
 interface Pagination {
   page: number;
@@ -53,13 +54,38 @@ interface CertificationCourseQuery {
   signal?: AbortSignal;
 }
 
+function waitForRetry(delayMs: number, signal?: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    const timeoutId = window.setTimeout(resolve, delayMs);
+    signal?.addEventListener('abort', () => {
+      window.clearTimeout(timeoutId);
+      reject(new DOMException('The request was aborted.', 'AbortError'));
+    }, { once: true });
+  });
+}
+
 async function requestJson<T>(url: string, signal?: AbortSignal): Promise<T> {
-  const response = await fetch(url, { signal });
-  if (!response.ok) {
+  for (let attempt = 0; attempt <= TRANSIENT_RETRY_DELAYS_MS.length; attempt += 1) {
+    let response: Response;
+    try {
+      response = await fetch(url, { signal });
+    } catch (error) {
+      if (signal?.aborted || (error instanceof DOMException && error.name === 'AbortError')) throw error;
+      if (attempt === TRANSIENT_RETRY_DELAYS_MS.length) throw error;
+      await waitForRetry(TRANSIENT_RETRY_DELAYS_MS[attempt], signal);
+      continue;
+    }
+
+    if (response.ok) return response.json() as Promise<T>;
+
     const body = await response.json().catch(() => null) as { error?: string } | null;
-    throw new Error(body?.error || `Catalogue request failed (${response.status}).`);
+    const error = new Error(body?.error || `Catalogue request failed (${response.status}).`);
+    const isTransient = response.status >= 500 || response.status === 429;
+    if (!isTransient || attempt === TRANSIENT_RETRY_DELAYS_MS.length) throw error;
+    await waitForRetry(TRANSIENT_RETRY_DELAYS_MS[attempt], signal);
   }
-  return response.json() as Promise<T>;
+
+  throw new Error('Catalogue request could not be completed.');
 }
 
 function durationToMinutes(duration: string): number | null {

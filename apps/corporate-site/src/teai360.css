@@ -1,0 +1,301 @@
+.teai360 {
+  position: relative;
+  isolation: isolate;
+  background: #f4f7fc;
+  color: #17243e;
+}
+
+.teai360-scroll { position: relative; height: 420vh; }
+.teai360-viewport {
+  --teai-accent: #52d9f4;
+  --teai-camera-y: 14px;
+  --teai-camera-scale: 1;
+  position: sticky;
+  top: 92px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100svh - 92px);
+  min-height: 0;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(90deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.75) 31%, rgba(255,255,255,.09) 72%), url('/website/assets/teai360-light-background.png') center center / cover no-repeat;
+}
+.teai360-viewport::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.14), transparent 43%, rgba(247,250,255,.32));
+}
+.teai360-atmosphere {
+  position: absolute;
+  width: min(55vw, 760px);
+  aspect-ratio: 1;
+  right: 2%;
+  top: 4%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, color-mix(in srgb, var(--teai-accent) 20%, transparent), transparent 68%);
+  filter: blur(44px);
+  transition: background 800ms ease;
+}
+.teai360-layout {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, .86fr) minmax(0, 1.14fr);
+  gap: clamp(.8rem, 2vw, 2.5rem);
+  align-items: stretch;
+  width: min(100%, 1680px);
+  min-height: 0;
+  margin: auto;
+  padding: clamp(1.4rem, 3vw, 3rem) clamp(1.6rem, 4.4vw, 5rem) .5rem;
+}
+.teai360-editorial {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-width: 0;
+  padding-bottom: .55rem;
+}
+.teai360-heading { max-width: 620px; }
+.teai360-eyebrow, .teai360-mobile-heading > span {
+  display: block;
+  color: #63728f;
+  font-size: .67rem;
+  font-weight: 850;
+  letter-spacing: .2em;
+}
+.teai360-heading h2 {
+  margin: .42rem 0 .15rem;
+  color: #14213d;
+  font-family: News706, Georgia, serif;
+  font-size: clamp(2.2rem, 3.8vw, 4.2rem);
+  line-height: 1;
+  letter-spacing: -.048em;
+}
+.teai360-heading h2 em {
+  color: #536bb8;
+  font-weight: 400;
+  font-style: normal;
+  background: linear-gradient(105deg, #356da5, #6660b9 67%, #9f62c7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.teai360-heading > p { margin: .55rem 0 0; color: #596780; font-size: clamp(.88rem, 1.15vw, 1.1rem); }
+.teai360-stage-copy {
+  max-width: 590px;
+  margin-top: clamp(2rem, 6vh, 4rem);
+  padding: 1.1rem 0 1.3rem;
+  animation: teai-copy-in 650ms cubic-bezier(.2,.75,.2,1) both;
+}
+@keyframes teai-copy-in {
+  from { opacity: 0; transform: translateY(16px); filter: blur(5px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+.teai360-stage-kicker { color: #9861c5; font-size: .76rem; font-weight: 900; letter-spacing: .18em; text-transform: uppercase; }
+.teai360-stage-copy h3, .teai360-mobile-step h3 {
+  max-width: 12ch;
+  margin: .65rem 0 0;
+  color: #14213d;
+  font-family: News706, Georgia, serif;
+  font-size: clamp(2.75rem, 4.5vw, 5.1rem);
+  font-weight: 700;
+  line-height: 1.03;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+}
+.teai360-stage-headline { margin: .85rem 0 0; color: #293c5d; font-size: clamp(1.1rem, 1.6vw, 1.45rem); font-weight: 800; line-height: 1.35; }
+.teai360-stage-description { max-width: 37ch; margin: .45rem 0 0; color: #52617c; font-size: clamp(1.03rem, 1.45vw, 1.27rem); line-height: 1.55; }
+.teai360-capabilities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem .8rem; max-width: 450px; margin: 1.1rem 0 0; padding: .8rem 0 0; border-top: 1px solid rgba(70,104,159,.18); list-style: none; }
+.teai360-capabilities li { color: #596a88; font-size: .67rem; font-weight: 850; letter-spacing: .05em; text-transform: uppercase; }
+.teai360-capabilities li::before { content: ""; display: inline-block; width: 5px; height: 5px; margin: 0 .5rem .1rem 0; border-radius: 50%; background: var(--teai-accent); }
+.teai360-scroll-cue { display: flex; align-items: center; gap: .7rem; margin-top: auto; color: #62718d; font-size: .65rem; letter-spacing: .2em; font-weight: 850; }
+.teai360-scroll-cue span { display: block; width: 31px; height: 2px; background: #ab65d9; box-shadow: 0 0 12px rgba(171,101,217,.32); }
+
+.teai360-scene { display: grid; place-items: center; min-width: 0; min-height: 0; perspective: 1100px; }
+.teai360-scene-inner {
+  position: relative;
+  width: min(100%, 800px);
+  height: min(100%, 550px);
+  min-height: 320px;
+  transform: translate3d(0, var(--teai-camera-y), 0) scale(var(--teai-camera-scale));
+  transform-origin: center bottom;
+  will-change: transform;
+}
+.teai360-scene-inner::before {
+  content: "";
+  position: absolute;
+  inset: 22% -4% -2%;
+  z-index: -1;
+  background: radial-gradient(ellipse at 52% 60%, rgba(255,255,255,.72), rgba(201,219,255,.24) 45%, transparent 72%);
+  filter: blur(20px);
+}
+.teai360-staircase {
+  position: absolute;
+  inset: 2% 0 4%;
+  transform: perspective(1050px) rotateY(-5deg) rotateX(2deg);
+  transform-origin: center bottom;
+  filter: drop-shadow(0 26px 24px rgba(59,93,148,.16));
+}
+.teai360-foundation {
+  position: absolute;
+  left: 1%;
+  right: 1%;
+  bottom: 3%;
+  height: 11px;
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 999px;
+  background: linear-gradient(90deg, #a2eafa, #b7f1d5 25%, #d0b9ff 52%, #f9c6e1 76%, #fae2ab);
+  box-shadow: 0 0 17px rgba(141,178,245,.6), 0 10px 23px rgba(65,98,154,.16);
+}
+.teai360-foundation span {
+  position: absolute;
+  top: -2px;
+  width: 20%;
+  height: 13px;
+  border-radius: 999px;
+  transition: left 650ms cubic-bezier(.2,.8,.2,1), background-color 650ms ease, box-shadow 650ms ease;
+}
+.teai360-step {
+  --step-accent: #52d9f4;
+  position: absolute;
+  bottom: calc(3% + 11px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 19%;
+  padding: .85rem .58rem .65rem;
+  border: 1px solid color-mix(in srgb, var(--step-accent) 65%, white);
+  border-top: 3px solid color-mix(in srgb, var(--step-accent) 70%, white);
+  border-radius: 12px 12px 3px 3px;
+  background: linear-gradient(154deg, rgba(255,255,255,.92), color-mix(in srgb, var(--step-accent) 13%, rgba(255,255,255,.64)));
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,.95), 0 16px 22px rgba(67,93,141,.11), 0 0 22px color-mix(in srgb, var(--step-accent) 22%, transparent);
+  backdrop-filter: blur(12px);
+  opacity: .78;
+  transition: opacity 650ms ease, border-color 650ms ease, box-shadow 650ms ease, background 650ms ease, transform 650ms cubic-bezier(.2,.8,.2,1);
+}
+.teai360-step::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  right: -5px;
+  top: -13px;
+  height: 11px;
+  border: 1px solid rgba(255,255,255,.88);
+  border-radius: 8px 8px 2px 2px;
+  background: linear-gradient(145deg, rgba(255,255,255,.96), color-mix(in srgb, var(--step-accent) 36%, white));
+  transform: skewX(-19deg);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--step-accent) 50%, transparent);
+}
+.teai360-step::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: -1px;
+  right: -8px;
+  width: 8px;
+  background: color-mix(in srgb, var(--step-accent) 29%, white);
+  clip-path: polygon(0 0, 100% 9px, 100% 100%, 0 100%);
+  opacity: .75;
+}
+.teai360-step-icon {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin: -1.65rem 0 .4rem;
+  border: 1px solid color-mix(in srgb, var(--step-accent) 64%, white);
+  border-radius: 50%;
+  background: rgba(255,255,255,.91);
+  color: color-mix(in srgb, var(--step-accent) 74%, #245081);
+  box-shadow: 0 0 15px color-mix(in srgb, var(--step-accent) 48%, transparent), inset 0 0 10px rgba(255,255,255,.8);
+}
+.teai360-step-index { color: color-mix(in srgb, var(--step-accent) 74%, #204770); font-size: .78rem; letter-spacing: .1em; font-weight: 900; }
+.teai360-step strong { margin-top: .22rem; color: #1b2b48; font-size: clamp(.72rem, 1.05vw, 1.05rem); font-weight: 850; letter-spacing: -.03em; line-height: 1.12; word-break: normal; overflow-wrap: normal; }
+.teai360-step small { margin-top: .28rem; color: #61718c; font-size: clamp(.52rem, .75vw, .69rem); line-height: 1.25; }
+.teai360-step[data-state="complete"] { opacity: .94; }
+.teai360-step[data-state="active"] {
+  z-index: 3;
+  opacity: 1;
+  transform: translateY(-8px);
+  border-color: var(--step-accent);
+  background: linear-gradient(155deg, rgba(255,255,255,.98), color-mix(in srgb, var(--step-accent) 21%, rgba(255,255,255,.83)));
+  box-shadow: inset 0 0 38px rgba(255,255,255,.72), 0 18px 32px rgba(58,92,156,.2), 0 0 28px color-mix(in srgb, var(--step-accent) 65%, transparent);
+}
+.teai360-step[data-state="active"] .teai360-step-icon { transform: scale(1.09); box-shadow: 0 0 24px var(--step-accent), inset 0 0 10px rgba(255,255,255,.8); }
+.teai360-step-1 { left: 2%; height: 26%; }
+.teai360-step-2 { left: 21.2%; height: 38%; }
+.teai360-step-3 { left: 40.4%; height: 50%; }
+.teai360-step-4 { left: 59.6%; height: 62%; }
+.teai360-step-5 { left: 78.8%; height: 74%; }
+.teai360-track {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: .55rem;
+  width: min(100%, 1680px);
+  margin: 0 auto;
+  padding: .45rem clamp(1.6rem, 4.4vw, 5rem) clamp(.8rem, 1.7vw, 1.5rem);
+  list-style: none;
+}
+.teai360-track li { min-width: 0; color: #74839b; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: .45rem; font-size: .62rem; letter-spacing: .07em; text-transform: uppercase; transition: color 550ms ease; }
+.teai360-track-line { flex-basis: 100%; height: 2px; background: rgba(90,125,180,.23); transition: background 550ms ease, box-shadow 550ms ease; }
+.teai360-track li.is-complete .teai360-track-line { background: color-mix(in srgb, var(--step-accent) 60%, #b8c8e4); }
+.teai360-track li.is-active .teai360-track-line { background: var(--step-accent); box-shadow: 0 0 11px var(--step-accent); }
+.teai360-mobile { display: none; }
+
+@media (max-width: 1050px) and (min-width: 761px) {
+  .teai360-viewport { top: 76px; height: calc(100svh - 76px); }
+  .teai360-layout { grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); padding-inline: 2rem; }
+  .teai360-track { padding-inline: 2rem; }
+  .teai360-step { padding-inline: .4rem; }
+  .teai360-step strong { font-size: clamp(.68rem, 1.4vw, .94rem); }
+  .teai360-step small { font-size: .53rem; }
+}
+@media (max-height: 680px) and (min-width: 761px) {
+  .teai360-layout { padding-top: 1.1rem; }
+  .teai360-heading h2 { font-size: clamp(1.85rem, 3.2vw, 3rem); }
+  .teai360-stage-copy { margin-top: 1.75rem; padding-block: .5rem; }
+  .teai360-stage-copy h3 { font-size: clamp(2rem, 3.2vw, 3.15rem); }
+  .teai360-stage-description { font-size: .9rem; margin-top: .5rem; }
+  .teai360-capabilities { margin-top: .65rem; padding-top: .5rem; }
+  .teai360-scene-inner { height: min(100%, 470px); }
+  .teai360-step { padding-top: .55rem; }
+  .teai360-step-icon { width: 36px; height: 36px; margin-top: -1.35rem; }
+  .teai360-step-icon svg { width: 20px; height: 20px; }
+}
+@media (max-width: 760px), (prefers-reduced-motion: reduce) {
+  .teai360-scroll { display: none; }
+  .teai360-mobile {
+    display: block;
+    padding: 4rem clamp(1.25rem, 6vw, 2rem) 4.5rem;
+    background: linear-gradient(180deg, rgba(255,255,255,.91), rgba(246,250,255,.84)), url('/website/assets/teai360-light-background.png') center top / cover no-repeat;
+  }
+  .teai360-mobile-heading { max-width: 560px; margin-bottom: 2.7rem; }
+  .teai360-mobile-heading h2 { max-width: 12ch; margin: .65rem 0 .7rem; color: #14213d; font-family: News706, Georgia, serif; font-size: clamp(2.5rem, 11vw, 4.5rem); line-height: 1.04; letter-spacing: -.045em; }
+  .teai360-mobile-heading p { color: #5b6981; font-size: .95rem; }
+  .teai360-mobile-steps { position: relative; display: grid; gap: 1.5rem; padding-left: 1.1rem; }
+  .teai360-mobile-steps::before { content: ""; position: absolute; left: 0; top: 1.5rem; bottom: 1.5rem; width: 2px; background: linear-gradient(#52d9f4,#92e5a1,#a797ff,#f396cd,#f7c879); opacity: .75; }
+  .teai360-mobile-step { position: relative; padding: 1.55rem 1.4rem 1.65rem; border: 1px solid color-mix(in srgb, var(--step-accent) 48%, white); border-top: 3px solid var(--step-accent); border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,.96), color-mix(in srgb, var(--step-accent) 11%, white)); box-shadow: 0 16px 35px rgba(69,97,153,.1); }
+  .teai360-mobile-step::before { content: ""; position: absolute; top: 1.6rem; left: -1.49rem; width: 11px; height: 11px; border-radius: 50%; background: var(--step-accent); box-shadow: 0 0 12px var(--step-accent); }
+  .teai360-mobile-step .teai360-stage-kicker { color: color-mix(in srgb, var(--step-accent) 75%, #35446b); }
+  .teai360-mobile-step .teai360-stage-headline { font-size: 1.15rem; }
+  .teai360-mobile-step h3 { font-size: clamp(2rem, 8vw, 3.2rem); }
+  .teai360-mobile-step .teai360-stage-description { font-size: .9rem; }
+  .teai360-mobile-step .teai360-capabilities li::before { background: var(--step-accent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .teai360-mobile { padding: 4rem clamp(1.25rem, 6vw, 5.5rem); }
+  .teai360-mobile-heading { max-width: 700px; }
+  .teai360-mobile-steps { grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); max-width: 1400px; padding-left: 0; }
+  .teai360-mobile-steps::before, .teai360-mobile-step::before { display: none; }
+  .teai360-stage-copy { animation: none; }
+}

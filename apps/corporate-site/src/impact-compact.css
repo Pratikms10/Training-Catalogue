@@ -1,0 +1,40 @@
+/* Keep the four impact measures, but give the section a shorter footprint. */
+.impact { height: 250vh; }
+.impact-intro h2 { font-size: clamp(2.65rem, 3.8vw, 3.9rem); line-height: .98; }
+.impact-intro > p { margin-top: .9rem; }
+.impact-mode { margin-top: 1rem; }
+.impact-progress { margin-top: 1.35rem; }
+.impact-grid { height: clamp(330px, 54vh, 460px); }
+.impact-card-index { margin-bottom: clamp(1.2rem, 3vh, 2rem); }
+.impact-value strong { font-size: clamp(4.6rem, 7vw, 7rem); }
+
+@media (max-width: 860px) {
+  .impact { height: auto; padding: 3.25rem 1.25rem; }
+  .impact-shell { width: min(100%, 860px); }
+  .impact-intro { margin-bottom: 1.5rem; }
+  .impact-intro h2 { font-size: clamp(2.5rem, 6vw, 3.5rem); line-height: 1.02; }
+  .impact-intro > p { margin-top: .75rem; font-size: .94rem; line-height: 1.45; }
+  .impact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; }
+  .impact .impact-card { min-height: 255px; padding: 1.5rem; }
+  .impact-card-copy { max-width: 91%; }
+  .impact-card-index { margin-bottom: 1rem; font-size: .64rem; }
+  .impact-value strong { font-size: clamp(3.7rem, 9vw, 5.5rem); }
+  .impact-value span { font-size: clamp(2.3rem, 5vw, 3.2rem); }
+  .impact-card p { margin-top: .7rem; font-size: 1.05rem; }
+  .impact-card small { margin-top: .45rem; font-size: .74rem; line-height: 1.35; }
+}
+
+@media (max-width: 680px) {
+  .impact { padding: 3rem 1rem; }
+  .impact-intro h2 { font-size: clamp(2.35rem, 8vw, 3.2rem); }
+  .impact-grid { grid-template-columns: 1fr; gap: .75rem; }
+  .impact .impact-card { min-height: 205px; padding: 1.4rem; }
+  .impact-card-index { margin-bottom: .7rem; }
+  .impact-value strong { font-size: clamp(3.6rem, 14vw, 5rem); }
+  .impact-card p { margin-top: .5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .impact { height: auto; }
+  .impact-grid { height: auto; }
+}

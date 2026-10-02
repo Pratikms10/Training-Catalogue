@@ -1,0 +1,53 @@
+.why.why-unified {
+  display: block;
+  background: #fcfaf4;
+  padding-top: clamp(3rem, 5vw, 4.5rem);
+  padding-bottom: clamp(4.5rem, 8vw, 7rem);
+}
+
+.why-unified-intro,
+.why-unified-showcase,
+.why-unified-values { max-width: 1280px; margin-left: auto; margin-right: auto; }
+
+.why-unified-intro { display: grid; grid-template-columns: 1.15fr .85fr; align-items: end; gap: clamp(1.5rem, 5vw, 5rem); margin-bottom: 2rem; }
+.why-unified-intro h2 { margin: .6rem 0 0; color: #141a2f; font-family: News706, Georgia, serif; font-size: clamp(2.7rem, 5.1vw, 5rem); line-height: 1.02; letter-spacing: -.045em; }
+.why-unified-intro h2 em { color: #236ba6; font-style: normal; }
+.why-unified-intro p { max-width: 440px; margin: 0 0 .25rem; color: #59677a; font-size: clamp(1rem, 1.3vw, 1.16rem); line-height: 1.7; }
+
+.why-unified-showcase { display: grid; grid-template-columns: 1fr 1fr .92fr; gap: 1rem; }
+.why-proof-card { position: relative; min-width: 0; min-height: 356px; margin: 0; overflow: hidden; border-radius: 24px; }
+.why-proof-card { display: flex; flex-direction: column; padding: clamp(1.25rem, 2.2vw, 1.9rem); border: 1px solid #dce5ee; background: #fff; box-shadow: 0 16px 38px rgba(27, 46, 75, .065); }
+.why-proof-card:before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #1a6fc6; }
+.why-proof-dpiit:before { background: linear-gradient(90deg, #f4772f 0 62%, #217f5e 62%); }
+.why-proof-skilling:before { background: linear-gradient(90deg, #f25022 0 25%, #7fba00 25% 50%, #00a4ef 50% 75%, #ffb900 75%); }
+.why-proof-label { color: #54708a; font-size: .67rem; font-weight: 850; letter-spacing: .16em; }
+.why-proof-logo { display: flex; align-items: center; justify-content: center; flex: 1; min-height: 230px; padding: 1.1rem .2rem; }
+.why-proof-logo img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
+.why-proof-microsoft .why-proof-logo img { width: min(190px, 78%); aspect-ratio: 1; border-radius: 16px; }
+.why-proof-dpiit .why-proof-logo img { width: min(350px, 100%); height: auto; }
+.why-proof-skilling .why-proof-logo img { width: min(100%, 340px); height: auto; border-radius: 10px; }
+.why-proof-card figcaption { padding-top: 1rem; border-top: 1px solid #edf0f3; color: #17213a; font-size: 1rem; font-weight: 800; }
+
+.why-unified-values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin-top: 1.25rem; }
+.why-unified-values p { display: grid; gap: .28rem; margin: 0; padding: 1rem .2rem 0; border-top: 1px solid #dbe3ec; }
+.why-unified-values strong { color: #192748; font-size: .94rem; }
+.why-unified-values span { color: #697688; font-size: .85rem; line-height: 1.45; }
+
+@media (max-width: 1050px) {
+  .why-unified-showcase { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .why-proof-skilling { grid-column: 1 / -1; min-height: 280px; }
+}
+
+@media (max-width: 760px) {
+  .why-unified-intro { grid-template-columns: 1fr; gap: 1rem; }
+  .why-unified-intro p { max-width: 620px; }
+}
+
+@media (max-width: 560px) {
+  .why-unified-showcase,
+  .why-unified-values { grid-template-columns: 1fr; }
+  .why-proof-card { min-height: 300px; }
+  .why-proof-logo { min-height: 190px; }
+  .why-proof-skilling { grid-column: 1; }
+  .why-unified-values { gap: .8rem; }
+}

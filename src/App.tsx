@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { CategoryId, BaseProgramme } from './types';
+import { CategoryId, BaseProgramme, PeopleProcessProgramme } from './types';
 import { CATEGORIES_ARCHITECTURE } from './data/architectureData';
 import { HeaderStructure } from './components/HeaderStructure';
 import { IntroductionStructure } from './components/IntroductionStructure';
@@ -21,6 +21,9 @@ import { InsightArticlePage } from './components/insights/InsightArticlePage';
 export default function App() {
   const location = useLocation();
   const navigate = useNavigate();
+  useEffect(() => {
+    if (location.pathname === '/') window.location.replace('/website/');
+  }, [location.pathname]);
   const isImportCentre = location.pathname === '/admin/import';
   const isInsightsPage = location.pathname === '/insights';
   const insightArticleSlug = location.pathname.startsWith('/insights/')
@@ -82,21 +85,22 @@ export default function App() {
           return () => controller.abort();
         }
 
-        let prog: BaseProgramme | undefined;
+        let prog: PeopleProcessProgramme | undefined;
         if (id.startsWith('PP')) prog = peopleProcessProgrammes.find(p => p.id === id);
 
         setIsProgrammeLoading(false);
         if (prog) {
           if (id.startsWith('PP')) {
-            const category: CategoryId = prog && 'subType' in prog && prog.subType === 'Process'
+            const category: PeopleProcessProgramme['category'] = prog.subType === 'Process'
               ? 'process-based'
               : 'people-behavioural';
             setActiveCategoryId(category);
-            setSelectedProgramme({
+            const selectedPeopleProcessProgramme: PeopleProcessProgramme = {
               ...prog,
               category,
               badge: category === 'process-based' ? 'Process Based' : 'People & Behavioural',
-            });
+            };
+            setSelectedProgramme(selectedPeopleProcessProgramme);
           } else {
             setSelectedProgramme(prog);
           }
@@ -124,13 +128,13 @@ export default function App() {
   };
 
   const handleBack = () => {
-    navigate('/');
+    navigate('/catalogue');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleQuickSearchClick = () => {
-    if (location.pathname !== '/') {
-      navigate('/');
+    if (location.pathname !== '/catalogue') {
+      navigate('/catalogue');
     }
     setTimeout(() => {
       const searchInput = document.getElementById('catalogue-search-input');
@@ -166,8 +170,8 @@ export default function App() {
 
   const handleFooterCategorySelect = (catId: CategoryId) => {
     setActiveCategoryId(catId);
-    if (location.pathname !== '/') {
-      navigate('/');
+    if (location.pathname !== '/catalogue') {
+      navigate('/catalogue');
     }
     setTimeout(() => {
       const catalogueSection = document.getElementById('programme-catalogue-section');
@@ -182,13 +186,21 @@ export default function App() {
     }, 100);
   };
 
+  if (location.pathname === '/') {
+    return <div role="status" className="min-h-screen grid place-items-center">Opening TechnoEdge Home…</div>;
+  }
+
   return (
     <div id="corporate-catalogue-app" className="min-h-screen bg-white text-[#000000] flex flex-col font-sans antialiased selection:bg-[#0000FF] selection:text-white">
       <HeaderStructure 
-        onHomeClick={handleBack}
+        onHomeClick={() => window.location.assign('/website/')}
         onQuickSearchClick={handleQuickSearchClick}
         onEnterpriseInquiryClick={() => setIsEnterpriseInquiryOpen(true)}
         onNavigate={(path) => {
+          if (path === '/e-learning/' || path === '/website/') {
+            window.location.assign(path);
+            return;
+          }
           navigate(path);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}

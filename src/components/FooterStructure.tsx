@@ -78,11 +78,11 @@ export const FooterStructure: React.FC<FooterStructureProps> = ({
               Quick Links
             </h3>
             <ul className="space-y-3 text-sm text-slate-600">
-              <li><a href="#" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">Corporate Training</a></li>
-              <li><a href="#" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">E-learning Solution</a></li>
-              <li><a href="#" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">Business Consultation</a></li>
-              <li><a href="#" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 400, behavior: 'smooth' }); }}>Explore Programmes</a></li>
+              <li><a href="/website/#about" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">About Us</a></li>
+              <li><a href="/website/#services" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">Corporate Training</a></li>
+              <li><a href="/e-learning/" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">E-learning Solution</a></li>
+              <li><a href="/website/#contact" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">Business Consultation</a></li>
+              <li><a href="/catalogue" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">Explore Programmes</a></li>
               <li><a href="#" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors" onClick={(e) => { e.preventDefault(); onOpenInquiry?.(); }}>Contact Us</a></li>
             </ul>
           </div>
