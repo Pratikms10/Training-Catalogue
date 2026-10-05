@@ -62,7 +62,7 @@ export const InsightComments: React.FC<InsightCommentsProps> = ({ articleId }) =
     setName('');
     setMessage('');
     setError('');
-    setConfirmation('Your comment has been added.');
+    setConfirmation('Saved in this browser only. Your comment is not published to other visitors.');
   };
 
   return (

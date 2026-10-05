@@ -1,6 +1,7 @@
 import { ArrowUpRight, Linkedin, MessageCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 import { GradualSpacing } from './GradualSpacing';
+import { CONTACT_EMAIL, CONTACT_PHONES, whatsappUrl } from '../../../../../src/data/siteContact';
 
 export function Footer() {
   return (
@@ -33,10 +34,10 @@ export function Footer() {
             </li>
             <li>
               <a
-                href="mailto:training@technoedgels.com"
+                href={`mailto:${CONTACT_EMAIL}`}
                 className="hover:text-[#0b0b0d] transition-colors"
               >
-                training@technoedgels.com
+                {CONTACT_EMAIL}
               </a>
             </li>
             <li>
@@ -61,7 +62,7 @@ export function Footer() {
                 <Linkedin className="w-4 h-4" />
               </a>
               <a
-                href="https://wa.me/"
+                href={whatsappUrl(CONTACT_PHONES[0])}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="WhatsApp"

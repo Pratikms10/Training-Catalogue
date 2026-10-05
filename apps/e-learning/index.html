@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="is-booting">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,9 +7,6 @@
     <style>
       html, body, #root { min-height: 100%; background: #fffdf8; }
       body { margin: 0; }
-      html.is-booting { overflow: hidden; }
-      html.is-booting #root { visibility: hidden; }
-      #boot-shield { position: fixed; inset: 0; z-index: 2147483647; background: #fffdf8; }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,7 +15,6 @@
     <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,600,700,800&display=swap" />
   </head>
   <body>
-    <div id="boot-shield" aria-hidden="true"></div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

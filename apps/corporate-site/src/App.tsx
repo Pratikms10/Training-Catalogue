@@ -8,6 +8,8 @@ import ServicesShowcase from './ServicesShowcase';
 import HomeInsightsSection from './HomeInsightsSection';
 import ClientLogosSection from './ClientLogosSection';
 import ContactSection from './ContactSection';
+import { FooterStructure } from '../../../src/components/FooterStructure';
+import { CONTACT_PHONES, whatsappUrl } from '../../../src/data/siteContact';
 
 function CorporateHome() {
   useEffect(() => mountCorporateInteractions(), []);
@@ -222,16 +224,17 @@ function CorporateHome() {
     <ContactSection />
   </main>
 
-  <footer className="site-footer" id="careers">
-    <div><img src="/website/assets/technoedge-logo.png" alt="TechnoEdge" /><p>Your workforce capability development partner for training, e-learning and responsible AI transformation.</p></div>
-    <div><strong>Services</strong><a href="#services">Corporate Training</a><a href="/e-learning/">E-Learning</a><a href="#services">AI &amp; Automation</a><a href="#services">Content &amp; Language</a></div>
-    <div><strong>Company</strong><a href="#about">About Us</a><a href="/insights">Insights</a><a href="/careers">Careers</a><a href="#contact">Contact</a></div>
-    <div><strong>Connect</strong><a href="https://www.linkedin.com/company/technoedge-learning-services-india-pvt-ltd/home/" target="_blank" rel="noopener">LinkedIn</a><a href="tel:+917400068614">+91 74000 68614</a><a href="#contact">Talk to our team</a></div>
-    <p className="copyright">© 2026 TechnoEdge Learning Services. All rights reserved.</p>
-  </footer>
+  <FooterStructure />
 
   <div className="ai-contact">
-    <div className="contact-choices" id="contact-choices"><a href="https://wa.me/917400068614" target="_blank" rel="noopener"><b>Chat with us</b><span>Start a WhatsApp conversation</span></a><a href="tel:+917400068614"><b>Call our team</b><span>+91 74000 68614</span></a></div>
+    <div className="contact-choices" id="contact-choices">
+      {CONTACT_PHONES.map((phone) => (
+        <a href={whatsappUrl(phone)} target="_blank" rel="noopener noreferrer" key={`whatsapp-${phone.number}`}><b>Chat on WhatsApp</b><span>{phone.display}</span></a>
+      ))}
+      {CONTACT_PHONES.map((phone) => (
+        <a href={`tel:${phone.e164}`} key={`call-${phone.number}`}><b>Call our team</b><span>{phone.display}</span></a>
+      ))}
+    </div>
     <button className="ai-bot-button" aria-expanded="false" aria-controls="contact-choices"><img src="/website/assets/contact-host.png" alt="A welcoming TechnoEdge host—open contact options" /><span>Talk to us</span></button>
   </div>
   <a className="back-top" href="#top" aria-label="Back to top"><ArrowUp size={20} aria-hidden="true" /></a>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Phone, MessageCircle, X } from 'lucide-react';
+import { CONTACT_PHONES, whatsappUrl } from '../data/siteContact';
 
 export const FloatingActions: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -65,11 +66,11 @@ export const FloatingActions: React.FC = () => {
               {/* WhatsApp Chat Button - Vibrant Green Pop */}
               <a
                 id="support-widget-chat-btn"
-                href="https://wa.me/919845012345?text=Hi%2C%20I%20would%20like%20to%20inquire%20about%20TechnoEdge%20corporate%20training%20programmes."
+                href={whatsappUrl(CONTACT_PHONES[0], 'Hi, I would like to inquire about TechnoEdge corporate training programmes.')}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Chat with TechnoEdge on WhatsApp"
-                title="Chat on WhatsApp (+91 98450 12345)"
+                title={`Chat on WhatsApp (${CONTACT_PHONES[0].display})`}
                 className="flex items-center justify-center gap-2 py-2 px-2.5 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] text-white text-xs font-bold shadow-[0_4px_14px_rgba(37,211,102,0.45)] hover:shadow-[0_6px_20px_rgba(37,211,102,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white"
               >
                 <MessageCircle className="w-4 h-4 fill-white stroke-white shrink-0" aria-hidden="true" />
@@ -79,9 +80,9 @@ export const FloatingActions: React.FC = () => {
               {/* Call Button - Crisp White Pop */}
               <a
                 id="support-widget-call-btn"
-                href="tel:+918040001234"
+                href={`tel:${CONTACT_PHONES[0].e164}`}
                 aria-label="Call TechnoEdge Corporate Training Desk"
-                title="Call Enterprise Desk (+91 80 4000 1234)"
+                title={`Call Enterprise Desk (${CONTACT_PHONES[0].display})`}
                 className="flex items-center justify-center gap-2 py-2 px-2.5 rounded-xl bg-white hover:bg-blue-50 text-[#0038CC] text-xs font-bold shadow-[0_4px_14px_rgba(0,0,0,0.18)] hover:shadow-[0_6px_18px_rgba(255,255,255,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white"
               >
                 <Phone className="w-4 h-4 fill-[#0038CC] stroke-[#0038CC] shrink-0" aria-hidden="true" />

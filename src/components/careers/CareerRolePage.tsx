@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { careerJobs } from '../../data/careersData';
+import { CareerEmailDialog } from './CareerEmailDialog';
 
 interface CareerRolePageProps {
   slug: string;
@@ -9,6 +10,7 @@ interface CareerRolePageProps {
 
 export const CareerRolePage: React.FC<CareerRolePageProps> = ({ slug, onBack }) => {
   const job = careerJobs.find((item) => item.slug === slug);
+  const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
 
   useEffect(() => {
     document.title = job
@@ -50,15 +52,17 @@ export const CareerRolePage: React.FC<CareerRolePageProps> = ({ slug, onBack }) 
               {[job.department, job.type, job.location].filter(Boolean).join(' · ')}
             </p>
           </div>
-          <a
-            href={`mailto:info@technoedgels.com?subject=${encodeURIComponent(`Application for ${job.title}`)}`}
+          <button
+            type="button"
+            onClick={() => setIsEmailDialogOpen(true)}
             className="careers-primary-button"
           >
             Send your profile
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-          </a>
+          </button>
         </div>
       </div>
+      {isEmailDialogOpen && <CareerEmailDialog roleTitle={job.title} onClose={() => setIsEmailDialogOpen(false)} />}
     </section>
   );
 };

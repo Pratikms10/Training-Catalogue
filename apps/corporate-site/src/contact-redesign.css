@@ -110,8 +110,12 @@
 .contact-submit > span { display: inline-flex; align-items: center; gap: .55rem; }
 .contact-submit > svg { flex: none; }
 .contact-submit:hover { background: #2451a2; transform: translateY(-2px); box-shadow: 0 12px 25px rgba(24, 60, 136, .2); }
+.contact-submit-direct { grid-column: 1 / -1; background: #172967; }
+.contact-submit-whatsapp { border-color: #a9d4bf; background: #f0faf4; color: #176343; }
+.contact-submit-whatsapp:hover { background: #e2f5e9; box-shadow: 0 12px 25px rgba(23, 99, 67, .1); }
 .contact-submit-email { border-color: #a7bdd7; background: #f3f8ff; color: #173268; }
 .contact-submit-email:hover { background: #e3effe; box-shadow: 0 12px 25px rgba(24, 60, 136, .1); }
+.contact-submit:disabled { cursor: wait; opacity: .65; transform: none; box-shadow: none; }
 .contact-submit:focus-visible { outline: 3px solid #78b4f0; outline-offset: 3px; }
 .contact-draft-status { margin: .85rem 0 0; padding: .75rem .9rem; border: 1px solid #b7dfcd; border-radius: 10px; background: #eefaf4; color: #225946; font-size: .82rem; line-height: 1.4; }
 .contact-draft-status a { color: #12684d; font-weight: 850; text-decoration: underline; }

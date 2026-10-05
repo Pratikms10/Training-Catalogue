@@ -10,4 +10,4 @@ From the repository root:
 
 The page markup is in `src/App.tsx`. Scroll, menu, contact, and counter behaviors are in `src/interactions.ts`, with listeners removed on unmount. The original visual rules are in `src/legacy.css`; responsive overrides are in `src/overrides.css`. Tailwind CSS 4 is available through the Vite plugin. Motion animates the hero entrance, and Lucide supplies interface icons.
 
-The enquiry form preserves the approved prototype behavior: it displays a local confirmation but does not send data. Connect it to the destination project's preferred API or CRM before treating it as a live submission form. The media montage currently contains the supplied photos and testimonials; no video files were supplied for this section.
+The enquiry form submits to the shared `/api/enquiries` endpoint. Local development saves to PostgreSQL with a CRM outbox entry and mirrors to a private Excel workbook; Vercel uses PostgreSQL when migration 007 and `DATABASE_URL` are configured. CRM delivery is queued but not connected yet. The media montage currently contains the supplied photos and testimonials; no video files were supplied for this section.

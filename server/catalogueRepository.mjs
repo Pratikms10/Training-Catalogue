@@ -208,7 +208,7 @@ export async function listCourses(pool, filters) {
     : filters;
   const { whereSql, values } = buildFilters(effectiveFilters);
   const page = Math.max(1, filters.page || 1);
-  const pageSize = Math.min(100, Math.max(1, filters.pageSize || 24));
+  const pageSize = Math.min(9, Math.max(1, filters.pageSize || 9));
   const offset = (page - 1) * pageSize;
   const sortSql = sortExpressions[filters.sort] || (allowedLevels.has(filters.sort)
     ? 'c.title ASC, c.course_id ASC'

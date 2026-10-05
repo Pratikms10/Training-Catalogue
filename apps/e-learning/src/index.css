@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@source "../../../src/components/FooterStructure.tsx";
 @import "@fontsource-variable/geist";
 
 :root {
@@ -20,18 +21,6 @@ body { margin: 0; min-width: 320px; overflow-x: clip; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; }
 .site-shell { min-height: 100vh; overflow: clip; background: #f7f7f3; }
-.site-content { opacity: 0; }
-.site-content.is-ready { opacity: 1; transition: opacity .55s ease; }
-
-.loading-screen { position: fixed; inset: 0; z-index: 500; display: grid; place-content: center; justify-items: center; gap: 17px; color: #174f79; background: #f7f0e5; }
-.loading-screen::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 50% 42%,rgba(100,190,239,.17),transparent 31%); }
-.loading-word { position: relative; z-index: 1; display: flex; align-items: center; gap: clamp(2px,.5vw,8px); font-size: clamp(40px,7vw,94px); font-weight: 820; letter-spacing: -.055em; }
-.loading-word span { color: #bdcbd3; animation: loading-letter .24s ease forwards; animation-delay: calc(var(--letter) * 85ms); }
-.loading-word i { width: .13em; height: .13em; margin: .55em 0 0 .04em; border-radius: 50%; background: #b83254; animation: loading-dot .35s .72s both; }
-.loading-screen p { position: relative; z-index: 1; margin: 0; color: #7593a6; font-size: 9px; font-weight: 730; letter-spacing: .16em; text-transform: uppercase; animation: loading-caption .45s .45s both; }
-@keyframes loading-letter { to { color: #174f79; text-shadow: 0 8px 30px rgba(28,89,130,.12); } }
-@keyframes loading-dot { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-@keyframes loading-caption { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
 
 .reading-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 100; background: rgba(255,255,255,.15); }
 .reading-progress i { display: block; width: 100%; height: 100%; transform-origin: left center; background: linear-gradient(90deg,#244fc3,#7541a8,#17805f,#d2ad12,#b83254); }
@@ -372,15 +361,6 @@ button { font: inherit; }
   --accent-font: "Cabinet Grotesk", "Geist Variable", Inter, ui-sans-serif, system-ui, sans-serif;
   color: var(--ink);
 }
-/* loader: letters appear first, then colour fills each one in turn */
-.loading-screen { background: var(--cream); }
-.loading-screen::before { background:radial-gradient(circle at 46% 42%,rgba(34,111,167,.14),transparent 30%),radial-gradient(circle at 56% 54%,rgba(45,134,104,.1),transparent 25%),radial-gradient(circle at 61% 40%,rgba(117,86,168,.08),transparent 22%); }
-.loading-word span { position: relative; display: inline-block; color: transparent; opacity: 0; transform: translateY(.3em); animation: ld-in .38s calc(var(--letter) * 70ms) cubic-bezier(.22,1,.36,1) forwards; animation-duration: .38s !important; line-height: 1; text-shadow: none; }
-.loading-word span::after { content: attr(data-l); position: absolute; inset: 0; color: var(--c); clip-path: inset(100% 0 0 0); animation: ld-fill .55s calc(550ms + var(--letter) * 160ms) cubic-bezier(.65,0,.35,1) forwards; animation-duration: .55s !important; line-height: inherit; will-change: clip-path; }
-.loading-word i { background: var(--marker); animation-delay: 2.15s; }
-.loading-screen p { color: var(--ink-soft); }
-@keyframes ld-in { to { opacity: 1; transform: none; } }
-@keyframes ld-fill { to { clip-path: inset(0 0 0 0); } }
 
 .reading-progress i, .formats-progress i { background: linear-gradient(90deg, var(--blue), var(--green), var(--marker)); }
 .site-brand { color: var(--ink); }
@@ -650,7 +630,7 @@ html,body,.site-shell { color:var(--ink); background:var(--cream); }
 .header-controls { display: flex; align-items: center; gap: 10px; }
 .global-menu-toggle { display: none; width: 42px; height: 42px; align-items: center; justify-content: center; border: 1px solid rgba(34,111,167,.22); border-radius: 10px; background: #fff; color: var(--blue-deep); cursor: pointer; }
 
-@media (max-width: 1050px) {
+@media (max-width: 1279px) {
   .global-menu-toggle { display: inline-flex; }
   .site-header .global-nav { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; padding: 10px 20px 16px; background: #fffdf8; border-bottom: 1px solid rgba(34,111,167,.15); box-shadow: 0 18px 28px rgba(16,58,89,.12); }
   .site-header.menu-open .global-nav { display: flex; }
@@ -661,4 +641,64 @@ html,body,.site-shell { color:var(--ink); background:var(--cream); }
   .site-header .site-brand__name small { display: none; }
   .site-header .header-cta { padding: 9px 10px; font-size: 11px; }
   .global-menu-toggle { width: 38px; height: 38px; }
+}
+
+/* Use the same full wordmark as the corporate homepage. */
+.site-header .site-brand { flex: 0 0 auto; }
+.site-header .site-brand__logo {
+  display: block;
+  width: 190px;
+  height: 60px;
+  object-fit: cover;
+  object-position: center;
+}
+@media (max-width: 760px) {
+  .site-header .site-brand__logo { width: 145px; height: 48px; }
+}
+
+/* One fixed topbar geometry across the TechnoEdge sites: it never hides or shrinks on scroll. */
+:root { --site-topbar-height: 80px; }
+.site-header,
+.site-header.is-compact {
+  height: var(--site-topbar-height);
+  padding: 0 clamp(22px, 4.5vw, 72px);
+  transform: none;
+}
+.layered-hero { padding-top: var(--site-topbar-height); }
+.layered-hero__room { inset: var(--site-topbar-height) 0 0; height: calc(100% - var(--site-topbar-height)); }
+.layered-hero__depth-light { inset: var(--site-topbar-height) -3% -3%; }
+.layered-hero__wash { top: var(--site-topbar-height); }
+
+@media (max-width: 760px) {
+  :root { --site-topbar-height: 76px; }
+  .site-header,
+  .site-header.is-compact { padding: 0 16px; }
+}
+
+/* Balanced side columns keep the five links at the viewport centre. */
+.site-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  column-gap: 24px;
+}
+.site-header .site-brand { grid-column: 1; justify-self: start; }
+.site-header .global-nav {
+  grid-column: 2;
+  justify-self: center;
+  justify-content: center;
+  gap: 24px;
+  font: 600 14px Arial, sans-serif;
+}
+.site-header .global-nav a[aria-current="page"] { font-weight: 600; }
+.site-header .header-controls { grid-column: 3; justify-self: end; }
+
+@media (max-width: 1279px) {
+  .site-header { grid-template-columns: minmax(0, 1fr) auto; }
+  .site-header .header-controls { grid-column: 2; }
+}
+
+@media (max-width: 450px) {
+  .site-header { column-gap: 8px; }
+  .site-header .header-cta { padding: 8px; font-size: 10px; }
+  .global-menu-toggle { width: 42px; height: 42px; }
 }

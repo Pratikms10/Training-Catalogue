@@ -1,5 +1,6 @@
 import { ArrowUpRight, Sparkles, Mail, ShieldCheck, Clock, Award } from 'lucide-react';
 import { motion } from 'motion/react';
+import { CONTACT_EMAIL } from '../../../../src/data/siteContact';
 
 interface ContactSectionProps {
   onOpenScoper: () => void;
@@ -41,11 +42,11 @@ export function ContactSection({ onOpenScoper }: ContactSectionProps) {
             </a>
 
             <a
-              href="mailto:training@technoedgels.com"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="text-sm sm:text-base text-[#444347] hover:text-[#0b0b0d] font-bold underline underline-offset-4 transition-colors flex items-center gap-1.5"
             >
               <Mail className="w-4 h-4" />
-              <span>training@technoedgels.com</span>
+              <span>{CONTACT_EMAIL}</span>
             </a>
           </div>
 

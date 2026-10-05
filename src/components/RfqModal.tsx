@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { BaseProgramme } from '../types';
+import { submitEnquiry } from '../data/submitEnquiry';
 import { X, CheckCircle2, Building2, Mail, User, Phone, Users2, Calendar, FileText, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -7,10 +8,16 @@ interface RfqModalProps {
   programme?: BaseProgramme | null;
   isOpen: boolean;
   onClose: () => void;
+  requestType?: 'proposal' | 'outline';
+  ctaId?: string;
 }
 
-export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }) => {
+export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, requestType = 'proposal', ctaId = '' }) => {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState('');
+  const [reference, setReference] = useState('');
+  const submissionId = useRef<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,19 +30,51 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
     notes: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (submitting) return;
+    setSubmitting(true);
+    setSubmissionError('');
+    submissionId.current ??= crypto.randomUUID();
+    try {
+      const savedReference = await submitEnquiry({
+        submissionId: submissionId.current,
+        kind: 'course',
+        name: formData.name,
+        email: formData.email,
+        company: formData.company,
+        phone: formData.phone,
+        service: requestType === 'outline' ? 'Tailored course outline' : formData.trackInterest,
+        courseId: programme?.id || '',
+        courseTitle: programme?.title || '',
+        courseCategory: programme?.category || '',
+        learners: formData.learners === 'Custom cohort size' ? `${formData.customLearners} Participants` : formData.learners,
+        delivery: formData.preferredDelivery,
+        notes: formData.notes || (requestType === 'outline' ? 'Tailored course outline requested.' : 'Corporate training proposal requested.'),
+        sourcePage: window.location.pathname,
+        ctaId,
+      });
+      setReference(savedReference);
+      setSubmitted(true);
+    } catch (error) {
+      setSubmissionError(error instanceof Error ? error.message : 'Your enquiry could not be saved. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleResetAndClose = () => {
     setSubmitted(false);
+    setSubmissionError('');
+    setReference('');
+    submissionId.current = null;
     onClose();
   };
 
   if (!isOpen) return null;
 
   const isSpecificProgramme = Boolean(programme && programme.id);
+  const isOutlineRequest = requestType === 'outline';
 
   return (
     <AnimatePresence>
@@ -63,7 +102,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
                 {isSpecificProgramme ? `${programme?.id} · ${programme?.duration || 'Corporate Training'}` : 'Enterprise Corporate Consultation'}
               </div>
               <h2 className="text-xl font-bold text-[#000000]">
-                {isSpecificProgramme ? 'Get Corporate Training Proposal' : 'Corporate Training Enquiry'}
+                {isOutlineRequest ? 'Request a Tailored Course Outline' : isSpecificProgramme ? 'Get Corporate Training Proposal' : 'Corporate Training Enquiry'}
               </h2>
               <p className="text-xs sm:text-sm text-[rgba(0,0,0,0.70)] mt-0.5">
                 {isSpecificProgramme ? programme?.title : 'Discuss custom cohorts, curriculum tailoring, or multi-programme enterprise licensing.'}
@@ -84,15 +123,15 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
               <div className="w-16 h-16 rounded-full bg-[rgba(33,150,243,0.10)] text-[#0000FF] mx-auto flex items-center justify-center mb-4">
                 <CheckCircle2 className="w-9 h-9 text-[#0000FF]" />
               </div>
-              <h3 className="text-2xl font-bold text-[#000000] mb-2">Proposal Request Received</h3>
+              <h3 className="text-2xl font-bold text-[#000000] mb-2">{isOutlineRequest ? 'Outline Request Received' : 'Proposal Request Received'}</h3>
               <p className="text-sm text-[rgba(0,0,0,0.70)] max-w-md mx-auto mb-6">
-                Thank you, <strong className="text-[#000000]">{formData.name || 'Corporate Partner'}</strong>. Your commercial enquiry {isSpecificProgramme ? <>for <strong className="text-[#000000]">{programme?.id}</strong></> : 'for enterprise corporate training'} has been logged. Our solutions advisor will reach out within 24 business hours.
+                Thank you, <strong className="text-[#000000]">{formData.name || 'Corporate Partner'}</strong>. Your enquiry {isSpecificProgramme ? <>for <strong className="text-[#000000]">{programme?.id}</strong></> : 'for enterprise corporate training'} has been saved. Please keep the reference below for follow-up.
               </p>
 
               <div className="bg-[rgba(33,150,243,0.06)] border border-[rgba(0,0,255,0.10)] rounded-xl p-4 max-w-md mx-auto text-left text-xs text-[rgba(0,0,0,0.72)] space-y-1.5 mb-6">
                 <div className="flex justify-between">
                   <span className="text-[rgba(0,0,0,0.58)] font-medium">Reference Code:</span>
-                  <span className="font-mono font-bold text-[#0000FF]">RFQ-2026-{Math.floor(1000 + Math.random() * 9000)}</span>
+                  <span className="font-mono font-bold text-[#0000FF]">{reference}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[rgba(0,0,0,0.58)] font-medium">Programme / Track:</span>
@@ -272,6 +311,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
                 </div>
               </div>
 
+              {submissionError && <p role="alert" className="text-sm text-red-700">{submissionError}</p>}
               <div className="pt-2 flex items-center justify-end gap-3">
                 <button
                   type="button"
@@ -282,9 +322,10 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose }
                 </button>
                 <button
                   type="submit"
+                  disabled={submitting}
                   className="bg-[#0000FF] hover:opacity-90 active:opacity-100 text-white font-semibold text-sm px-6 py-2.5 rounded-lg inline-flex items-center gap-2 shadow-xs transition-all hover:shadow-[0_4px_12px_rgba(0,0,255,0.2)]"
                 >
-                  Request Training Proposal
+                  {submitting ? 'Saving enquiry…' : isOutlineRequest ? 'Request Tailored Outline' : 'Request Training Proposal'}
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>

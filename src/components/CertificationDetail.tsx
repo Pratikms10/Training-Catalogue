@@ -32,6 +32,12 @@ function statusClasses(status?: string) {
 
 export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
   const [isRfqOpen, setIsRfqOpen] = useState(false);
+  const [rfqCtaId, setRfqCtaId] = useState('');
+
+  const openRfq = (ctaId: string) => {
+    setRfqCtaId(ctaId);
+    setIsRfqOpen(true);
+  };
   const details = programme.details || {};
   const exams = details.exams || [];
   const objectives: CertificationObjective[] = details.certificationObjectives || [];
@@ -137,7 +143,7 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <button
                 type="button"
-                onClick={() => setIsRfqOpen(true)}
+                onClick={() => openRfq('catalogue_certification_hero_proposal')}
                 className="inline-flex items-center gap-2 rounded-lg bg-[#0000FF] px-5 py-3 text-sm font-bold text-white shadow-[0_10px_28px_rgba(0,0,255,0.22)] transition-transform hover:-translate-y-0.5"
               >
                 Get Corporate Training Proposal
@@ -287,12 +293,12 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
         <section className="overflow-hidden rounded-2xl bg-[#0000FF] p-7 text-white shadow-[0_22px_60px_rgba(0,0,255,0.24)] sm:p-10">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
             <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-200">Corporate certification enablement</p><h2 className="mt-2 text-2xl font-bold sm:text-3xl">Turn this pathway into a team capability plan</h2><p className="mt-3 text-sm leading-6 text-blue-100">We can align the learning path, instructor support, practice environment and delivery schedule to your team’s roles and certification target.</p></div>
-            <button type="button" onClick={() => setIsRfqOpen(true)} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-[#0000FF] transition-transform hover:-translate-y-0.5">Build a training proposal <ArrowRight className="h-4 w-4" /></button>
+            <button type="button" onClick={() => openRfq('catalogue_certification_bottom_proposal')} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-[#0000FF] transition-transform hover:-translate-y-0.5">Build a training proposal <ArrowRight className="h-4 w-4" /></button>
           </div>
         </section>
       </main>
 
-      <RfqModal programme={programme} isOpen={isRfqOpen} onClose={() => setIsRfqOpen(false)} />
+      <RfqModal programme={programme} isOpen={isRfqOpen} onClose={() => setIsRfqOpen(false)} ctaId={rfqCtaId} />
     </div>
   );
 };

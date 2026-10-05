@@ -4,6 +4,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getCatalogueFilters, getCourseById, listCourses } from './catalogueRepository.mjs';
 import { createImportCentreRouter } from './importCentre.mjs';
+import { EnquiryInputError, EnquiryStorageUnavailableError, saveContactActionToWorkbook, saveEnquiryToWorkbook, validateEnquiry } from './enquiries.mjs';
+import { saveEnquiryToDatabase } from './enquiryDatabase.mjs';
+import { saveContactActionToDatabase, validateContactAction } from './contactActions.mjs';
 
 const serverDirectory = path.dirname(fileURLToPath(import.meta.url));
 const distDirectory = path.resolve(serverDirectory, '../dist');
@@ -27,11 +30,74 @@ function positiveIntegerValues(value) {
   return stringValues(value).map((item) => positiveInteger(item, undefined));
 }
 
-export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'production' || process.env.SERVE_STATIC === 'true' } = {}) {
+function leadStorageMode() {
+  return process.env.LEADS_STORAGE_MODE?.trim().toLowerCase()
+    || (process.env.VERCEL || process.env.VERCEL_ENV ? 'postgres' : 'hybrid');
+}
+
+function storeEnquiry(pool, enquiry) {
+  const mode = leadStorageMode();
+  if (mode === 'postgres') return saveEnquiryToDatabase(pool, enquiry);
+  if (mode === 'excel') return saveEnquiryToWorkbook(enquiry);
+  if (mode === 'hybrid') {
+    if (process.env.VERCEL || process.env.VERCEL_ENV) {
+      throw new EnquiryStorageUnavailableError('Hybrid Excel storage is not available on Vercel. Use PostgreSQL lead storage.');
+    }
+    return saveEnquiryToDatabase(pool, enquiry).then(async (saved) => {
+      await saveEnquiryToWorkbook(enquiry, { reference: saved.reference });
+      return saved;
+    });
+  }
+  throw new EnquiryStorageUnavailableError('Enquiry storage is not configured correctly.');
+}
+
+function storeContactAction(pool, action) {
+  const mode = leadStorageMode();
+  if (mode === 'postgres') return saveContactActionToDatabase(pool, action);
+  if (mode === 'excel') return saveContactActionToWorkbook(action);
+  if (mode === 'hybrid') {
+    if (process.env.VERCEL || process.env.VERCEL_ENV) {
+      throw new EnquiryStorageUnavailableError('Hybrid Excel storage is not available on Vercel. Use PostgreSQL lead storage.');
+    }
+    return saveContactActionToDatabase(pool, action).then(async (saved) => {
+      await saveContactActionToWorkbook(action);
+      return saved;
+    });
+  }
+  throw new EnquiryStorageUnavailableError('Contact action storage is not configured correctly.');
+}
+
+export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'production' || process.env.SERVE_STATIC === 'true', saveEnquiry = (enquiry) => storeEnquiry(pool, enquiry), saveContactAction = (action) => storeContactAction(pool, action) } = {}) {
   const app = express();
   app.disable('x-powered-by');
   app.use(express.json({ limit: '1mb' }));
   app.use('/api/admin/import', createImportCentreRouter(pool));
+
+  app.post('/api/enquiries', async (request, response, next) => {
+    try {
+      const enquiry = validateEnquiry(request.body);
+      const result = await saveEnquiry(enquiry);
+      response.status(result.duplicate ? 200 : 201).json({ reference: result.reference });
+    } catch (error) {
+      if (error instanceof EnquiryInputError) return response.status(400).json({ error: error.message });
+      if (error instanceof EnquiryStorageUnavailableError) return response.status(503).json({ error: error.message });
+      console.error('Enquiry could not be stored:', error);
+      return response.status(500).json({ error: 'Your enquiry could not be saved. Please try again or contact us directly.' });
+    }
+  });
+
+  app.post('/api/contact-actions', async (request, response) => {
+    try {
+      const action = validateContactAction(request.body);
+      const result = await saveContactAction(action);
+      return response.status(result.duplicate ? 200 : 201).json({ recorded: true });
+    } catch (error) {
+      if (error instanceof EnquiryInputError) return response.status(400).json({ error: error.message });
+      if (error instanceof EnquiryStorageUnavailableError) return response.status(503).json({ error: error.message });
+      console.error('Contact action could not be stored:', error);
+      return response.status(500).json({ error: 'The contact action could not be recorded.' });
+    }
+  });
 
   app.get('/api/health', async (_request, response, next) => {
     try {
@@ -60,7 +126,7 @@ export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'produc
         durationMinutes: positiveIntegerValues(request.query.durationMinutes),
         sort: request.query.sort?.toString(),
         page: positiveInteger(request.query.page, 1),
-        pageSize: positiveInteger(request.query.pageSize, 24),
+        pageSize: positiveInteger(request.query.pageSize, 9),
       });
       response.json(result);
     } catch (error) {

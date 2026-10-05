@@ -1,11 +1,10 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react';
-import { ArrowUpRight, Building2, GraduationCap, Mail, MessageCircle, Phone } from 'lucide-react';
+import { useRef, useState, type ChangeEvent, type FormEvent } from 'react';
+import { ArrowUpRight, Building2, CheckCircle2, GraduationCap, Mail, MessageCircle, Phone } from 'lucide-react';
+import { CONTACT_EMAIL, CONTACT_PHONES, whatsappUrl } from '../../../src/data/siteContact';
+import { submitEnquiry } from '../../../src/data/submitEnquiry';
 
 type ContactPath = 'organisation' | 'trainer';
 type ContactValues = Record<string, string>;
-
-const whatsappNumber = '917400068614';
-const contactEmail = 'info@technoedgels.com';
 
 export default function ContactSection() {
   const [path, setPath] = useState<ContactPath>('organisation');
@@ -13,6 +12,10 @@ export default function ContactSection() {
   const [trainerValues, setTrainerValues] = useState<ContactValues>({});
   const [draftUrl, setDraftUrl] = useState('');
   const [draftChannel, setDraftChannel] = useState<'whatsapp' | 'email'>('whatsapp');
+  const [savedReference, setSavedReference] = useState('');
+  const [submissionError, setSubmissionError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const submissionId = useRef<string | null>(null);
   const values = path === 'organisation' ? organisationValues : trainerValues;
 
   const updateField = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -20,17 +23,24 @@ export default function ContactSection() {
     const update = path === 'organisation' ? setOrganisationValues : setTrainerValues;
     update((current) => ({ ...current, [name]: value }));
     setDraftUrl('');
+    setSavedReference('');
+    setSubmissionError('');
+    submissionId.current = null;
   };
 
   const choosePath = (next: ContactPath) => {
     setPath(next);
     setDraftUrl('');
+    setSavedReference('');
+    setSubmissionError('');
+    submissionId.current = null;
   };
 
-  const prepareContactDraft = (event: FormEvent<HTMLFormElement>) => {
+  const handleContactSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (submitting) return;
     const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLButtonElement | null;
-    const channel = submitter?.value === 'email' ? 'email' : 'whatsapp';
+    const channel = submitter?.value === 'email' || submitter?.value === 'whatsapp' ? submitter.value : 'submit';
     const form = new FormData(event.currentTarget);
     const read = (name: string) => String(form.get(name) || '').trim();
     const lines = path === 'organisation'
@@ -56,13 +66,41 @@ export default function ContactSection() {
       ? `TechnoEdge enquiry — ${read('service')}`
       : `TechnoEdge trainer application — ${read('name')}`;
     const url = channel === 'email'
-      ? `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`
-      : `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
+      ? `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`
+      : channel === 'whatsapp' ? whatsappUrl(CONTACT_PHONES[0], lines.join('\n')) : '';
+    submissionId.current ??= crypto.randomUUID();
+    setSubmitting(true);
+    setSubmissionError('');
+    let reference: string;
+    try {
+      reference = await submitEnquiry({
+        submissionId: submissionId.current,
+        kind: path,
+        name: read('name'),
+        email: read('email'),
+        phone: read('phone'),
+        company: read('company'),
+        service: read('service'),
+        notes: read('message'),
+        preferredChannel: channel === 'submit' ? undefined : channel,
+        trainerExpertise: read('expertise'),
+        trainerExperience: read('experience'),
+        profileUrl: read('profile'),
+        sourcePage: window.location.pathname,
+        ctaId: `home_contact_${path}_${channel}`,
+      });
+    } catch (error) {
+      setSubmissionError(error instanceof Error ? error.message : 'Your details could not be saved. Please try again.');
+      setSubmitting(false);
+      return;
+    }
+    setSavedReference(reference);
     setDraftUrl(url);
-    setDraftChannel(channel);
+    if (channel !== 'submit') setDraftChannel(channel);
+    setSubmitting(false);
     if (channel === 'email') {
       window.location.assign(url);
-    } else {
+    } else if (channel === 'whatsapp') {
       window.open(url, '_blank', 'noopener,noreferrer');
     }
   };
@@ -84,7 +122,9 @@ export default function ContactSection() {
           <div className="contact-direct">
             <span>Prefer a direct conversation?</span>
             <div>
-              <a href="tel:+917400068614"><Phone size={17} aria-hidden="true" /> Call our team <ArrowUpRight size={15} aria-hidden="true" /></a>
+              {CONTACT_PHONES.map((phone) => (
+                <a href={`tel:${phone.e164}`} key={phone.number}><Phone size={17} aria-hidden="true" /> {phone.display} <ArrowUpRight size={15} aria-hidden="true" /></a>
+              ))}
             </div>
           </div>
         </div>
@@ -108,7 +148,7 @@ export default function ContactSection() {
             </label>
           </fieldset>
 
-          <form className="contact-form" id="enquiry-form" onSubmit={prepareContactDraft}>
+          <form className="contact-form" id="enquiry-form" onSubmit={handleContactSubmit}>
             {path === 'organisation' ? (
               <div className="contact-form-grid">
                 <label className="contact-field contact-field-wide"><span>What can we help with? <b>*</b></span><select name="service" value={values.service || ''} onChange={updateField} required><option value="">Select a service</option><option>Corporate Training Solution</option><option>E-Learning Solution</option><option>AI &amp; Automation Consulting</option><option>Content Processing &amp; Language Services</option><option>Data &amp; AI Support</option></select></label>
@@ -129,10 +169,12 @@ export default function ContactSection() {
               </div>
             )}
             <div className="contact-actions">
-              <button className="contact-submit" type="submit" name="contact-channel" value="whatsapp"><span><MessageCircle size={18} aria-hidden="true" />{path === 'organisation' ? 'Review enquiry on WhatsApp' : 'Review application on WhatsApp'}</span><ArrowUpRight size={20} aria-hidden="true" /></button>
-              <button className="contact-submit contact-submit-email" type="submit" name="contact-channel" value="email"><span><Mail size={18} aria-hidden="true" />{path === 'organisation' ? 'Review enquiry by email' : 'Review application by email'}</span><ArrowUpRight size={20} aria-hidden="true" /></button>
+              <button className="contact-submit contact-submit-direct" type="submit" name="contact-channel" value="submit" disabled={submitting}><span><CheckCircle2 size={19} aria-hidden="true" />{submitting ? 'Submitting…' : path === 'organisation' ? 'Submit enquiry' : 'Submit trainer application'}</span><ArrowUpRight size={20} aria-hidden="true" /></button>
+              <button className="contact-submit contact-submit-whatsapp" type="submit" name="contact-channel" value="whatsapp" disabled={submitting}><span><MessageCircle size={18} aria-hidden="true" />{submitting ? 'Saving details…' : path === 'organisation' ? 'Review enquiry on WhatsApp' : 'Review application on WhatsApp'}</span><ArrowUpRight size={20} aria-hidden="true" /></button>
+              <button className="contact-submit contact-submit-email" type="submit" name="contact-channel" value="email" disabled={submitting}><span><Mail size={18} aria-hidden="true" />{submitting ? 'Saving details…' : path === 'organisation' ? 'Review enquiry by email' : 'Review application by email'}</span><ArrowUpRight size={20} aria-hidden="true" /></button>
             </div>
-            {draftUrl && <p className="contact-draft-status" role="status">Draft ready. If it did not open, <a href={draftUrl} {...(draftChannel === 'whatsapp' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>open it in {draftChannel === 'email' ? 'your email app' : 'WhatsApp'}</a>.</p>}
+            {submissionError && <p className="contact-draft-status" role="alert">{submissionError}</p>}
+            {savedReference && <p className="contact-draft-status" role="status">{path === 'organisation' ? 'Enquiry' : 'Trainer application'} saved successfully. Your reference is <strong>{savedReference}</strong>. {draftUrl && <>If the draft did not open, <a href={draftUrl} {...(draftChannel === 'whatsapp' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>open it in {draftChannel === 'email' ? 'your email app' : 'WhatsApp'}</a>.</>}</p>}
           </form>
         </div>
       </div>

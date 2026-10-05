@@ -27,6 +27,7 @@
     "db:import:certifications:xlsx": "node scripts/import-certifications-xlsx.mjs",
     "db:convert:technical": "node scripts/convert-technical-training-xlsx.mjs",
     "db:verify": "node scripts/verify-db.mjs",
+    "leads:status": "node scripts/leads-status.mjs",
     "test": "node --test server/*.test.mjs"
   },
   "dependencies": {

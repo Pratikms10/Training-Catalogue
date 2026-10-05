@@ -42,7 +42,6 @@ export function mountCorporateInteractions(): () => void {
   if (!root) return () => undefined;
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const disposers: Array<() => void> = [];
   const frameIds = new Set<number>();
   const observe = (target: EventTarget, type: string, handler: EventListener, options?: AddEventListenerOptions) => {
@@ -326,59 +325,6 @@ export function mountCorporateInteractions(): () => void {
   observe(window, 'scroll', requestParallax, { passive: true });
   observe(window, 'resize', requestParallax);
   updateParallax();
-
-  if (finePointer && !reducedMotion) {
-    const cursor = document.createElement('div');
-    cursor.className = 'motion-cursor';
-    cursor.setAttribute('aria-hidden', 'true');
-    root.append(cursor);
-    disposers.push(() => cursor.remove());
-    let targetX = -100, targetY = -100, currentX = -100, currentY = -100, cursorFrame = 0;
-    const drawCursor = () => {
-      cursorFrame = 0;
-      currentX += (targetX - currentX) * .2;
-      currentY += (targetY - currentY) * .2;
-      cursor.style.transform = `translate3d(${currentX}px,${currentY}px,0) translate(-50%,-50%)`;
-      if (Math.abs(targetX - currentX) > .1 || Math.abs(targetY - currentY) > .1) cursorFrame = frame(drawCursor);
-    };
-    observe(window, 'pointermove', (event) => {
-      const pointer = event as PointerEvent;
-      targetX = pointer.clientX;
-      targetY = pointer.clientY;
-      cursor.classList.add('visible');
-      cursor.classList.toggle('over-hero', Boolean((pointer.target as Element).closest('.hero')));
-      if (!cursorFrame) cursorFrame = frame(drawCursor);
-    }, { passive: true });
-    observe(document.documentElement, 'mouseleave', () => cursor.classList.remove('visible'));
-    ([['.service-card a', 'Enquire'], ['.post-grid a', 'Read'], ['.ai-bot-button', 'Talk'], ['.primary-nav a', 'Go']] as const)
-      .forEach(([selector, label]) => root.querySelectorAll(selector).forEach((element) => {
-        observe(element, 'mouseenter', () => { cursor.textContent = label; cursor.classList.add('is-active'); });
-        observe(element, 'mouseleave', () => { cursor.textContent = ''; cursor.classList.remove('is-active'); });
-      }));
-    root.querySelectorAll<HTMLElement>('.btn,.service-card a,.post-grid a').forEach((element) => {
-      observe(element, 'pointermove', (event) => {
-        const pointer = event as PointerEvent;
-        const rect = element.getBoundingClientRect();
-        element.style.transform = `translate3d(${(pointer.clientX - rect.left - rect.width / 2) * .12}px,${(pointer.clientY - rect.top - rect.height / 2) * .16}px,0)`;
-      });
-      observe(element, 'pointerleave', () => { element.style.transform = ''; });
-    });
-    root.querySelectorAll<HTMLElement>('.service-card').forEach((card) => {
-      const image = card.querySelector<HTMLElement>('.service-image');
-      observe(card, 'pointermove', (event) => {
-        const pointer = event as PointerEvent;
-        const rect = card.getBoundingClientRect();
-        const x = (pointer.clientX - rect.left) / rect.width - .5;
-        const y = (pointer.clientY - rect.top) / rect.height - .5;
-        card.style.transform = `translateY(-5px) perspective(1000px) rotateX(${-y * 2.4}deg) rotateY(${x * 2.4}deg)`;
-        if (image) image.style.transform = `scale(1.035) translate3d(${x * 7}px,${y * 7}px,0)`;
-      });
-      observe(card, 'pointerleave', () => {
-        card.style.transform = '';
-        if (image) image.style.transform = '';
-      });
-    });
-  }
 
   return () => {
     disposers.forEach((dispose) => dispose());

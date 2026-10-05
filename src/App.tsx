@@ -38,6 +38,19 @@ export default function App() {
   const [isProgrammeLoading, setIsProgrammeLoading] = useState(false);
   const [programmeLoadError, setProgrammeLoadError] = useState<string | null>(null);
   const [isEnterpriseInquiryOpen, setIsEnterpriseInquiryOpen] = useState(false);
+  const [enterpriseInquiryCtaId, setEnterpriseInquiryCtaId] = useState('');
+
+  const openEnterpriseInquiry = (ctaId: string) => {
+    setEnterpriseInquiryCtaId(ctaId);
+    setIsEnterpriseInquiryOpen(true);
+  };
+
+  useEffect(() => {
+    if (location.pathname !== '/catalogue') return;
+    const requestedCategory = new URLSearchParams(location.search).get('category');
+    const category = CATEGORIES_ARCHITECTURE.find(({ id }) => id === requestedCategory);
+    if (category) setActiveCategoryId(category.id);
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     let activeController: AbortController | null = null;
@@ -193,9 +206,8 @@ export default function App() {
   return (
     <div id="corporate-catalogue-app" className="min-h-screen bg-white text-[#000000] flex flex-col font-sans antialiased selection:bg-[#0000FF] selection:text-white">
       <HeaderStructure 
-        onHomeClick={() => window.location.assign('/website/')}
         onQuickSearchClick={handleQuickSearchClick}
-        onEnterpriseInquiryClick={() => setIsEnterpriseInquiryOpen(true)}
+        onEnterpriseInquiryClick={() => openEnterpriseInquiry('catalogue_header_corporate_enquiry')}
         onNavigate={(path) => {
           if (path === '/e-learning/' || path === '/website/') {
             window.location.assign(path);
@@ -264,7 +276,7 @@ export default function App() {
       </main>
       <FooterStructure 
         onSelectCategory={handleFooterCategorySelect}
-        onOpenInquiry={() => setIsEnterpriseInquiryOpen(true)}
+        onOpenInquiry={() => openEnterpriseInquiry('catalogue_footer_contact_us')}
       />
 
       {/* Floating WhatsApp and Phone utility buttons */}
@@ -274,6 +286,7 @@ export default function App() {
       <RfqModal
         isOpen={isEnterpriseInquiryOpen}
         onClose={() => setIsEnterpriseInquiryOpen(false)}
+        ctaId={enterpriseInquiryCtaId}
       />
     </div>
   );

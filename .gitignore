@@ -10,5 +10,6 @@ __pycache__/
 !.env.example
 data/import-staging/
 data/import-reports/*-preview.json
+data/private/
 .runtime/
 .vercel/

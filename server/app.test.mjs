@@ -149,6 +149,13 @@ test('catalogue endpoint returns frontend-shaped pagination data', async () => {
   assert.equal(body.data[0].vendor, 'OpenAI');
 });
 
+test('catalogue API caps requested page size to the public grid size', async () => {
+  const response = await fetch(`${baseUrl}/api/courses?category=tools-technology&page=1&pageSize=100`);
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.equal(body.pagination.pageSize, 9);
+});
+
 test('technical training is exposed as the Tools & Technology catalogue', async () => {
   const response = await fetch(`${baseUrl}/api/courses?category=technical-training&page=1&pageSize=24`);
   assert.equal(response.status, 200);
@@ -212,4 +219,67 @@ test('detail endpoint rejects malformed course IDs before querying PostgreSQL', 
   const response = await fetch(`${baseUrl}/api/courses/not-valid`);
   assert.equal(response.status, 400);
   assert.deepEqual(await response.json(), { error: 'Invalid course ID.' });
+});
+
+test('enquiry endpoint returns a real reference only after the writer succeeds', async () => {
+  const saved = [];
+  const app = createApp(fakePool, {
+    saveEnquiry: async (enquiry) => {
+      saved.push(enquiry);
+      return { reference: 'TE-20261005-TEST1234', duplicate: false };
+    },
+  });
+  const localServer = app.listen(0);
+  await new Promise((resolve) => localServer.once('listening', resolve));
+  try {
+    const response = await fetch(`http://127.0.0.1:${localServer.address().port}/api/enquiries`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        submissionId: 'ebd1222f-08ce-4687-9c41-e74f353551ce',
+        kind: 'course',
+        name: 'Test Customer',
+        email: 'test@example.com',
+        phone: '+919876543210',
+        company: 'Example Company',
+        notes: 'Please send a proposal.',
+        sourcePage: '/catalogue',
+      }),
+    });
+    assert.equal(response.status, 201);
+    assert.deepEqual(await response.json(), { reference: 'TE-20261005-TEST1234' });
+    assert.equal(saved.length, 1);
+  } finally {
+    await new Promise((resolve) => localServer.close(resolve));
+  }
+});
+
+test('contact action endpoint records a click separately from an enquiry', async () => {
+  const saved = [];
+  const app = createApp(fakePool, {
+    saveContactAction: async (action) => {
+      saved.push(action);
+      return { duplicate: false };
+    },
+  });
+  const localServer = app.listen(0);
+  await new Promise((resolve) => localServer.once('listening', resolve));
+  try {
+    const response = await fetch(`http://127.0.0.1:${localServer.address().port}/api/contact-actions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        eventId: 'bd2baaeb-00a1-44a0-a5f4-78b13986ab93',
+        channel: 'call',
+        destination: '+919356433629',
+        sourcePage: '/careers',
+        ctaLabel: 'Call TechnoEdge',
+      }),
+    });
+    assert.equal(response.status, 201);
+    assert.deepEqual(await response.json(), { recorded: true });
+    assert.equal(saved.length, 1);
+  } finally {
+    await new Promise((resolve) => localServer.close(resolve));
+  }
 });

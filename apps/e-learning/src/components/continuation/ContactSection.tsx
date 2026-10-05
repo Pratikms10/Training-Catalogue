@@ -1,19 +1,24 @@
-import { ArrowUpRight, Sparkles, Mail, ShieldCheck, Clock, Award } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowUpRight, Mail } from 'lucide-react';
 import { motion } from 'motion/react';
+import { GradualSpacing } from './GradualSpacing';
+import { ELearningEnquiryModal } from './ELearningEnquiryModal';
+import { CONTACT_EMAIL } from '../../../../../src/data/siteContact';
 
-interface ContactSectionProps {
-  onOpenScoper: () => void;
-}
-
-export function ContactSection({ onOpenScoper }: ContactSectionProps) {
+export function ContactSection() {
+  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
   return (
     <section id="contact" className="min-h-screen py-16 sm:py-20 lg:py-24 flex flex-col justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p className="closing-hook mb-10 sm:mb-12 select-none" role="heading" aria-level={2}>
+        <GradualSpacing text="LET'S CHANGE THE" className="block" />
+        <GradualSpacing text="WAY PEOPLE LEARN." className="block" gradient delay={0.35} slowFade />
+      </p>
       <motion.div
         initial={{ opacity: 0, y: 48 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="relative rounded-[40px] bg-[#faf8f3] text-[#30283f] border border-[#9877bd]/15 p-8 sm:p-14 lg:p-16 overflow-hidden shadow-2xl min-h-[500px] flex flex-col justify-center w-full"
+        className="relative rounded-[40px] bg-[#faf8f3] text-[#30283f] border border-[#9877bd]/15 p-8 sm:p-14 lg:p-16 overflow-hidden shadow-2xl min-h-[390px] flex flex-col justify-center w-full"
       >
         {/* Glow Spheres */}
         <div className="absolute -right-24 -top-24 w-[450px] h-[450px] rounded-full bg-[#b8dcff]/35 blur-[110px] pointer-events-none" />
@@ -29,40 +34,27 @@ export function ContactSection({ onOpenScoper }: ContactSectionProps) {
           </p>
 
           <div className="flex flex-wrap items-center gap-4">
-            <a
-              href="/website/#contact"
-              className="inline-flex items-center gap-2.5 px-6 sm:px-8 py-4 rounded-full text-base sm:text-lg font-black bg-[#30283f] text-white hover:bg-[#4b3d60] transition-all shadow-xl hover:-translate-y-0.5 cursor-pointer"
+            <button
+              type="button"
+              onClick={() => setIsEnquiryOpen(true)}
+              className="contact-primary-cta inline-flex items-center gap-2.5 px-6 sm:px-8 py-4 rounded-full text-base sm:text-lg font-black transition-all shadow-xl hover:-translate-y-0.5 cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#226FA7]"
             >
               <span>Talk to TechnoEdge</span>
               <ArrowUpRight className="w-5 h-5 text-white" />
-            </a>
+            </button>
 
             <a
-              href="mailto:training@technoedgels.com"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="text-sm sm:text-base text-[#554b60] hover:text-[#30283f] font-bold underline underline-offset-4 transition-colors flex items-center gap-1.5"
             >
               <Mail className="w-4 h-4" />
-              <span>training@technoedgels.com</span>
+              <span>{CONTACT_EMAIL}</span>
             </a>
           </div>
 
-          {/* Quick Trust Highlights */}
-          <div className="mt-12 pt-8 border-t border-[#9877bd]/20 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-[#554b60]">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#147d69]" />
-              <span>SCORM 1.2 / 2004 &amp; xAPI Tested</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#9877bd]" />
-              <span>Rapid 2-to-4 Week Sprints</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Award className="w-4 h-4 text-[#c5a48c]" />
-              <span>LMS &amp; Enterprise Ready</span>
-            </div>
-          </div>
         </div>
       </motion.div>
+      {isEnquiryOpen && <ELearningEnquiryModal onClose={() => setIsEnquiryOpen(false)} />}
     </section>
   );
 }

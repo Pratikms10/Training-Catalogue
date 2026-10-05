@@ -3,7 +3,6 @@ import { Menu, Search, X } from 'lucide-react';
 import { OriginButton } from '@/components/ui/origin-button';
 
 interface HeaderStructureProps {
-  onHomeClick?: () => void;
   onQuickSearchClick?: () => void;
   onEnterpriseInquiryClick?: () => void;
   onNavigate?: (path: string) => void;
@@ -19,7 +18,6 @@ const primaryNavigation = [
 ];
 
 export const HeaderStructure: React.FC<HeaderStructureProps> = ({
-  onHomeClick,
   onQuickSearchClick,
   onEnterpriseInquiryClick,
   onNavigate,
@@ -36,35 +34,18 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
   return (
     <header id="technoedge-header-structure" className="w-full bg-white border-b border-[rgba(0,0,255,0.12)] sticky top-0 z-40 shrink-0">
       {/* Main navigation header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between gap-4">
-        {/* Brand logo & tagline */}
-        <div 
-          onClick={onHomeClick}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              onHomeClick?.();
-            }
-          }}
-          tabIndex={0}
-          role="button"
-          aria-label="TechnoEdge Home"
-          className="flex items-center gap-3 cursor-pointer group select-none outline-none focus-visible:ring-2 focus-visible:ring-[#0000FF] focus-visible:ring-offset-2 rounded-lg p-0.5"
-        >
-          <div className="w-9 h-9 flex items-center justify-center shrink-0">
-            <img 
-              id="header-brand-logo"
-              src="/hero-logo.png" 
-              alt="TechnoEdge Logo" 
-              className="w-9 h-9 object-contain transition-transform duration-200 group-hover:scale-105" 
-            />
-          </div>
-          <span className="font-bold text-lg sm:text-xl tracking-tight text-[#000000] whitespace-nowrap">
-            TechnoEdge <span className="hidden xl:inline text-[rgba(0,0,0,0.58)] font-light">Learning Services</span>
-          </span>
-        </div>
+      <div className="mx-auto grid h-[76px] w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 px-4 min-[761px]:h-20 min-[761px]:px-[clamp(22px,4.5vw,72px)] min-[1280px]:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] min-[1280px]:gap-x-6">
+        {/* The corporate wordmark is shared by every site topbar. */}
+        <a href="/website/" aria-label="TechnoEdge home" className="shrink-0 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0000FF]">
+          <img
+            id="header-brand-logo"
+            src="/website/assets/technoedge-logo.png"
+            alt="TechnoEdge Learning Services"
+            className="block h-[48px] w-[145px] object-cover object-center min-[761px]:h-[60px] min-[761px]:w-[190px]"
+          />
+        </a>
 
-        <nav className="hidden lg:flex items-center justify-center gap-7" aria-label="Primary navigation">
+        <nav className="hidden min-[1280px]:flex items-center justify-center justify-self-center gap-6 font-[Arial,sans-serif]" aria-label="Primary navigation">
           {visibleNavigation.map((item) => {
             const isActive = item.path === '/catalogue'
               ? currentPath === '/catalogue' || currentPath.startsWith('/programmes/')
@@ -87,7 +68,7 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
         </nav>
 
         {/* Right action group */}
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden min-[1280px]:flex items-center justify-self-end gap-3">
           <button
             type="button"
             id="header-quick-search"
@@ -111,7 +92,7 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
 
         <button
           type="button"
-          className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[rgba(0,0,255,0.18)] text-[#0000FF] hover:bg-[rgba(33,150,243,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0000FF]/30"
+          className="min-[1280px]:hidden inline-flex h-[42px] w-[42px] items-center justify-center rounded-lg border border-[rgba(0,0,255,0.18)] text-[#0000FF] hover:bg-[rgba(33,150,243,0.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0000FF]/30"
           onClick={() => setIsMenuOpen((open) => !open)}
           aria-expanded={isMenuOpen}
           aria-controls="mobile-site-navigation"
@@ -122,7 +103,7 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
       </div>
 
       {isMenuOpen && (
-        <div id="mobile-site-navigation" className="lg:hidden border-t border-[rgba(0,0,255,0.12)] bg-white px-4 sm:px-8 py-5 shadow-[0_18px_35px_rgba(15,23,42,0.10)]">
+        <div id="mobile-site-navigation" className="min-[1280px]:hidden border-t border-[rgba(0,0,255,0.12)] bg-white px-4 sm:px-8 py-5 shadow-[0_18px_35px_rgba(15,23,42,0.10)]">
           <nav className="flex flex-col" aria-label="Mobile navigation">
             {visibleNavigation.map((item) => {
               const isActive = item.path === '/catalogue'

@@ -1,7 +1,6 @@
 #depth,
 #industries,
-#contact,
-.site-content > footer {
+#contact {
   color: var(--ink);
   background: var(--cream);
 }
@@ -62,6 +61,23 @@
   background: var(--blue-deep) !important;
 }
 
+#contact .contact-primary-cta {
+  color: #fff !important;
+  background: #123f6b;
+  border: 1px solid #0d3154;
+  box-shadow: 0 14px 30px rgba(18, 63, 107, .25);
+  font-family: inherit;
+}
+
+#contact .contact-primary-cta span {
+  color: #fff;
+}
+
+#contact .contact-primary-cta:hover {
+  color: #fff !important;
+  background: #0a2e50;
+}
+
 #root .closing-hook {
   font-size: clamp(48px, 7vw, 96px);
   line-height: .98;
@@ -105,4 +121,8 @@
 @media (max-width: 900px) {
   #root #industries h2,
   #root #contact h2 { font-size: clamp(38px, 7vw, 56px); }
+}
+
+@media (max-width: 640px) {
+  #root .closing-hook { font-size: clamp(38px, 9vw, 52px); }
 }

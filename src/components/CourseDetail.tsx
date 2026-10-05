@@ -54,6 +54,14 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
   // RFQ Modal State
   const [isRfqOpen, setIsRfqOpen] = useState(false);
+  const [rfqRequestType, setRfqRequestType] = useState<'proposal' | 'outline'>('proposal');
+  const [rfqCtaId, setRfqCtaId] = useState('');
+
+  const openRfq = (ctaId: string, requestType: 'proposal' | 'outline' = 'proposal') => {
+    setRfqRequestType(requestType);
+    setRfqCtaId(ctaId);
+    setIsRfqOpen(true);
+  };
 
   // Scroll to top on programme change
   useEffect(() => {
@@ -219,7 +227,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
             <div>
               <OriginButton 
                 id="hero-rfq-button"
-                onClick={() => setIsRfqOpen(true)}
+                onClick={() => openRfq('catalogue_course_hero_proposal')}
                 fillClassName="bg-[#22c55e]"
                 className="bg-[#0000FF] border-none text-white font-semibold text-sm sm:text-base py-3.5 px-7 rounded-lg inline-flex items-center gap-2.5 shadow-xs transition-all hover:shadow-[0_6px_22px_rgba(0,0,255,0.40)] hover:ring-2 hover:ring-[#2196F3]/70 hover:-translate-y-0.5 focus:outline-none focus:ring-3 focus:ring-[#0000FF]/25 text-white hover:text-white cursor-pointer"
               >
@@ -743,7 +751,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                     <button
                       id="custom-training-plan-button"
                       type="button"
-                      onClick={() => setIsRfqOpen(true)}
+                      onClick={() => openRfq('catalogue_course_training_plan')}
                       className="group mt-6 flex w-full flex-col items-start justify-between gap-4 overflow-hidden rounded-xl border border-[#0000FF] bg-[linear-gradient(135deg,#0000FF_0%,#075DEB_60%,#2196F3_100%)] px-5 py-5 text-left shadow-[0_10px_28px_rgba(0,0,255,0.20)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(0,0,255,0.28)] focus:outline-none focus:ring-3 focus:ring-[#2196F3]/35 sm:flex-row sm:items-center sm:px-6"
                     >
                       <div>
@@ -851,6 +859,59 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
             </AnimatePresence>
           </section>
 
+          {/* Course-specific close: gives the TOC a purposeful next step before the site footer. */}
+          <section
+            aria-labelledby="course-next-steps-heading"
+            className="relative overflow-hidden rounded-2xl border border-[rgba(0,0,255,0.18)] bg-[linear-gradient(135deg,#F5FAFF_0%,#FFFFFF_52%,#EEF7FF_100%)] px-6 py-8 shadow-[0_16px_40px_rgba(0,70,180,0.08)] sm:px-8 sm:py-10"
+          >
+            <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-24 h-56 w-56 rounded-full bg-[rgba(33,150,243,0.12)] blur-3xl" />
+            <div className="relative grid gap-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+              <div className="max-w-2xl">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#0000FF]">
+                  Take the next step
+                </p>
+                <h2 id="course-next-steps-heading" className="mt-2 text-2xl font-bold tracking-tight text-[#000000] sm:text-3xl">
+                  Ready to make this programme work for your team?
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-[rgba(0,0,0,0.70)] sm:text-base">
+                  Customise modules, duration and business scenarios for your team.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2" aria-label="Delivery options">
+                  {['Instructor-led', 'Virtual', 'Hybrid'].map((option) => (
+                    <span
+                      key={option}
+                      className="rounded-full border border-[rgba(0,0,255,0.14)] bg-white/80 px-3 py-1.5 text-xs font-semibold text-[#164B7A]"
+                    >
+                      {option}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="flex flex-col items-start gap-3 lg:items-end">
+                <button
+                  id="discuss-programme-button"
+                  type="button"
+                  onClick={() => openRfq('catalogue_course_bottom_discuss')}
+                  className="group inline-flex items-center gap-2 rounded-lg bg-[#0000FF] px-5 py-3 text-sm font-bold text-white shadow-[0_10px_24px_rgba(0,0,255,0.20)] transition-all hover:-translate-y-0.5 hover:bg-[#0808D9] hover:shadow-[0_14px_28px_rgba(0,0,255,0.28)] focus:outline-none focus:ring-3 focus:ring-[#2196F3]/35"
+                >
+                  Discuss this programme
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openRfq('catalogue_course_bottom_outline', 'outline')}
+                  className="text-sm font-semibold text-[#0000FF] underline decoration-[#0000FF]/35 underline-offset-4 transition-colors hover:text-[#075DEB]"
+                >
+                  Request a tailored course outline
+                </button>
+              </div>
+            </div>
+            <p className="relative mt-7 border-t border-[rgba(0,0,255,0.12)] pt-4 text-xs font-medium text-[rgba(0,0,0,0.58)]">
+              Designed around your roles, tools and real workflows.
+            </p>
+          </section>
+
         </div>
 
       </main>
@@ -860,6 +921,8 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
         programme={programme}
         isOpen={isRfqOpen}
         onClose={() => setIsRfqOpen(false)}
+        requestType={rfqRequestType}
+        ctaId={rfqCtaId}
       />
 
     </div>

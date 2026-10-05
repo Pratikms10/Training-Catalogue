@@ -1,6 +1,7 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Linkedin } from 'lucide-react';
-import { CategoryId } from '../types';
+import { Mail, Phone, MapPin, Linkedin, MessageCircle } from 'lucide-react';
+import type { CategoryId } from '../types';
+import { CONTACT_EMAIL, CONTACT_PHONES, whatsappUrl } from '../data/siteContact';
 
 interface FooterStructureProps {
   onSelectCategory?: (id: CategoryId) => void;
@@ -12,12 +13,21 @@ export const FooterStructure: React.FC<FooterStructureProps> = ({
   onOpenInquiry,
 }) => {
   const handleCategoryClick = (e: React.MouseEvent, catId: CategoryId) => {
-    e.preventDefault();
     if (onSelectCategory) {
+      e.preventDefault();
       onSelectCategory(catId);
-      window.scrollTo({ top: 400, behavior: 'smooth' });
     }
   };
+
+  const categoryLink = (catId: CategoryId, label: string) => (
+    <a
+      href={`/catalogue?category=${encodeURIComponent(catId)}`}
+      onClick={(event) => handleCategoryClick(event, catId)}
+      className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left"
+    >
+      {label}
+    </a>
+  );
 
   return (
     <footer id="technoedge-corporate-footer" className="w-full bg-white text-slate-800 border-t border-[rgba(0,0,255,0.12)] mt-auto">
@@ -32,17 +42,22 @@ export const FooterStructure: React.FC<FooterStructureProps> = ({
             </h3>
             
             <div className="space-y-4 text-sm text-slate-600">
-              <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-[#0000FF] shrink-0" />
-                <a href="tel:+919356433629" className="hover:text-[#0000FF]/70 transition-colors underline-offset-2 hover:underline">
-                  +91 9356433629
-                </a>
-              </div>
+              {CONTACT_PHONES.map((phone) => (
+                <div className="flex items-center gap-3" key={phone.number}>
+                  <Phone className="w-4 h-4 text-[#0000FF] shrink-0" />
+                  <a href={`tel:${phone.e164}`} className="hover:text-[#0000FF]/70 transition-colors underline-offset-2 hover:underline">
+                    {phone.display}
+                  </a>
+                  <a href={whatsappUrl(phone)} target="_blank" rel="noopener noreferrer" aria-label={`WhatsApp ${phone.display}`} className="text-[#0000FF] hover:text-[#0000FF]/70">
+                    <MessageCircle className="w-4 h-4" />
+                  </a>
+                </div>
+              ))}
               
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[#0000FF] shrink-0" />
-                <a href="mailto:info@technoedgels.com" className="hover:text-[#0000FF]/70 transition-colors underline-offset-2 hover:underline">
-                  info@technoedgels.com
+                <a href={`mailto:${CONTACT_EMAIL}`} className="hover:text-[#0000FF]/70 transition-colors underline-offset-2 hover:underline">
+                  {CONTACT_EMAIL}
                 </a>
               </div>
 
@@ -83,7 +98,7 @@ export const FooterStructure: React.FC<FooterStructureProps> = ({
               <li><a href="/e-learning/" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">E-learning Solution</a></li>
               <li><a href="/website/#contact" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">Business Consultation</a></li>
               <li><a href="/catalogue" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors">Explore Programmes</a></li>
-              <li><a href="#" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors" onClick={(e) => { e.preventDefault(); onOpenInquiry?.(); }}>Contact Us</a></li>
+              <li><a href="/website/#contact" className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors" onClick={(e) => { if (onOpenInquiry) { e.preventDefault(); onOpenInquiry(); } }}>Contact Us</a></li>
             </ul>
           </div>
 
@@ -93,60 +108,12 @@ export const FooterStructure: React.FC<FooterStructureProps> = ({
               Explore Training
             </h3>
             <ul className="space-y-3 text-sm text-slate-600">
-              <li>
-                <button
-                  type="button"
-                  onClick={(e) => handleCategoryClick(e, 'role-based')}
-                  className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
-                >
-                  Role-Based Training
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={(e) => handleCategoryClick(e, 'tools-technology')}
-                  className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
-                >
-                  Tools & Technology
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={(e) => handleCategoryClick(e, 'process-based')}
-                  className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
-                >
-                  Process Based
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={(e) => handleCategoryClick(e, 'certifications')}
-                  className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
-                >
-                  Certifications
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={(e) => handleCategoryClick(e, 'ai-tools')}
-                  className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
-                >
-                  AI Tools
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  onClick={(e) => handleCategoryClick(e, 'people-behavioural')}
-                  className="hover:text-[#0000FF]/70 hover:underline underline-offset-2 transition-colors text-left cursor-pointer"
-                >
-                  People &amp; Behavioural
-                </button>
-              </li>
+              <li>{categoryLink('role-based', 'Role-Based Training')}</li>
+              <li>{categoryLink('tools-technology', 'Tools & Technology')}</li>
+              <li>{categoryLink('process-based', 'Process Based')}</li>
+              <li>{categoryLink('certifications', 'Certifications')}</li>
+              <li>{categoryLink('ai-tools', 'AI Tools')}</li>
+              <li>{categoryLink('people-behavioural', 'People & Behavioural')}</li>
             </ul>
           </div>
 

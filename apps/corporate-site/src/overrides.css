@@ -2,4 +2,25 @@
 .menu-toggle[aria-expanded="true"] .menu-open-icon{display:none}
 .menu-toggle[aria-expanded="true"] .menu-close-icon{display:block}
 .menu-toggle svg{color:#07143d}
+
+/* Balanced side columns keep the five links at the viewport centre. */
+.site-header{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);column-gap:24px}
+.brand{grid-column:1;justify-self:start}
+.primary-nav{grid-column:2;justify-self:center;justify-content:center;gap:24px;font:600 14px Arial,sans-serif;white-space:nowrap}
+.header-actions{grid-column:3;justify-self:end}
+
+@media(max-width:1279px){
+  .site-header{grid-template-columns:minmax(0,1fr) auto auto}
+  .primary-nav{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;padding:1.2rem;background:#fff;box-shadow:var(--shadow);white-space:normal}
+  .primary-nav.open{display:flex}
+  .primary-nav>a{display:block;width:100%;padding:.8rem;text-align:left}
+  .header-actions{grid-column:2}
+  .menu-toggle{display:grid;place-items:center;grid-column:3;width:42px;height:42px;justify-self:end}
+}
+
+@media(max-width:760px){
+  .site-header{grid-template-columns:minmax(0,1fr) auto;padding-inline:16px}
+  .header-actions{display:none}
+  .menu-toggle{grid-column:2}
+}
 .back-top{display:grid;place-items:center}

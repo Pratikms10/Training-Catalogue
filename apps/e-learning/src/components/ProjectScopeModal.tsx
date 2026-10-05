@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { X, Sparkles, Check, Copy, ArrowRight, Mail } from 'lucide-react';
+import { CONTACT_EMAIL } from '../../../../src/data/siteContact';
 
 interface ProjectScopeModalProps {
   isOpen: boolean;
@@ -236,10 +237,10 @@ export function ProjectScopeModal({ isOpen, onClose }: ProjectScopeModalProps) {
           <div className="text-xs text-[#666]">
             Questions? Email directly:{' '}
             <a
-              href="mailto:training@technoedgels.com"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="font-bold text-[#0b0b0d] underline"
             >
-              training@technoedgels.com
+              {CONTACT_EMAIL}
             </a>
           </div>
           <div className="flex gap-2">
@@ -251,7 +252,7 @@ export function ProjectScopeModal({ isOpen, onClose }: ProjectScopeModalProps) {
               Close
             </button>
             <a
-              href={`mailto:training@technoedgels.com?subject=Project Scope Inquiry&body=${encodeURIComponent(
+              href={`mailto:${CONTACT_EMAIL}?subject=Project Scope Inquiry&body=${encodeURIComponent(
                 scopeSummaryText
               )}`}
               className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-[#0b0b0d] text-white font-extrabold text-xs hover:bg-[#1a1b24] shadow-sm cursor-pointer"

@@ -27,7 +27,7 @@ export const CareersHero: React.FC<CareersHeroProps> = ({ onViewOpenings }) => (
         <figure className="careers-hero__portrait-shell">
           <div className="careers-hero__portrait-media">
             <img
-              src="/media/careers/pavan-lalwani-founder-ceo.png"
+              src="/media/careers/pavan-lalwani-founder-ceo-portrait.png"
               alt="Pavan Lalwani, Founder and CEO of TechnoEdge"
               decoding="async"
             />
