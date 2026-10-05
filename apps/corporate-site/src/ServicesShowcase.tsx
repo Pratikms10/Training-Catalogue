@@ -1,162 +1,90 @@
-import { useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Bot, DatabaseZap, GraduationCap, Languages, MonitorPlay } from 'lucide-react';
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
+import { ArrowRight } from 'lucide-react';
 
 const services = [
-  {
-    name: 'Corporate Training',
-    icon: GraduationCap,
-    title: 'Corporate Training Solutions',
-    subtitle: 'Learn it. Practise it. Use it.',
-    points: [
-      'Role-based, instructor-led programs built around the work your teams do every day.',
-      'Hands-on labs and experienced trainers turn technical knowledge into practical capability.',
-    ],
-    takeaway: 'Learning that moves from the classroom into the workplace.',
-    image: '/website/assets/services-showcase/corporate-training.png',
-    imageAlt: 'Trainer guiding a group through a practical technology workshop',
-    visualLabel: 'Expert-led learning, grounded in real work',
-  },
-  {
-    name: 'E-Learning',
-    icon: MonitorPlay,
-    title: 'E-Learning Solutions',
-    subtitle: 'Flexible by design. Consistent at scale.',
-    points: [
-      'Structured digital courses, simulations and learning content available when people need them.',
-      'Engaging practice and clear progress help teams build skills across locations and schedules.',
-    ],
-    takeaway: 'The right learning experience, wherever work happens.',
-    image: '/website/assets/services-showcase/e-learning.png',
-    imageAlt: 'Professional learner taking a digital course on a laptop',
-    visualLabel: 'Digital learning that stays engaging',
-  },
-  {
-    name: 'AI & Automation',
-    icon: Bot,
-    title: 'AI & Automation Consulting',
-    subtitle: 'From useful idea to working process.',
-    points: [
-      'Identify high-value AI use cases and redesign workflows around measurable business needs.',
-      'Implement practical automation with human oversight, responsible adoption and clear outcomes.',
-    ],
-    takeaway: 'Smarter workflows, with people at the centre.',
-    image: '/website/assets/services-showcase/ai-automation.png',
-    imageAlt: 'Consultants reviewing an AI-supported business workflow',
-    visualLabel: 'Practical AI for everyday operations',
-  },
-  {
-    name: 'Content & Language',
-    icon: Languages,
-    title: 'Content Processing & Language Services',
-    subtitle: 'Make every message clear and accessible.',
-    points: [
-      'Human-reviewed transcription, translation and captions help content reach more people.',
-      'Adapt learning assets for different languages, regions and accessibility needs.',
-    ],
-    takeaway: 'One experience, understood across teams and regions.',
-    image: '/website/assets/services-showcase/content-language.png',
-    imageAlt: 'Content specialists reviewing captions and language adaptations',
-    visualLabel: 'Content that connects across languages',
-  },
-  {
-    name: 'Data & AI Support',
-    icon: DatabaseZap,
-    title: 'Data & AI Support',
-    subtitle: 'Better data makes better AI possible.',
-    points: [
-      'Build smarter AI systems with structured, high-quality datasets and careful validation.',
-      'Power automation initiatives with reliable data operations tailored to the work they support.',
-    ],
-    takeaway: 'Reliable data at the foundation of every intelligent system.',
-    image: '/website/assets/services-showcase/data-ai.png',
-    imageAlt: 'Data specialists checking structured datasets and AI readiness',
-    visualLabel: 'Reliable data, ready for what comes next',
-  },
+  { name: 'Content & Language', title: 'Content Processing & Language Services', subtitle: 'Make every message clear and accessible.', image: '/website/assets/services-showcase/content-language-india-v2.png', imageAlt: 'Content specialists reviewing captions and language adaptations', visualLabel: 'Content that connects across languages' },
+  { name: 'E-Learning', title: 'E-Learning Solutions', subtitle: 'Flexible by design. Consistent at scale.', image: '/website/assets/services-showcase/e-learning-india-v2.png', imageAlt: 'Professional learner taking a digital course on a laptop', visualLabel: 'Digital learning that stays engaging' },
+  { name: 'Corporate Training', title: 'Corporate Training Solutions', subtitle: 'Learn it. Practise it. Use it.', image: '/website/assets/services-showcase/corporate-training-india-v2.png', imageAlt: 'Trainer guiding a group through a practical technology workshop', visualLabel: 'Expert-led learning, grounded in real work' },
+  { name: 'AI & Automation', title: 'AI & Automation Consulting', subtitle: 'From useful idea to working process.', image: '/website/assets/services-showcase/ai-automation-india-v2.png', imageAlt: 'Consultants reviewing an AI-supported business workflow', visualLabel: 'Practical AI for everyday operations' },
+  { name: 'Data & AI Support', title: 'Data & AI Support', subtitle: 'Better data makes better AI possible.', image: '/website/assets/services-showcase/data-ai-india-v2.png', imageAlt: 'Data specialists checking structured datasets and AI readiness', visualLabel: 'Reliable data, ready for what comes next' },
 ] as const;
 
+const AUTOPLAY_DELAY = 3000;
+
 export default function ServicesShowcase() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const activeService = services[activeIndex];
-  const ActiveIcon = activeService.icon;
+  const [activeIndex, setActiveIndex] = useState(2);
+  const [isPaused, setIsPaused] = useState(false);
+  const deckRef = useRef<HTMLDivElement | null>(null);
+  const dragStart = useRef<number | null>(null);
 
-  function selectTab(index: number, focus = false) {
-    const nextIndex = (index + services.length) % services.length;
-    setActiveIndex(nextIndex);
-    if (focus) tabRefs.current[nextIndex]?.focus();
-  }
+  const move = (direction: 1 | -1) => setActiveIndex((current) => (current + direction + services.length) % services.length);
 
-  function handleTabKeyDown(event: React.KeyboardEvent<HTMLButtonElement>, index: number) {
-    if (event.key === 'ArrowRight') {
-      event.preventDefault();
-      selectTab(index + 1, true);
-    } else if (event.key === 'ArrowLeft') {
-      event.preventDefault();
-      selectTab(index - 1, true);
-    } else if (event.key === 'Home') {
-      event.preventDefault();
-      selectTab(0, true);
-    } else if (event.key === 'End') {
-      event.preventDefault();
-      selectTab(services.length - 1, true);
-    }
-  }
+  useEffect(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion || isPaused) return;
+    const timer = window.setInterval(() => move(1), AUTOPLAY_DELAY);
+    return () => window.clearInterval(timer);
+  }, [activeIndex, isPaused]);
+
+  const offsetFor = (index: number) => {
+    let offset = index - activeIndex;
+    if (offset > services.length / 2) offset -= services.length;
+    if (offset < -services.length / 2) offset += services.length;
+    return offset;
+  };
+
+  const finishDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const start = dragStart.current;
+    if (start === null) return;
+    const distance = event.clientX - start;
+    dragStart.current = null;
+    deckRef.current?.style.setProperty('--drag-x', '0px');
+    setIsPaused(false);
+    if (Math.abs(distance) > 42) move(distance < 0 ? 1 : -1);
+  };
 
   return (
     <section className="services-showcase section" id="services" aria-labelledby="services-heading">
       <div className="services-showcase-shell">
         <header className="services-showcase-header">
-          <div>
-            <span className="services-showcase-eyebrow">OUR SERVICES</span>
-            <h2 id="services-heading">Choose the challenge.<br /><span>We&apos;ll build the capability.</span></h2>
-          </div>
-          <div className="services-showcase-controls" aria-label="Service navigation">
-            <span className="services-showcase-count"><strong>{String(activeIndex + 1).padStart(2, '0')}</strong> / {String(services.length).padStart(2, '0')}</span>
-            <button type="button" aria-label="Previous service" onClick={() => selectTab(activeIndex - 1)}><ArrowLeft size={19} aria-hidden="true" /></button>
-            <button type="button" aria-label="Next service" onClick={() => selectTab(activeIndex + 1)}><ArrowRight size={19} aria-hidden="true" /></button>
-          </div>
+          <h2 id="services-heading">Five services. <span>One capability partner.</span></h2>
         </header>
 
-        <div className="services-showcase-tabs" role="tablist" aria-label="Explore TechnoEdge services">
+        <div className="services-carousel-tabs" role="tablist" aria-label="Choose a service">
+          {services.map((service, index) => (
+            <button type="button" id={`service-tab-${index}`} role="tab" aria-selected={activeIndex === index} aria-controls={`service-slide-${index}`} className={activeIndex === index ? 'is-active' : ''} onClick={() => setActiveIndex(index)} key={service.name}>{service.name}</button>
+          ))}
+        </div>
+
+        <div
+          className="services-card-deck"
+          ref={deckRef}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="TechnoEdge services"
+          tabIndex={0}
+          onKeyDown={(event) => { if (event.key === 'ArrowLeft') move(-1); if (event.key === 'ArrowRight') move(1); }}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onPointerDown={(event) => { dragStart.current = event.clientX; event.currentTarget.setPointerCapture(event.pointerId); event.currentTarget.classList.add('is-dragging'); setIsPaused(true); }}
+          onPointerMove={(event) => { if (dragStart.current === null) return; const distance = Math.max(-110, Math.min(110, event.clientX - dragStart.current)); deckRef.current?.style.setProperty('--drag-x', `${distance}px`); }}
+          onPointerUp={(event) => { event.currentTarget.classList.remove('is-dragging'); finishDrag(event); }}
+          onPointerCancel={(event) => { event.currentTarget.classList.remove('is-dragging'); finishDrag(event); }}
+        >
           {services.map((service, index) => {
-            const Icon = service.icon;
+            const offset = offsetFor(index);
             return (
-              <button
-                key={service.name}
-                ref={(element) => { tabRefs.current[index] = element; }}
-                id={`service-tab-${index}`}
-                type="button"
-                role="tab"
-                aria-selected={activeIndex === index}
-                aria-controls="service-panel"
-                tabIndex={activeIndex === index ? 0 : -1}
-                className={activeIndex === index ? 'is-active' : ''}
-                onClick={() => selectTab(index)}
-                onKeyDown={(event) => handleTabKeyDown(event, index)}
-              >
-                <small>{String(index + 1).padStart(2, '0')}</small>
-                <Icon size={17} strokeWidth={1.8} aria-hidden="true" />
-                <span>{service.name}</span>
-                {activeIndex === index && <i aria-hidden="true" />}
-              </button>
+              <article className={`services-stack-card${offset === 0 ? ' is-active' : ''}`} id={`service-slide-${index}`} role="tabpanel" aria-labelledby={`service-tab-${index}`} aria-hidden={offset !== 0} style={{ '--card-offset': offset, '--card-distance': Math.abs(offset) } as CSSProperties} key={service.name}>
+                <img src={service.image} alt={service.imageAlt} loading={index === 2 ? 'eager' : 'lazy'} draggable="false" />
+                <div className="services-stack-shade" aria-hidden="true" />
+                <div className="services-stack-copy"><span>{service.visualLabel}</span><h3>{service.title}</h3><a href="#contact" tabIndex={offset === 0 ? 0 : -1}>Explore service <ArrowRight size={17} aria-hidden="true" /></a></div>
+              </article>
             );
           })}
         </div>
 
-        <div className="services-showcase-panel" id="service-panel" role="tabpanel" aria-labelledby={`service-tab-${activeIndex}`} key={activeService.name}>
-          <div className="services-showcase-copy">
-            <div className="services-showcase-copy-heading">
-              <span className="services-showcase-icon"><ActiveIcon size={29} strokeWidth={1.7} aria-hidden="true" /></span>
-              <div><span className="services-showcase-step">SERVICE {String(activeIndex + 1).padStart(2, '0')}</span><h3>{activeService.title}</h3><p>{activeService.subtitle}</p></div>
-            </div>
-            <ul>{activeService.points.map((point) => <li key={point}>{point}</li>)}</ul>
-            <p className="services-showcase-takeaway">{activeService.takeaway}</p>
-            <a className="services-showcase-cta" href="#contact">Enquire about this service <ArrowRight size={18} aria-hidden="true" /></a>
-          </div>
-          <figure className="services-showcase-visual">
-            <div className="services-showcase-image-wrap"><img src={activeService.image} alt={activeService.imageAlt} loading="lazy" /></div>
-            <figcaption><span className="services-showcase-visual-dot" />{activeService.visualLabel}</figcaption>
-          </figure>
+        <div className="services-carousel-dots" aria-label="Carousel progress">
+          {services.map((service, index) => <button type="button" className={activeIndex === index ? 'is-active' : ''} aria-label={`Show ${service.name}`} aria-current={activeIndex === index ? 'true' : undefined} onClick={() => setActiveIndex(index)} key={service.name} />)}
         </div>
       </div>
     </section>

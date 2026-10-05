@@ -3,3 +3,30 @@
 .menu-toggle[aria-expanded="true"] .menu-close-icon{display:block}
 .menu-toggle svg{color:#07143d}
 .back-top{display:grid;place-items:center}
+/* Keep the primary navigation compact without changing its information density. */
+@media (min-width: 761px) {
+  .site-header { height: 74px; }
+  .site-header .brand {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .site-header .brand img { transform: none; }
+}
+
+@media (max-width: 1050px) and (min-width: 761px) {
+  .primary-nav { top: 73px; }
+}
+
+@media (max-width: 760px) {
+  .site-header { height: 61px; }
+  .site-header .brand {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+  .site-header .brand img { transform: none; }
+  .primary-nav { top: 60px; }
+}

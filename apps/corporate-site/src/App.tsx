@@ -36,7 +36,6 @@ function CorporateHome() {
   <main id="main">
     <section className="hero">
       <motion.div className="hero-copy" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, ease: 'easeOut' }}>
-        <span className="hero-kicker">LEARN &nbsp;•&nbsp; UPSKILL &nbsp;•&nbsp; TRANSFORM</span>
         <h1>Build workforce capability.<br /><span>Unlock AI-powered productivity.</span></h1>
         <p>Corporate training, e-learning and practical AI solutions that help teams learn faster, redesign work and deliver measurable outcomes.</p>
         <div className="hero-actions"><a className="btn btn-solid hero-button" href="#services">Explore Our Services <span>›</span></a><a className="btn btn-outline hero-button" href="#ai-journey">Explore the AI Journey</a></div>
@@ -45,67 +44,17 @@ function CorporateHome() {
 
     <ClientLogosSection />
 
-    <section className="impact" aria-labelledby="impact-title" data-active="0">
+    <section className="impact" aria-labelledby="impact-title">
       <div className="impact-shell">
-        <div className="impact-space" aria-hidden="true">
-          <span className="impact-grid-plane"></span>
-          <span className="impact-space-ring ring-one"></span>
-          <span className="impact-space-ring ring-two"></span>
-          <span className="impact-space-ring ring-three"></span>
-          <span className="impact-energy-core"></span>
-          <span className="impact-scan"></span>
-        </div>
         <header className="impact-intro">
-          <span className="eyebrow">IMPACT AT SCALE</span>
-          <h2 id="impact-title">Built through experience.<br />Proven through scale.</h2>
+          <h2 id="impact-title">Built through experience. Proven through scale.</h2>
           <p>Four measures of the capability we build with teams worldwide.</p>
-          <span className="impact-mode"><i></i> Scroll to navigate the capability field</span>
-          <div className="impact-progress" aria-hidden="true">
-            <span className="impact-progress-line"><i></i></span>
-            <strong className="impact-step">01</strong><span>/ 04</span>
-          </div>
         </header>
-
         <div className="impact-grid" aria-label="Company metrics">
-          <article className="impact-card impact-card-navy is-active" style={{ '--card-index': '0' } as React.CSSProperties}>
-            <div className="impact-art impact-orbit" aria-hidden="true"><span></span><i></i></div>
-            <div className="impact-card-copy">
-              <span className="impact-card-index">01 / GLOBAL REACH</span>
-              <div className="impact-value"><strong data-count="200">0</strong><span>+</span></div>
-              <p>Clients Globally</p>
-              <small>Trusted across enterprise learning engagements worldwide.</small>
-            </div>
-          </article>
-
-          <article className="impact-card impact-card-blue is-upcoming" style={{ '--card-index': '1' } as React.CSSProperties}>
-            <div className="impact-art impact-fold" aria-hidden="true"><span></span><i></i></div>
-            <div className="impact-card-copy">
-              <span className="impact-card-index">02 / DELIVERY</span>
-              <div className="impact-value"><strong data-count="3500">0</strong><span>+</span></div>
-              <p>Training Hours Delivered</p>
-              <small>Instructor-led programs delivered across critical technologies.</small>
-            </div>
-          </article>
-
-          <article className="impact-card impact-card-periwinkle is-upcoming" style={{ '--card-index': '2' } as React.CSSProperties}>
-            <div className="impact-art impact-waves" aria-hidden="true"><span></span><i></i><b></b></div>
-            <div className="impact-card-copy">
-              <span className="impact-card-index">03 / CURRICULUM</span>
-              <div className="impact-value"><strong data-count="3000">0</strong><span>+</span></div>
-              <p>Courses Supported</p>
-              <small>Curricula mapped to roles, platforms and business outcomes.</small>
-            </div>
-          </article>
-
-          <article className="impact-card impact-card-light is-upcoming" style={{ '--card-index': '3' } as React.CSSProperties}>
-            <div className="impact-art impact-arc" aria-hidden="true"><span></span><i></i></div>
-            <div className="impact-card-copy">
-              <span className="impact-card-index">04 / CONTENT</span>
-              <div className="impact-value"><strong data-count="1500">0</strong><span>+</span></div>
-              <p>Content Hours Developed</p>
-              <small>Learning assets designed for repeatable capability building.</small>
-            </div>
-          </article>
+          <article className="impact-card"><div className="impact-value"><strong data-count="200">0</strong><span>+</span></div><p>Clients Globally</p><small>Enterprise learning engagements worldwide</small></article>
+          <article className="impact-card"><div className="impact-value"><strong data-count="3500">0</strong><span>+</span></div><p>Training Hours</p><small>Across critical technologies</small></article>
+          <article className="impact-card"><div className="impact-value"><strong data-count="3000">0</strong><span>+</span></div><p>Courses Supported</p><small>Mapped to roles and outcomes</small></article>
+          <article className="impact-card"><div className="impact-value"><strong data-count="1500">0</strong><span>+</span></div><p>Content Hours</p><small>Designed for repeatable learning</small></article>
         </div>
       </div>
     </section>

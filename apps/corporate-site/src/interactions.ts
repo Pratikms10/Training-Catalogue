@@ -118,42 +118,13 @@ export function mountCorporateInteractions(): () => void {
   disposers.push(() => revealObserver.disconnect());
 
   const impact = root.querySelector<HTMLElement>('.impact');
-  const impactCards = [...root.querySelectorAll<HTMLElement>('.impact-card')];
-  const impactStep = root.querySelector<HTMLElement>('.impact-step');
-  const impactBar = root.querySelector<HTMLElement>('.impact-progress-line i');
-  let impactFrame = 0;
-  const updateImpact = () => {
-    impactFrame = 0;
-    if (!impact || !impactCards.length) return;
-    const rect = impact.getBoundingClientRect();
-    const progress = clamp(-rect.top / Math.max(1, rect.height - innerHeight));
-    const styles: Record<string, string> = {
-      '--impact-scroll': progress.toFixed(4),
-      '--impact-ring-one': `${progress * 140}deg`,
-      '--impact-ring-two': `${progress * -210}deg`,
-      '--impact-ring-three': `${progress * 280}deg`,
-      '--impact-core-rotation': `${progress * 180}deg`,
-      '--impact-core-scale': (.86 + progress * .18).toFixed(4),
-      '--impact-scan-y': `${12 + progress * 74}%`,
-      '--impact-art-x': `${progress * 8}px`,
-      '--impact-art-y': `${progress * -6}px`,
-    };
-    Object.entries(styles).forEach(([name, value]) => impact.style.setProperty(name, value));
-    const active = Math.min(impactCards.length - 1, Math.floor(progress * impactCards.length));
-    impact.dataset.active = String(active);
-    impactCards.forEach((card, index) => {
-      card.classList.toggle('is-active', index === active);
-      card.classList.toggle('is-past', index < active);
-      card.classList.toggle('is-upcoming', index > active);
-    });
-    if (rect.top < innerHeight * .82 && rect.bottom > 0) animateCount(impactCards[active].querySelector('[data-count]'));
-    if (impactStep) impactStep.textContent = String(active + 1).padStart(2, '0');
-    if (impactBar) impactBar.style.transform = `scaleX(${Math.max(.04, progress)})`;
-  };
-  const requestImpact = () => { if (!impactFrame) impactFrame = frame(updateImpact); };
-  observe(window, 'scroll', requestImpact, { passive: true });
-  observe(window, 'resize', requestImpact);
-  updateImpact();
+  const impactObserver = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    counters.forEach(animateCount);
+    impactObserver.disconnect();
+  }, { threshold: .32 });
+  if (impact && !reducedMotion) impactObserver.observe(impact);
+  disposers.push(() => impactObserver.disconnect());
 
   const media = root.querySelector<HTMLElement>('.media-universe');
   const mediaWorld = root.querySelector<HTMLElement>('.media-world');
