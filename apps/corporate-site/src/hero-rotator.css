@@ -1,0 +1,107 @@
+.hero.hero-rotator {
+  min-height: clamp(640px, 70vw, 820px);
+  isolation: isolate;
+  overflow: hidden;
+  background: #eef5fa;
+}
+
+.hero-backgrounds,
+.hero-background,
+.hero-rotator::after {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-backgrounds { z-index: -2; }
+
+.hero-background {
+  opacity: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  transition: opacity .8s ease-in-out;
+}
+
+.hero-background.is-active { opacity: 1; }
+
+.hero-background-ai,
+.hero-background-workforce {
+  background-color: #f7f9fb;
+  background-position: right center;
+  background-size: auto 100%;
+}
+
+.hero-rotator::after {
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(255,255,255,.99) 0%, rgba(255,255,255,.94) 30%, rgba(255,255,255,.56) 48%, rgba(255,255,255,.08) 70%, rgba(255,255,255,.02) 100%);
+}
+
+.hero-rotator-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-height: inherit;
+}
+
+.hero-rotator .hero-copy {
+  width: min(100%, 760px);
+  max-width: 760px;
+  padding-top: 3.4rem;
+  padding-bottom: 1.5rem;
+}
+
+.hero-rotator .hero-kicker {
+  margin-bottom: 1.1rem;
+  color: #0a66c2;
+}
+
+.hero-rotator .hero-copy > p { max-width: 620px; }
+
+.hero-rotator-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem clamp(1.25rem, 4vw, 4.5rem) 3.25rem;
+  color: #1d4168;
+}
+
+.hero-rotator-dots { display: flex; gap: .5rem; }
+
+.hero-rotator-dots button {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 1px solid #1c5f9e;
+  border-radius: 999px;
+  background: rgba(255,255,255,.72);
+  cursor: pointer;
+  transition: width .2s ease, background-color .2s ease;
+}
+
+.hero-rotator-dots button.is-active { width: 30px; background: #155a99; }
+.hero-rotator-dots button:focus-visible { outline: 3px solid #0a66c2; outline-offset: 3px; }
+
+@media (max-width: 1050px) {
+  .hero-background-ai,
+  .hero-background-workforce {
+    background-position: 72% center;
+    background-size: cover;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero.hero-rotator { min-height: 730px; }
+  .hero-rotator::after { background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.93) 42%, rgba(255,255,255,.67) 62%, rgba(255,255,255,.16) 100%); }
+  .hero-background-ai,
+  .hero-background-workforce { background-position: 75% center; }
+  .hero-rotator .hero-copy { padding-top: 4.75rem; }
+  .hero-rotator-controls { padding-bottom: 2.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-background { transition: none; }
+}

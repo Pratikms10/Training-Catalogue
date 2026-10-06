@@ -1,177 +1,116 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
-import { Cog, Lightbulb, Rocket, TrendingUp, UsersRound, type LucideIcon } from 'lucide-react';
+import './teai360-ascent.css';
 
-type Stage = {
-  name: string;
-  headline: string;
-  description: string;
-  capabilities?: string[];
-  color: string;
-  icon: LucideIcon;
-};
-
-const stages: Stage[] = [
+const stages = [
   {
     name: 'Awareness',
-    headline: 'Understand AI.',
-    description: 'Establishing baseline digital literacy and AI possibilities.',
-    capabilities: ['Digital foundations', 'Responsible AI'],
-    color: '#52D9F4',
-    icon: Lightbulb,
+    headline: 'Understand where AI creates value.',
+    description: 'Build shared AI literacy, recognise relevant opportunities, and establish the principles for safe, responsible use.',
+    color: '#eef8ff', edge: '#bddcf2', text: '#14518a', height: '42%',
   },
   {
     name: 'Adoption',
-    headline: 'Use AI every day.',
-    description: 'Integrating initial AI agentic workflows into daily tasks.',
-    capabilities: ['Everyday workflows', 'AI assistants'],
-    color: '#92E5A1',
-    icon: UsersRound,
+    headline: 'Put trusted AI tools into daily work.',
+    description: 'Equip teams with role-based practice, reliable tools, and repeatable habits that turn awareness into practical use.',
+    color: '#82c9f5', edge: '#4d9ed6', text: '#103f6c', height: '54%',
   },
   {
     name: 'Automation',
-    headline: 'Redesign the work.',
-    description: 'Streamlining processes via Robotic Process Automation (RPA) and ML.',
-    capabilities: ['Robotic process automation', 'Machine learning'],
-    color: '#A797FF',
-    icon: Cog,
+    headline: 'Redesign repeatable work.',
+    description: 'Connect processes and systems so routine tasks can run faster, consistently, and with the right human oversight.',
+    color: '#3c9ae4', edge: '#2479bd', text: '#ffffff', height: '66%',
   },
   {
     name: 'Augmentation',
-    headline: 'Amplify people.',
-    description: 'Enhancing human decision-making with predictive analytics.',
-    capabilities: ['Predictive insights', 'Human decisions'],
-    color: '#F396CD',
-    icon: TrendingUp,
+    headline: 'Amplify judgement and expertise.',
+    description: 'Embed intelligent assistance into complex work so people can analyse, decide, create, and deliver with greater confidence.',
+    color: '#236ac1', edge: '#134e96', text: '#ffffff', height: '79%',
   },
   {
     name: 'Acceleration',
-    headline: 'Scale the advantage.',
-    description: 'Achieving full-scale, AI-driven enterprise transformation.',
-    capabilities: ['Business Productivity', 'AI Orchestration', 'AI Champions', 'Continuous Upskilling'],
-    color: '#F7C879',
-    icon: Rocket,
+    headline: 'Scale AI as an enterprise capability.',
+    description: 'Operationalise proven use cases across functions with governance, measurement, and a system for continuous improvement.',
+    color: '#0d4688', edge: '#062f66', text: '#ffffff', height: '93%',
   },
-];
-
-const clamp = (value: number) => Math.max(0, Math.min(1, value));
-
-function StageContent({ stage, index }: { stage: Stage; index: number }) {
-  return (
-    <>
-      <div className="teai360-stage-kicker">{String(index + 1).padStart(2, '0')} / 05</div>
-      <h3>{stage.name}</h3>
-      <p className="teai360-stage-headline">{stage.headline}</p>
-      <p className="teai360-stage-description">{stage.description}</p>
-      {stage.capabilities && <ul className="teai360-capabilities" aria-label={`${stage.name} focus areas`}>
-        {stage.capabilities.map((capability) => <li key={capability}>{capability}</li>)}
-      </ul>}
-    </>
-  );
-}
+] as const;
 
 export default function TEAI360Section() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [active, setActive] = useState(0);
+  const [activeStage, setActiveStage] = useState(0);
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section) return;
+    if (!section || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const mobile = window.matchMedia('(max-width: 760px)');
-    let raf = 0;
-
-    const update = () => {
-      raf = 0;
-      if (mobile.matches || reducedMotion.matches) return;
-      const header = window.innerWidth <= 1050 ? 76 : 92;
+    let frame = 0;
+    const updateStage = () => {
+      frame = 0;
       const rect = section.getBoundingClientRect();
-      const travel = Math.max(1, section.offsetHeight - window.innerHeight + header);
-      const progress = clamp((header - rect.top) / travel);
-      const stage = Math.min(stages.length - 1, Math.floor(progress * stages.length));
-      section.style.setProperty('--teai-camera-y', `${(14 - progress * 32).toFixed(1)}px`);
-      section.style.setProperty('--teai-camera-scale', (1 + progress * .035).toFixed(4));
-      setActive((current) => current === stage ? current : stage);
+      const travel = Math.max(section.offsetHeight - window.innerHeight, 1);
+      const progress = Math.min(1, Math.max(0, -rect.top / travel));
+      const nextStage = Math.min(stages.length - 1, Math.floor(progress * stages.length));
+      setActiveStage((current) => (current === nextStage ? current : nextStage));
     };
-    const requestUpdate = () => { if (!raf) raf = requestAnimationFrame(update); };
-    window.addEventListener('scroll', requestUpdate, { passive: true });
-    window.addEventListener('resize', requestUpdate);
-    update();
+    const onScroll = () => {
+      if (!frame) frame = window.requestAnimationFrame(updateStage);
+    };
+
+    updateStage();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
     return () => {
-      window.removeEventListener('scroll', requestUpdate);
-      window.removeEventListener('resize', requestUpdate);
-      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
 
-  const current = stages[active];
+  const active = stages[activeStage];
 
   return (
-    <section className="teai360" id="ai-journey" ref={sectionRef} data-active={active} aria-labelledby="teai360-title">
-      <div className="teai360-scroll">
-        <div className="teai360-viewport" style={{ '--teai-accent': current.color } as CSSProperties}>
-          <div className="teai360-atmosphere" aria-hidden="true" />
-          <div className="teai360-layout">
-            <div className="teai360-editorial">
-              <div className="teai360-heading">
-                <span className="teai360-eyebrow">AI CAPABILITY FRAMEWORK</span>
-                <h2 id="teai360-title">TE-AI360 <em>Ascension</em></h2>
-              </div>
-              <div className="teai360-stage-copy" key={active}>
-                <StageContent stage={current} index={active} />
-              </div>
-            </div>
+    <section className="ai-framework-scroll" id="ai-journey" ref={sectionRef} aria-labelledby="teai360-title">
+      <div className="ai-framework">
+        <header className="ai-framework-heading">
+          <h2 id="teai360-title">TE-AI360</h2>
+          <p>Five levels that turn AI ambition into organisational capability.</p>
+        </header>
 
-            <div className="teai360-scene" aria-hidden="true">
-              <div className="teai360-scene-inner">
-                <div className="teai360-staircase">
-                  <svg className="teai360-ascent-path" viewBox="0 0 1000 600" preserveAspectRatio="none" focusable="false">
-                    <defs>
-                      <linearGradient id="teai360-path-gradient" x1="0" y1="1" x2="1" y2="0">
-                        <stop offset="0%" stopColor="#52d9f4" />
-                        <stop offset="26%" stopColor="#92e5a1" />
-                        <stop offset="52%" stopColor="#a797ff" />
-                        <stop offset="76%" stopColor="#f396cd" />
-                        <stop offset="100%" stopColor="#f7c879" />
-                      </linearGradient>
-                    </defs>
-                    <path className="teai360-ascent-path-bed" d="M 70 445 H 198 Q 219 445 219 426 V 391 Q 219 373 238 373 H 390 Q 411 373 411 354 V 319 Q 411 301 430 301 H 582 Q 603 301 603 282 V 247 Q 603 229 622 229 H 774 Q 795 229 795 210 V 175 Q 795 157 814 157 H 940" />
-                    <path className="teai360-ascent-path-progress" pathLength="100" style={{ strokeDashoffset: 100 - (active + 1) * 20 }} d="M 70 445 H 198 Q 219 445 219 426 V 391 Q 219 373 238 373 H 390 Q 411 373 411 354 V 319 Q 411 301 430 301 H 582 Q 603 301 603 282 V 247 Q 603 229 622 229 H 774 Q 795 229 795 210 V 175 Q 795 157 814 157 H 940" />
-                    <circle className="teai360-ascent-marker" cx={[115, 307, 499, 691, 883][active]} cy={[445, 373, 301, 229, 157][active]} r="9" fill={current.color} />
-                  </svg>
-                  <div className="teai360-foundation"><span style={{ left: `${active * 20}%`, backgroundColor: current.color, boxShadow: `0 0 24px ${current.color}` }} /></div>
-                  {stages.map((stage, index) => {
-                    const Icon = stage.icon;
-                    return (
-                      <div
-                        key={stage.name}
-                        className={`teai360-step teai360-step-${index + 1}`}
-                        data-state={index < active ? 'complete' : index === active ? 'active' : 'future'}
-                        style={{ '--step-accent': stage.color } as CSSProperties}
-                      >
-                        <span className="teai360-step-watermark">{String(index + 1).padStart(2, '0')}</span>
-                        <span className="teai360-step-icon"><Icon size={23} strokeWidth={1.8} /></span>
-                        <span className="teai360-step-index">{String(index + 1).padStart(2, '0')}</span>
-                        <strong>{stage.name}</strong>
-                        <small>{stage.headline}</small>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
+        <div className="ai-framework-layout">
+          <div className="ai-framework-copy" key={active.name} aria-live="polite">
+            <h3>{active.name}</h3>
+            <strong>{active.headline}</strong>
+            <p>{active.description}</p>
+            <div className="ai-framework-progress" aria-hidden="true">
+              {stages.map((stage, index) => (
+                <span className={index <= activeStage ? 'is-filled' : ''} key={stage.name} />
+              ))}
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="teai360-mobile" aria-label="Five AI capability levels">
-        <div className="teai360-mobile-heading"><span>AI CAPABILITY FRAMEWORK</span><h2>TE-AI360 Ascension</h2></div>
-        <div className="teai360-mobile-steps">
-          {stages.map((stage, index) => (
-            <article className="teai360-mobile-step" key={stage.name} style={{ '--step-accent': stage.color } as CSSProperties}>
-              <StageContent stage={stage} index={index} />
-            </article>
-          ))}
+          <div className="ai-framework-stage-window" role="group" aria-label="Five AI capability stages">
+            <div className="ai-framework-stage-set">
+              {stages.map((stage, index) => {
+                const state = index === activeStage ? 'active' : index < activeStage ? 'complete' : 'upcoming';
+                return (
+                  <article
+                    className="ai-framework-stage"
+                    data-state={state}
+                    aria-current={state === 'active' ? 'step' : undefined}
+                    style={{
+                      '--stage-color': stage.color,
+                      '--stage-edge': stage.edge,
+                      '--stage-text': stage.text,
+                      '--stage-height': stage.height,
+                    } as CSSProperties}
+                    key={stage.name}
+                  >
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                    <h3>{stage.name}</h3>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </section>

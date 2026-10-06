@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ArrowUp, Menu, X } from 'lucide-react';
-import { motion } from 'motion/react';
 import { mountCorporateInteractions } from './interactions';
+import HeroRotator from './HeroRotator';
 import TEAI360Section from './TEAI360Section';
 import ServicesShowcase from './ServicesShowcase';
 import HomeInsightsSection from './HomeInsightsSection';
@@ -36,13 +36,7 @@ function CorporateHome() {
   </header>
 
   <main id="main">
-    <section className="hero">
-      <motion.div className="hero-copy" initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, ease: 'easeOut' }}>
-        <h1>Build workforce capability.<br /><span>Unlock AI-powered productivity.</span></h1>
-        <p>Corporate training, e-learning and practical AI solutions that help teams learn faster, redesign work and deliver measurable outcomes.</p>
-        <div className="hero-actions"><a className="btn btn-solid hero-button" href="#services">Explore Our Services <span>›</span></a><a className="btn btn-outline hero-button" href="#ai-journey">Explore the AI Journey</a></div>
-      </motion.div>
-    </section>
+    <HeroRotator />
 
     <ClientLogosSection />
 
@@ -71,20 +65,20 @@ function CorporateHome() {
         <p>Five years of helping teams turn learning into practical capability—through expert-led training, digital experiences and AI-enabled solutions.</p>
       </header>
       <div className="why-unified-showcase" aria-label="TechnoEdge partnerships, recognition and experience">
-        <figure className="why-proof-card why-proof-microsoft">
-          <span className="why-proof-label">TRAINING PARTNERSHIP</span>
-          <div className="why-proof-logo"><img src="/website/assets/partnerships/microsoft-training-partner.gif" alt="Microsoft in Education Global Training Partner badge" loading="lazy" decoding="async" /></div>
-          <figcaption>Microsoft Global Training Partner</figcaption>
-        </figure>
         <figure className="why-proof-card why-proof-dpiit">
-          <span className="why-proof-label">STARTUP INDIA RECOGNITION</span>
-          <div className="why-proof-logo"><img src="/website/assets/partnerships/dpiit-startup-india.png" alt="DPIIT Startup India logo" loading="lazy" decoding="async" /></div>
-          <figcaption>DPIIT · Startup India</figcaption>
+          <span className="why-proof-label">DPIIT RECOGNITION</span>
+          <div className="why-proof-logo"><img src="/website/assets/partnerships/dpiit-recognition.png" alt="DPIIT recognition emblem" loading="lazy" decoding="async" /></div>
+          <figcaption>Recognised by DPIIT</figcaption>
         </figure>
         <figure className="why-proof-card why-proof-skilling">
           <span className="why-proof-label">MICROSOFT SKILLING PARTNERSHIP</span>
           <div className="why-proof-logo"><img src="/website/assets/partnerships/microsoft-training-skilling-partner-badge.png" alt="Microsoft Training Skilling Partner badge" loading="lazy" decoding="async" /></div>
           <figcaption>Microsoft Training Skilling Partner</figcaption>
+        </figure>
+        <figure className="why-proof-card why-proof-startup">
+          <span className="why-proof-label">STARTUP INDIA RECOGNITION</span>
+          <div className="why-proof-logo"><img src="/website/assets/partnerships/startup-india.png" alt="Startup India emblem" loading="lazy" decoding="async" /></div>
+          <figcaption>Startup India</figcaption>
         </figure>
       </div>
     </section>
@@ -171,11 +165,6 @@ function CorporateHome() {
             <figure className="media-node media-photo" data-focus="0.92" data-x="690" data-y="1370" data-zoom="1.04" style={{ '--wx': '690px', '--wy': '1370px', '--node-width': '560px', '--depth': '30px' } as React.CSSProperties}>
               <img src="/website/assets/training-media/training-enterprise-team.jpeg" alt="Enterprise learning community gathered after training" loading="lazy" />
               <figcaption>Real people. Real capability.</figcaption>
-            </figure>
-
-            <figure className="media-node media-photo media-recognition" style={{ '--node-width': '350px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/recognition-youtube-silver.jpg" alt="YouTube Silver Creator Award presented to Pavan Lalwani for 100,000 subscribers" loading="lazy" />
-              <figcaption>Pavan Lalwani’s 100K creator milestone</figcaption>
             </figure>
 
             <figure className="media-node media-photo media-recognition" style={{ '--node-width': '390px' } as React.CSSProperties}>

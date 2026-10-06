@@ -1,35 +1,55 @@
 .media-world .media-recognition {
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #d9e1ea;
+  border-radius: 14px;
   background: #fff;
+  box-shadow: 0 14px 34px rgba(18, 42, 72, .12);
 }
 
 .media-world .media-recognition::after {
   display: none;
 }
 
+.media-world .media-recognition::before {
+  display: none;
+}
+
 .media-world .media-recognition img {
+  display: block;
   width: 100%;
-  max-height: min(57vh, 430px);
-  aspect-ratio: 3 / 4;
+  max-height: min(54vh, 400px);
+  aspect-ratio: 4 / 5;
   object-fit: contain;
-  background: #efede9;
-  border-radius: 11px 11px 0 0;
+  background: #f4f6f8;
+  border-radius: 0;
 }
 
 .media-world .media-recognition figcaption {
   position: static;
-  padding: .7rem .8rem .55rem;
-  color: #213251;
+  min-height: 58px;
+  margin: 0;
+  padding: .8rem .9rem;
+  border-top: 1px solid #e2e7ed;
+  color: #203755;
   background: #fff;
-  font-size: .65rem;
-  letter-spacing: .03em;
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .015em;
+  line-height: 1.35;
   text-transform: none;
   opacity: 1;
   transform: none;
 }
 
+.media-world .media-node.is-focus.media-recognition {
+  border-color: #afbdcb;
+  box-shadow: 0 20px 42px rgba(18, 42, 72, .16);
+}
+
 @media (max-width: 760px), (prefers-reduced-motion: reduce) {
   .media-world .media-recognition img {
-    max-height: min(70vh, 520px);
-    aspect-ratio: 3 / 4;
+    max-height: min(66vh, 500px);
+    aspect-ratio: 4 / 5;
   }
 }

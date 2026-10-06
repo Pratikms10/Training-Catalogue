@@ -100,12 +100,6 @@ export const careerPhotos: CareerPhoto[] = [
     position: 'center center',
   },
   {
-    id: 'rooftop-colleagues',
-    src: '/media/careers/team-rooftop-colleagues.jpg',
-    alt: 'A group of TechnoEdge colleagues spending time together outdoors',
-    position: 'center 38%',
-  },
-  {
     id: 'festive-women',
     src: '/media/careers/team-festive-women.jpg',
     alt: 'TechnoEdge team members celebrating in traditional attire',

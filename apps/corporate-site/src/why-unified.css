@@ -18,20 +18,20 @@
 .why-proof-card { position: relative; min-width: 0; min-height: 356px; margin: 0; overflow: hidden; border-radius: 24px; }
 .why-proof-card { display: flex; flex-direction: column; padding: clamp(1.25rem, 2.2vw, 1.9rem); border: 1px solid #dce5ee; background: #fff; box-shadow: 0 16px 38px rgba(27, 46, 75, .065); }
 .why-proof-card:before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: #1a6fc6; }
-.why-proof-dpiit:before { background: linear-gradient(90deg, #f4772f 0 62%, #217f5e 62%); }
+.why-proof-dpiit:before, .why-proof-startup:before { background: linear-gradient(90deg, #f4772f 0 62%, #217f5e 62%); }
 .why-proof-skilling:before { background: linear-gradient(90deg, #f25022 0 25%, #7fba00 25% 50%, #00a4ef 50% 75%, #ffb900 75%); }
 .why-proof-label { color: #54708a; font-size: .67rem; font-weight: 850; letter-spacing: .16em; }
 .why-proof-logo { display: flex; align-items: center; justify-content: center; flex: 1; min-height: 230px; padding: 1.1rem .2rem; }
 .why-proof-logo img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; }
 .why-proof-microsoft .why-proof-logo img { width: min(190px, 78%); aspect-ratio: 1; border-radius: 16px; }
-.why-proof-dpiit .why-proof-logo img { width: min(350px, 100%); height: auto; }
+.why-proof-dpiit .why-proof-logo img, .why-proof-startup .why-proof-logo img { width: min(350px, 100%); height: auto; }
 .why-proof-skilling .why-proof-logo img { width: min(100%, 340px); height: auto; border-radius: 10px; }
 .why-proof-card figcaption { padding-top: 1rem; border-top: 1px solid #edf0f3; color: #17213a; font-size: 1rem; font-weight: 800; }
 
 
 @media (max-width: 1050px) {
   .why-unified-showcase { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .why-proof-skilling { grid-column: 1 / -1; min-height: 280px; }
+  .why-proof-startup { grid-column: 1 / -1; min-height: 280px; }
 }
 
 @media (max-width: 760px) {
@@ -43,5 +43,5 @@
   .why-unified-showcase { grid-template-columns: 1fr; }
   .why-proof-card { min-height: 300px; }
   .why-proof-logo { min-height: 190px; }
-  .why-proof-skilling { grid-column: 1; }
+  .why-proof-startup { grid-column: 1; }
 }
