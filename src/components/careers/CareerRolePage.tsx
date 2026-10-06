@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { careerJobs } from '../../data/careersData';
 import { CareerEmailDialog } from './CareerEmailDialog';
@@ -11,16 +11,6 @@ interface CareerRolePageProps {
 export const CareerRolePage: React.FC<CareerRolePageProps> = ({ slug, onBack }) => {
   const job = careerJobs.find((item) => item.slug === slug);
   const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
-
-  useEffect(() => {
-    document.title = job
-      ? `${job.title} | Careers at TechnoEdge`
-      : 'Role not found | Careers at TechnoEdge';
-
-    return () => {
-      document.title = 'TechnoEdge Corporate Training Catalogue';
-    };
-  }, [job]);
 
   if (!job) {
     return (

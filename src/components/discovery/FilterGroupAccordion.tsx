@@ -24,18 +24,18 @@ export const FilterGroupAccordion: React.FC<FilterGroupAccordionProps> = ({
   const visibleOptions = isShowingAll ? group.options : group.options.slice(0, initialCount);
 
   return (
-    <div className="border-b border-[rgba(0,0,255,0.08)] py-4 last:border-b-0">
+    <div className="border-b border-[rgba(1,38,106,0.08)] py-4 last:border-b-0">
       {/* Accordion Header */}
       <button
         type="button"
         onClick={() => setIsExpanded(!isExpanded)}
         aria-expanded={isExpanded}
-        className="w-full flex items-center justify-between text-left py-1 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0000FF] rounded"
+        className="w-full flex items-center justify-between text-left py-1 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#01266A] rounded"
       >
-        <span className="font-semibold text-sm tracking-wide text-[#000000] group-hover:text-[#0000FF]/70/70 transition-colors">
+        <span className="font-semibold text-sm tracking-wide text-[#000000] group-hover:text-[#01266A]/70/70 transition-colors">
           {group.title}
         </span>
-        <span className="text-[#0000FF] transition-transform duration-200">
+        <span className="text-[#01266A] transition-transform duration-200">
           {isExpanded ? (
             <ChevronUp className="w-4 h-4" aria-hidden="true" />
           ) : (
@@ -56,9 +56,9 @@ export const FilterGroupAccordion: React.FC<FilterGroupAccordionProps> = ({
                 key={opt.id}
                 htmlFor={inputId}
                 className={`relative flex items-start gap-2.5 px-2 py-1.5 rounded text-sm cursor-pointer transition-colors select-none group
-                  ${isChecked 
-                    ? 'text-[#0000FF] bg-[rgba(33,150,243,0.08)] font-medium' 
-                    : 'text-[rgba(0,0,0,0.82)] hover:bg-[rgba(33,150,243,0.04)]'}
+                  ${isChecked
+                    ? 'text-[#01266A] bg-[rgba(115,194,251,0.08)] font-medium'
+                    : 'text-[rgba(0,0,0,0.82)] hover:bg-[rgba(115,194,251,0.04)]'}
                 `}
               >
                 {/* Hidden Native Input for Accessibility/State */}
@@ -73,9 +73,9 @@ export const FilterGroupAccordion: React.FC<FilterGroupAccordionProps> = ({
                 {/* Custom Animated Checkbox */}
                 <div 
                   className={`mt-0.5 relative flex items-center justify-center w-4 h-4 rounded shrink-0 transition-colors duration-200 border
-                    ${isChecked 
-                      ? 'bg-[#0000FF] border-[#0000FF]' 
-                      : 'bg-white border-[rgba(0,0,255,0.25)] group-hover:border-[#0000FF]/30'
+                    ${isChecked
+                      ? 'bg-[#01266A] border-[#01266A]'
+                      : 'bg-white border-[rgba(1,38,106,0.25)] group-hover:border-[#01266A]/30'
                     }
                   `}
                 >
@@ -120,7 +120,7 @@ export const FilterGroupAccordion: React.FC<FilterGroupAccordionProps> = ({
             <button
               type="button"
               onClick={() => setIsShowingAll(!isShowingAll)}
-              className="mt-2 text-xs font-semibold text-[#0000FF] hover:underline px-2 py-1 flex items-center gap-1 focus:outline-none focus:ring-1 focus:ring-[#0000FF] rounded"
+              className="mt-2 text-xs font-semibold text-[#01266A] hover:underline px-2 py-1 flex items-center gap-1 focus:outline-none focus:ring-1 focus:ring-[#01266A] rounded"
             >
               {isShowingAll ? (
                 <>

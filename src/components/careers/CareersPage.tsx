@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { careerJobs } from '../../data/careersData';
 import { AboutTechnoEdge } from './AboutTechnoEdge';
 import { CareersHero } from './CareersHero';
@@ -11,13 +11,6 @@ interface CareersPageProps {
 }
 
 export const CareersPage: React.FC<CareersPageProps> = ({ onViewRole }) => {
-  useEffect(() => {
-    document.title = 'Careers at TechnoEdge | Learning, technology and innovation';
-    return () => {
-      document.title = 'TechnoEdge Corporate Training Catalogue';
-    };
-  }, []);
-
   const scrollToOpenings = () => {
     document.getElementById('current-openings')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };

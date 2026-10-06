@@ -24,7 +24,7 @@ export const ActiveFilterChips: React.FC<ActiveFilterChipsProps> = ({
       {chips.map((chip) => (
         <span
           key={`${chip.groupId}-${chip.value}`}
-          className="inline-flex items-center gap-1.5 px-3 py-1 bg-[rgba(33,150,243,0.08)] border border-[rgba(0,0,255,0.18)] rounded-full text-xs font-medium text-[#000000] transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-1 bg-[rgba(115,194,251,0.08)] border border-[rgba(1,38,106,0.18)] rounded-full text-xs font-medium text-[#000000] transition-colors"
         >
           <span className="text-[rgba(0,0,0,0.52)] font-normal">{chip.groupTitle}:</span>
           <span className="font-semibold">{chip.label}</span>
@@ -32,7 +32,7 @@ export const ActiveFilterChips: React.FC<ActiveFilterChipsProps> = ({
             type="button"
             onClick={() => onRemoveChip(chip.groupId, chip.value)}
             aria-label={`Remove filter ${chip.groupTitle}: ${chip.label}`}
-            className="ml-0.5 p-0.5 rounded-full hover:bg-[rgba(0,0,255,0.15)] text-[#0000FF] focus:outline-none focus:ring-1 focus:ring-[#0000FF]"
+            className="ml-0.5 p-0.5 rounded-full hover:bg-[rgba(1,38,106,0.15)] text-[#01266A] focus:outline-none focus:ring-1 focus:ring-[#01266A]"
           >
             <X className="w-3 h-3" />
           </button>
@@ -42,7 +42,7 @@ export const ActiveFilterChips: React.FC<ActiveFilterChipsProps> = ({
       <button
         type="button"
         onClick={onClearAll}
-        className="text-xs font-semibold text-[#0000FF] hover:underline ml-2 py-1 px-2 rounded focus:outline-none focus:ring-1 focus:ring-[#0000FF]"
+        className="text-xs font-semibold text-[#01266A] hover:underline ml-2 py-1 px-2 rounded focus:outline-none focus:ring-1 focus:ring-[#01266A]"
       >
         Clear All
       </button>

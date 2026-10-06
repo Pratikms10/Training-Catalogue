@@ -7,9 +7,11 @@ import './index.css';
 
 installContactActionTracking();
 
+const routerBasename = window.location.pathname === '/' ? '/' : '/website';
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter basename="/website">
+    <BrowserRouter basename={routerBasename}>
       <App />
     </BrowserRouter>
   </StrictMode>,

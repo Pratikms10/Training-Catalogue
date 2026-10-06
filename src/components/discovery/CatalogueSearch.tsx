@@ -28,7 +28,7 @@ export const CatalogueSearch: React.FC<CatalogueSearchProps> = ({
   return (
     <div className="relative flex-1 w-full group">
       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white">
-        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/15 transition-colors group-focus-within:bg-white group-focus-within:text-[#0000FF]">
+        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/15 transition-colors group-focus-within:bg-white group-focus-within:text-[#01266A]">
           <Search className="w-5 h-5" aria-hidden="true" />
         </span>
       </div>
@@ -42,7 +42,7 @@ export const CatalogueSearch: React.FC<CatalogueSearchProps> = ({
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        className="w-full h-14 sm:h-[60px] pl-16 pr-12 bg-[#075BFF] text-white text-sm sm:text-base font-medium placeholder:font-normal placeholder:text-white/80 border-2 border-[#075BFF] hover:bg-[#004BE0] hover:border-[#004BE0] rounded-xl shadow-[0_8px_24px_rgba(0,73,210,0.28)] transition-all focus:outline-none focus:border-[#003BB5] focus:ring-4 focus:ring-[rgba(33,150,243,0.28)] focus:shadow-[0_10px_30px_rgba(0,73,210,0.34)]"
+        className="w-full h-14 sm:h-[60px] pl-16 pr-12 bg-[#2666C4] text-white text-sm sm:text-base font-medium placeholder:font-normal placeholder:text-white/80 border-2 border-[#2666C4] hover:bg-[#2666C4] hover:border-[#2666C4] rounded-xl shadow-[0_8px_24px_rgba(0,73,210,0.28)] transition-all focus:outline-none focus:border-[#2666C4] focus:ring-4 focus:ring-[rgba(115,194,251,0.28)] focus:shadow-[0_10px_30px_rgba(0,73,210,0.34)]"
       />
 
       {value && (

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 @source "../../../src/components/FooterStructure.tsx";
+@import "../../../src/styles/brand-tokens.css";
 @import "./legacy.css";
 @import "./overrides.css";
-@import "./teai360.css";
 @import "./recognition.css";
 @import "./services-showcase.css";
 @import "./home-insights.css";

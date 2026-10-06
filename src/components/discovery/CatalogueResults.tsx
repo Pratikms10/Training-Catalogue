@@ -83,18 +83,18 @@ function getPaginationItems(currentPage: number, totalPages: number): (number | 
 }
 
 const SkeletonCard = () => (
-  <div className="flex flex-col border border-[rgba(0,0,255,0.06)] rounded-xl bg-white h-full w-full max-w-sm mx-auto overflow-hidden animate-pulse">
-    <div className="w-full aspect-[16/9] bg-[rgba(33,150,243,0.06)]"></div>
+  <div className="flex flex-col border border-[rgba(1,38,106,0.06)] rounded-xl bg-white h-full w-full max-w-sm mx-auto overflow-hidden animate-pulse">
+    <div className="w-full aspect-[16/9] bg-[rgba(115,194,251,0.06)]"></div>
     <div className="p-5 flex flex-col flex-1 gap-4">
       <div className="flex items-start justify-between">
-        <div className="h-5 w-24 bg-[rgba(33,150,243,0.08)] rounded"></div>
+        <div className="h-5 w-24 bg-[rgba(115,194,251,0.08)] rounded"></div>
         <div className="h-3 w-16 bg-[rgba(0,0,0,0.04)] rounded mt-1"></div>
       </div>
       <div className="h-6 w-3/4 bg-[rgba(0,0,0,0.06)] rounded"></div>
       <div className="h-10 w-full bg-[rgba(0,0,0,0.03)] rounded mt-2"></div>
-      <div className="mt-auto pt-4 flex items-center justify-between border-t border-[rgba(0,0,255,0.04)]">
+      <div className="mt-auto pt-4 flex items-center justify-between border-t border-[rgba(1,38,106,0.04)]">
         <div className="h-4 w-12 bg-[rgba(0,0,0,0.04)] rounded"></div>
-        <div className="h-4 w-20 bg-[rgba(0,0,255,0.06)] rounded"></div>
+        <div className="h-4 w-20 bg-[rgba(1,38,106,0.06)] rounded"></div>
       </div>
     </div>
   </div>
@@ -179,7 +179,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
       />
 
       {/* Result Count Status Bar */}
-      {!isCataloguePlanned && <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-4 mb-6 border-b border-[rgba(0,0,255,0.12)]">
+      {!isCataloguePlanned && <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-4 mb-6 border-b border-[rgba(1,38,106,0.12)]">
         <div>
           <h2 className="text-base font-bold text-[#000000] tracking-tight">
             {showLoading ? 'Updating...' : (resultCount === 1 ? '1 programme found' : `${resultCount.toLocaleString()} programmes found`)}
@@ -274,8 +274,8 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
                   aria-label="Previous page"
                   className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center border transition-all duration-150 ${
                     validCurrentPage === 1
-                      ? 'border-[#D9E2F1] text-[#9CA3AF] opacity-40 cursor-not-allowed'
-                      : 'bg-white text-[#1F2937] border-[#D9E2F1] hover:bg-[#EFF6FF] hover:border-[#93C5FD] hover:text-[#1D4ED8] shadow-xs cursor-pointer'
+                      ? 'border-[rgba(38,102,196,0.18)] text-[rgba(0,0,0,0.42)] opacity-40 cursor-not-allowed'
+                      : 'bg-white text-[#000000] border-[rgba(38,102,196,0.18)] hover:bg-[#F0F7FF] hover:border-[#73C2FB] hover:text-[#2666C4] shadow-xs cursor-pointer'
                   }`}
                 >
                   <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
@@ -287,7 +287,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
                     return (
                       <span
                         key={`ellipsis-${idx}`}
-                        className="w-8 h-9 sm:w-9 sm:h-10 flex items-center justify-center text-[#6B7280] text-sm select-none font-medium"
+                        className="w-8 h-9 sm:w-9 sm:h-10 flex items-center justify-center text-[rgba(0,0,0,0.58)] text-sm select-none font-medium"
                         aria-hidden="true"
                       >
                         ...
@@ -308,8 +308,8 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
                       aria-current={isActive ? 'page' : undefined}
                       className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg text-sm font-medium transition-all duration-150 flex items-center justify-center ${
                         isActive
-                          ? 'bg-[#1D4ED8] text-white border border-[#1D4ED8] font-semibold shadow-xs'
-                          : 'bg-white text-[#1F2937] border border-[#D9E2F1] hover:bg-[#EFF6FF] hover:border-[#93C5FD] hover:text-[#1D4ED8] shadow-xs cursor-pointer'
+                          ? 'bg-[#2666C4] text-white border border-[#2666C4] font-semibold shadow-xs'
+                          : 'bg-white text-[#000000] border border-[rgba(38,102,196,0.18)] hover:bg-[#F0F7FF] hover:border-[#73C2FB] hover:text-[#2666C4] shadow-xs cursor-pointer'
                       }`}
                     >
                       {pageNum}
@@ -326,8 +326,8 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
                   aria-label="Next page"
                   className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center border transition-all duration-150 ${
                     validCurrentPage === totalPages
-                      ? 'border-[#D9E2F1] text-[#9CA3AF] opacity-40 cursor-not-allowed'
-                      : 'bg-white text-[#1F2937] border-[#D9E2F1] hover:bg-[#EFF6FF] hover:border-[#93C5FD] hover:text-[#1D4ED8] shadow-xs cursor-pointer'
+                      ? 'border-[rgba(38,102,196,0.18)] text-[rgba(0,0,0,0.42)] opacity-40 cursor-not-allowed'
+                      : 'bg-white text-[#000000] border-[rgba(38,102,196,0.18)] hover:bg-[#F0F7FF] hover:border-[#73C2FB] hover:text-[#2666C4] shadow-xs cursor-pointer'
                   }`}
                 >
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
@@ -342,9 +342,9 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col items-center justify-center py-16 px-6 text-center bg-[rgba(33,150,243,0.03)] border border-dashed border-[rgba(0,0,255,0.18)] rounded-xl my-4"
+            className="flex flex-col items-center justify-center py-16 px-6 text-center bg-[rgba(115,194,251,0.03)] border border-dashed border-[rgba(1,38,106,0.18)] rounded-xl my-4"
           >
-            <div className="w-14 h-14 rounded-full bg-[rgba(33,150,243,0.08)] flex items-center justify-center text-[#0000FF] mb-4">
+            <div className="w-14 h-14 rounded-full bg-[rgba(115,194,251,0.08)] flex items-center justify-center text-[#01266A] mb-4">
               <SearchX className="w-7 h-7" aria-hidden="true" />
             </div>
 
@@ -365,7 +365,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
                 <button
                   type="button"
                   onClick={onClearSearch}
-                  className="px-4 py-2 text-sm font-semibold rounded-lg bg-white border border-[rgba(0,0,255,0.2)] text-[#0000FF] hover:bg-[rgba(33,150,243,0.06)] transition-colors focus:outline-none focus:ring-2 focus:ring-[#0000FF]"
+                  className="px-4 py-2 text-sm font-semibold rounded-lg bg-white border border-[rgba(1,38,106,0.2)] text-[#01266A] hover:bg-[rgba(115,194,251,0.06)] transition-colors focus:outline-none focus:ring-2 focus:ring-[#01266A]"
                 >
                   Clear Search
                 </button>
@@ -375,7 +375,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
                 <button
                   type="button"
                   onClick={onClearFilters}
-                  className="px-4 py-2 text-sm font-semibold rounded-lg bg-[#0000FF] text-white hover:opacity-90 active:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#0000FF]"
+                  className="px-4 py-2 text-sm font-semibold rounded-lg bg-[#01266A] text-white hover:opacity-90 active:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#01266A]"
                 >
                   Clear Filters
                 </button>
@@ -388,7 +388,7 @@ export const CatalogueResults: React.FC<CatalogueResultsProps> = ({
                     onClearSearch();
                     onClearFilters();
                   }}
-                  className="px-4 py-2 text-sm font-semibold rounded-lg bg-[#0000FF] text-white hover:opacity-90 active:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#0000FF]"
+                  className="px-4 py-2 text-sm font-semibold rounded-lg bg-[#01266A] text-white hover:opacity-90 active:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#01266A]"
                 >
                   Reset Discovery
                 </button>

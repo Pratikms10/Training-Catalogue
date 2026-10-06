@@ -1,0 +1,24 @@
+:root {
+  --brand-navy: #01266A;
+  --brand-blue: #2666C4;
+  --brand-sky: #73C2FB;
+  --brand-pale: #F0F7FF;
+  --brand-warm: #FEF4F1;
+  --brand-black: #000000;
+  --brand-white: #FFFFFF;
+
+  --brand-text: var(--brand-black);
+  --brand-heading: var(--brand-navy);
+  --brand-text-secondary: rgba(0, 0, 0, 0.72);
+  --brand-text-muted: rgba(1, 38, 106, 0.62);
+  --brand-border: rgba(38, 102, 196, 0.18);
+  --brand-border-strong: rgba(38, 102, 196, 0.42);
+  --brand-divider: rgba(38, 102, 196, 0.14);
+  --brand-shadow: rgba(1, 38, 106, 0.12);
+  --brand-focus: rgba(115, 194, 251, 0.72);
+}
+
+::selection {
+  color: var(--brand-white);
+  background: var(--brand-navy);
+}

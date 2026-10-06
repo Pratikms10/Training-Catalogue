@@ -2,7 +2,7 @@
   min-height: clamp(640px, 70vw, 820px);
   isolation: isolate;
   overflow: hidden;
-  background: #eef5fa;
+  background: #F0F7FF;
 }
 
 .hero-backgrounds,
@@ -26,7 +26,7 @@
 
 .hero-background-ai,
 .hero-background-workforce {
-  background-color: #f7f9fb;
+  background-color: #F0F7FF;
   background-position: right center;
   background-size: auto 100%;
 }
@@ -56,7 +56,7 @@
 
 .hero-rotator .hero-kicker {
   margin-bottom: 1.1rem;
-  color: #0a66c2;
+  color: #2666C4;
 }
 
 .hero-rotator .hero-copy > p { max-width: 620px; }
@@ -66,7 +66,7 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem clamp(1.25rem, 4vw, 4.5rem) 3.25rem;
-  color: #1d4168;
+  color: #01266A;
 }
 
 .hero-rotator-dots { display: flex; gap: .5rem; }
@@ -75,15 +75,15 @@
   width: 9px;
   height: 9px;
   padding: 0;
-  border: 1px solid #1c5f9e;
+  border: 1px solid #2666C4;
   border-radius: 999px;
   background: rgba(255,255,255,.72);
   cursor: pointer;
   transition: width .2s ease, background-color .2s ease;
 }
 
-.hero-rotator-dots button.is-active { width: 30px; background: #155a99; }
-.hero-rotator-dots button:focus-visible { outline: 3px solid #0a66c2; outline-offset: 3px; }
+.hero-rotator-dots button.is-active { width: 30px; background: #2666C4; }
+.hero-rotator-dots button:focus-visible { outline: 3px solid #2666C4; outline-offset: 3px; }
 
 @media (max-width: 1050px) {
   .hero-background-ai,

@@ -54,25 +54,25 @@ export const CareerEmailDialog: React.FC<CareerEmailDialogProps> = ({ roleTitle,
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-[100] overflow-y-auto bg-[#081736]/70 p-4 backdrop-blur-sm sm:p-6" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+    <div className="fixed inset-0 z-[100] overflow-y-auto bg-[#01266A]/70 p-4 backdrop-blur-sm sm:p-6" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
       <div className="flex min-h-full items-center justify-center">
-        <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="career-email-title" className="w-full max-w-lg rounded-3xl border border-[#d4e1f6] bg-white p-6 text-[#122244] shadow-[0_32px_90px_rgba(4,22,50,.28)] sm:p-8">
+        <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="career-email-title" className="w-full max-w-lg rounded-3xl border border-[#F0F7FF] bg-white p-6 text-[#01266A] shadow-[0_32px_90px_rgba(4,22,50,.28)] sm:p-8">
           <div className="flex items-start justify-between gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#eaf3ff] text-[#0000ff]"><Mail size={24} aria-hidden="true" /></div>
-            <button type="button" onClick={onClose} aria-label="Close application details" className="rounded-full p-2 text-[#5a6881] hover:bg-[#eef4ff] hover:text-[#122244]"><X size={20} /></button>
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F0F7FF] text-[#01266A]"><Mail size={24} aria-hidden="true" /></div>
+            <button type="button" onClick={onClose} aria-label="Close application details" className="rounded-full p-2 text-[rgba(0,0,0,0.62)] hover:bg-[#F0F7FF] hover:text-[#01266A]"><X size={20} /></button>
           </div>
-          <p className="mt-6 text-xs font-bold uppercase tracking-[.16em] text-[#0000ff]">Careers at TechnoEdge</p>
+          <p className="mt-6 text-xs font-bold uppercase tracking-[.16em] text-[#01266A]">Careers at TechnoEdge</p>
           <h2 id="career-email-title" className="mt-2 text-2xl font-bold leading-tight sm:text-3xl">{roleTitle ? `Apply for ${roleTitle}` : 'Send an open application'}</h2>
-          <p className="mt-3 text-sm leading-6 text-[#5a6881]">Email your CV or portfolio to our HR team. Your email app will open with the subject filled in; attach your files before sending.</p>
-          <div className="mt-6 rounded-2xl border border-[#d4e1f6] bg-[#f7faff] p-4">
-            <span className="block text-xs font-semibold uppercase tracking-wider text-[#5a6881]">Send to</span>
-            <a ref={mailLinkRef} href={mailto} className="mt-1 block break-all text-lg font-bold text-[#0000ff] underline underline-offset-4">{CAREERS_EMAIL}</a>
+          <p className="mt-3 text-sm leading-6 text-[rgba(0,0,0,0.68)]">Email your CV or portfolio to our HR team. Your email app will open with the subject filled in; attach your files before sending.</p>
+          <div className="mt-6 rounded-2xl border border-[#F0F7FF] bg-[#F0F7FF] p-4">
+            <span className="block text-xs font-semibold uppercase tracking-wider text-[rgba(1,38,106,0.62)]">Send to</span>
+            <a ref={mailLinkRef} href={mailto} className="mt-1 block break-all text-lg font-bold text-[#01266A] underline underline-offset-4">{CAREERS_EMAIL}</a>
           </div>
           <div className="mt-6 flex flex-wrap gap-3">
-            <a href={mailto} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#0000ff] px-5 py-3 text-sm font-bold text-white hover:bg-[#003bb5]">Open email app <ArrowUpRight size={17} aria-hidden="true" /></a>
-            <button type="button" onClick={copyEmail} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[#b8c9e6] px-5 py-3 text-sm font-bold text-[#122244] hover:bg-[#f3f7ff]">{copied ? <Check size={17} aria-hidden="true" /> : <Copy size={17} aria-hidden="true" />}{copied ? 'Copied' : 'Copy address'}</button>
+            <a href={mailto} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#01266A] px-5 py-3 text-sm font-bold text-white hover:bg-[#2666C4]">Open email app <ArrowUpRight size={17} aria-hidden="true" /></a>
+            <button type="button" onClick={copyEmail} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[rgba(38,102,196,0.24)] px-5 py-3 text-sm font-bold text-[#01266A] hover:bg-[#F0F7FF]">{copied ? <Check size={17} aria-hidden="true" /> : <Copy size={17} aria-hidden="true" />}{copied ? 'Copied' : 'Copy address'}</button>
           </div>
-          <p className="mt-4 text-xs leading-5 text-[#5a6881]">This opens your own email application. The website does not upload or store your CV.</p>
+          <p className="mt-4 text-xs leading-5 text-[rgba(0,0,0,0.62)]">This opens your own email application. The website does not upload or store your CV.</p>
         </div>
       </div>
     </div>,

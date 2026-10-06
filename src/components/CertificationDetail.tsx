@@ -27,7 +27,7 @@ function statusClasses(status?: string) {
   if (normalized.includes('retir')) return 'border-red-200 bg-red-50 text-red-700';
   if (normalized.includes('beta') || normalized.includes('coming')) return 'border-amber-200 bg-amber-50 text-amber-800';
   if (normalized.includes('active')) return 'border-emerald-200 bg-emerald-50 text-emerald-700';
-  return 'border-blue-200 bg-blue-50 text-[#0000FF]';
+  return 'border-[rgba(38,102,196,0.24)] bg-[#F0F7FF] text-[#01266A]';
 }
 
 export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
@@ -90,12 +90,12 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="border-b border-[rgba(0,0,255,0.10)] bg-white">
+      <div className="border-b border-[rgba(1,38,106,0.10)] bg-white">
         <div className="mx-auto max-w-[1320px] px-5 py-4 sm:px-8 lg:px-12">
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[rgba(0,0,0,0.66)] transition-colors hover:text-[#0000FF]"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[rgba(0,0,0,0.66)] transition-colors hover:text-[#01266A]"
           >
             <ChevronLeft className="h-4 w-4" />
             Back to Catalogue
@@ -103,17 +103,17 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
         </div>
       </div>
 
-      <section className="relative overflow-hidden border-b border-[rgba(0,0,255,0.10)] bg-[linear-gradient(135deg,#f7fbff_0%,#ffffff_58%,#eef5ff_100%)]">
-        <div className="absolute -right-24 -top-32 h-96 w-96 rounded-full border border-[#0000FF]/10" />
-        <div className="absolute -right-10 -top-12 h-64 w-64 rounded-full border border-[#2196F3]/15" />
+      <section className="relative overflow-hidden border-b border-[rgba(1,38,106,0.10)] bg-[linear-gradient(135deg,#F0F7FF_0%,#ffffff_58%,#F0F7FF_100%)]">
+        <div className="absolute -right-24 -top-32 h-96 w-96 rounded-full border border-[#01266A]/10" />
+        <div className="absolute -right-10 -top-12 h-64 w-64 rounded-full border border-[#73C2FB]/15" />
         <div className="relative mx-auto grid max-w-[1320px] gap-10 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-[1.45fr_0.55fr] lg:px-12 lg:py-20">
           <div className="max-w-4xl">
             <div className="mb-5 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#0000FF]/15 bg-white px-3 py-1.5 text-xs font-bold text-[#0000FF] shadow-sm">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-[#01266A]/15 bg-white px-3 py-1.5 text-xs font-bold text-[#01266A] shadow-sm">
                 <ShieldCheck className="h-3.5 w-3.5" />
                 {details.provider || 'Certification'} {recordLabel}
               </span>
-              <span className="rounded-full border border-[#0000FF]/10 bg-white px-3 py-1.5 font-mono text-xs font-bold text-[rgba(0,0,0,0.64)]">
+              <span className="rounded-full border border-[#01266A]/10 bg-white px-3 py-1.5 font-mono text-xs font-bold text-[rgba(0,0,0,0.64)]">
                 {programme.id}
               </span>
               {details.credentialStatus && (
@@ -129,12 +129,12 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
 
             <div className="mt-6 flex flex-wrap gap-2">
               {details.examCode && (
-                <span className="rounded-lg border border-[#0000FF]/12 bg-white px-3 py-2 font-mono text-xs font-semibold text-[rgba(0,0,0,0.68)]">
+                <span className="rounded-lg border border-[#01266A]/12 bg-white px-3 py-2 font-mono text-xs font-semibold text-[rgba(0,0,0,0.68)]">
                   Exam code: {details.examCode}
                 </span>
               )}
               {(details.productTechnologies || []).slice(0, 4).map((technology: string) => (
-                <span key={technology} className="rounded-lg bg-[#0000FF]/[0.06] px-3 py-2 text-xs font-semibold text-[#0000FF]">
+                <span key={technology} className="rounded-lg bg-[#01266A]/[0.06] px-3 py-2 text-xs font-semibold text-[#01266A]">
                   {technology}
                 </span>
               ))}
@@ -144,7 +144,7 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
               <button
                 type="button"
                 onClick={() => openRfq('catalogue_certification_hero_proposal')}
-                className="inline-flex items-center gap-2 rounded-lg bg-[#0000FF] px-5 py-3 text-sm font-bold text-white shadow-[0_10px_28px_rgba(0,0,255,0.22)] transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-lg bg-[#01266A] px-5 py-3 text-sm font-bold text-white shadow-[0_10px_28px_rgba(1,38,106,0.22)] transition-transform hover:-translate-y-0.5"
               >
                 Get Corporate Training Proposal
                 <ArrowRight className="h-4 w-4" />
@@ -154,7 +154,7 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
                   href={details.courseUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border border-[#0000FF]/15 bg-white px-5 py-3 text-sm font-bold text-[#0000FF] hover:border-[#0000FF]/30"
+                  className="inline-flex items-center gap-2 rounded-lg border border-[#01266A]/15 bg-white px-5 py-3 text-sm font-bold text-[#01266A] hover:border-[#01266A]/30"
                 >
                   Official provider page
                   <ExternalLink className="h-4 w-4" />
@@ -164,9 +164,9 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
           </div>
 
           <div className="flex items-center justify-center lg:justify-end">
-            <div className="relative flex aspect-square w-full max-w-[300px] items-center justify-center rounded-[2rem] border border-[#0000FF]/12 bg-white shadow-[0_24px_70px_rgba(15,40,120,0.10)]">
-              <div className="absolute inset-5 rounded-[1.5rem] border border-dashed border-[#2196F3]/25" />
-              <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-[#0000FF] text-white shadow-[0_18px_44px_rgba(0,0,255,0.28)]">
+            <div className="relative flex aspect-square w-full max-w-[300px] items-center justify-center rounded-[2rem] border border-[#01266A]/12 bg-white shadow-[0_24px_70px_rgba(15,40,120,0.10)]">
+              <div className="absolute inset-5 rounded-[1.5rem] border border-dashed border-[#73C2FB]/25" />
+              <div className="flex h-28 w-28 items-center justify-center rounded-3xl bg-[#01266A] text-white shadow-[0_18px_44px_rgba(1,38,106,0.28)]">
                 <Award className="h-14 w-14" />
               </div>
               <span className="absolute bottom-8 max-w-[80%] truncate text-xs font-bold uppercase tracking-[0.18em] text-[rgba(0,0,0,0.52)]">
@@ -179,10 +179,10 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
 
       {facts.length > 0 && (
         <section className="relative z-10 mx-auto -mt-5 max-w-[1160px] px-5 sm:px-8">
-          <div className={`grid overflow-hidden rounded-2xl border border-[#0000FF]/12 bg-white shadow-[0_14px_40px_rgba(15,40,120,0.08)] sm:grid-cols-2 ${factGridClass}`}>
+          <div className={`grid overflow-hidden rounded-2xl border border-[#01266A]/12 bg-white shadow-[0_14px_40px_rgba(15,40,120,0.08)] sm:grid-cols-2 ${factGridClass}`}>
             {facts.map(({ label, value, icon: Icon }, index) => (
-              <div key={label} className={`flex min-h-24 items-center gap-3 px-5 py-5 ${index ? 'border-t border-[#0000FF]/10 sm:border-l sm:border-t-0' : ''}`}>
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0000FF]/[0.06] text-[#0000FF]">
+              <div key={label} className={`flex min-h-24 items-center gap-3 px-5 py-5 ${index ? 'border-t border-[#01266A]/10 sm:border-l sm:border-t-0' : ''}`}>
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#01266A]/[0.06] text-[#01266A]">
                   <Icon className="h-5 w-5" />
                 </div>
                 <div>
@@ -197,17 +197,17 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
 
       <main className="mx-auto max-w-[1160px] space-y-7 px-5 py-12 sm:px-8 sm:py-16">
         {(details.summary || (details.audience && details.audience.length) || (details.productTechnologies && details.productTechnologies.length)) && (
-          <section className="rounded-2xl border border-[#0000FF]/12 bg-white p-6 shadow-sm sm:p-8">
+          <section className="rounded-2xl border border-[#01266A]/12 bg-white p-6 shadow-sm sm:p-8">
             <div className="mb-5 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0000FF] text-white"><FileCheck2 className="h-5 w-5" /></div>
-              <div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#0000FF]">{recordLabel} overview</p><h2 className="text-2xl font-bold text-black">About this {recordLabel}</h2></div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#01266A] text-white"><FileCheck2 className="h-5 w-5" /></div>
+              <div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#01266A]">{recordLabel} overview</p><h2 className="text-2xl font-bold text-black">About this {recordLabel}</h2></div>
             </div>
             {details.summary && <p className="max-w-4xl text-base leading-7 text-[rgba(0,0,0,0.70)]">{details.summary}</p>}
             {details.audience && details.audience.length > 0 && (
-              <div className="mt-7 rounded-xl bg-[#2196F3]/[0.06] p-5">
-                <h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-black"><Users className="h-4 w-4 text-[#0000FF]" />Who this is for</h3>
+              <div className="mt-7 rounded-xl bg-[#73C2FB]/[0.06] p-5">
+                <h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-black"><Users className="h-4 w-4 text-[#01266A]" />Who this is for</h3>
                 <div className="grid gap-2 md:grid-cols-2">
-                  {details.audience.map((item: string) => <div key={item} className="flex items-start gap-2 text-sm leading-6 text-[rgba(0,0,0,0.70)]"><Check className="mt-1 h-4 w-4 shrink-0 text-[#0000FF]" />{item}</div>)}
+                  {details.audience.map((item: string) => <div key={item} className="flex items-start gap-2 text-sm leading-6 text-[rgba(0,0,0,0.70)]"><Check className="mt-1 h-4 w-4 shrink-0 text-[#01266A]" />{item}</div>)}
                 </div>
               </div>
             )}
@@ -215,17 +215,17 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
         )}
 
         {exams.length > 0 && (
-          <section className="rounded-2xl border border-[#0000FF]/12 bg-white p-6 shadow-sm sm:p-8">
+          <section className="rounded-2xl border border-[#01266A]/12 bg-white p-6 shadow-sm sm:p-8">
             <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2196F3] text-white"><ShieldCheck className="h-5 w-5" /></div>
-              <div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#0000FF]">Assessment</p><h2 className="text-2xl font-bold text-black">Exam details</h2></div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#73C2FB] text-white"><ShieldCheck className="h-5 w-5" /></div>
+              <div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#01266A]">Assessment</p><h2 className="text-2xl font-bold text-black">Exam details</h2></div>
             </div>
             <div className="grid gap-4 lg:grid-cols-2">
               {exams.map((exam: any, index: number) => (
-                <article key={`${exam.examCode || 'exam'}-${index}`} className="rounded-xl border border-[#0000FF]/10 bg-[#f9fbff] p-5">
+                <article key={`${exam.examCode || 'exam'}-${index}`} className="rounded-xl border border-[#01266A]/10 bg-[#F0F7FF] p-5">
                   <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <div className="font-mono text-xs font-bold text-[#0000FF]">{exam.examCode || `Assessment ${index + 1}`}</div>
+                      <div className="font-mono text-xs font-bold text-[#01266A]">{exam.examCode || `Assessment ${index + 1}`}</div>
                       {exam.examName && <h3 className="mt-1 text-base font-bold text-black">{exam.examName}</h3>}
                     </div>
                     {(exam.requirementType || exam.status) && <span className="rounded-full bg-white px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-[rgba(0,0,0,0.58)]">{exam.requirementType || exam.status}</span>}
@@ -235,8 +235,8 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
                       <div key={label}><dt className="text-[11px] font-bold uppercase tracking-wide text-[rgba(0,0,0,0.42)]">{label}</dt><dd className="mt-0.5 font-semibold leading-snug text-black">{value}</dd></div>
                     ))}
                   </dl>
-                  {exam.languages?.length > 0 && <p className="mt-4 flex items-start gap-2 border-t border-[#0000FF]/8 pt-4 text-xs leading-5 text-[rgba(0,0,0,0.64)]"><Globe2 className="mt-0.5 h-4 w-4 shrink-0 text-[#0000FF]" />{exam.languages.join(', ')}</p>}
-                  {exam.url && <a href={exam.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[#0000FF] hover:underline">View exam details <ExternalLink className="h-3.5 w-3.5" /></a>}
+                  {exam.languages?.length > 0 && <p className="mt-4 flex items-start gap-2 border-t border-[#01266A]/8 pt-4 text-xs leading-5 text-[rgba(0,0,0,0.64)]"><Globe2 className="mt-0.5 h-4 w-4 shrink-0 text-[#01266A]" />{exam.languages.join(', ')}</p>}
+                  {exam.url && <a href={exam.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[#01266A] hover:underline">View exam details <ExternalLink className="h-3.5 w-3.5" /></a>}
                 </article>
               ))}
             </div>
@@ -244,14 +244,14 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
         )}
 
         {objectiveGroups.length > 0 && (
-          <section className="rounded-2xl border border-[#0000FF]/12 bg-white p-6 shadow-sm sm:p-8">
-            <div className="mb-6 flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0000FF] text-white"><FileCheck2 className="h-5 w-5" /></div><div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#0000FF]">Exam blueprint</p><h2 className="text-2xl font-bold text-black">Skills measured</h2></div></div>
+          <section className="rounded-2xl border border-[#01266A]/12 bg-white p-6 shadow-sm sm:p-8">
+            <div className="mb-6 flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#01266A] text-white"><FileCheck2 className="h-5 w-5" /></div><div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#01266A]">Exam blueprint</p><h2 className="text-2xl font-bold text-black">Skills measured</h2></div></div>
             <div className="space-y-3">
               {objectiveGroups.map(([group, items], groupIndex) => (
-                <details key={`${group}-${groupIndex}`} open={groupIndex === 0} className="group rounded-xl border border-[#0000FF]/10 bg-[#f9fbff]">
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-bold text-black"><span>{group}</span><span className="rounded-full bg-white px-2.5 py-1 text-xs text-[#0000FF]">{items.length} topics</span></summary>
-                  <ul className="space-y-2 border-t border-[#0000FF]/8 bg-white px-5 py-5">
-                    {items.map((item, index) => <li key={`${item.objective}-${index}`} className="flex items-start gap-2.5 text-sm leading-6 text-[rgba(0,0,0,0.70)]"><Check className="mt-1 h-4 w-4 shrink-0 text-[#0000FF]" /><span>{item.objective}{item.weight && <span className="ml-2 text-xs font-bold text-[#0000FF]">{item.weight}</span>}</span></li>)}
+                <details key={`${group}-${groupIndex}`} open={groupIndex === 0} className="group rounded-xl border border-[#01266A]/10 bg-[#F0F7FF]">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-bold text-black"><span>{group}</span><span className="rounded-full bg-white px-2.5 py-1 text-xs text-[#01266A]">{items.length} topics</span></summary>
+                  <ul className="space-y-2 border-t border-[#01266A]/8 bg-white px-5 py-5">
+                    {items.map((item, index) => <li key={`${item.objective}-${index}`} className="flex items-start gap-2.5 text-sm leading-6 text-[rgba(0,0,0,0.70)]"><Check className="mt-1 h-4 w-4 shrink-0 text-[#01266A]" /><span>{item.objective}{item.weight && <span className="ml-2 text-xs font-bold text-[#01266A]">{item.weight}</span>}</span></li>)}
                   </ul>
                 </details>
               ))}
@@ -260,40 +260,40 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
         )}
 
         {requirements.length > 0 && (
-          <section className="rounded-2xl border border-[#0000FF]/12 bg-white p-6 shadow-sm sm:p-8">
-            <div className="mb-6 flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2196F3] text-white"><FileCheck2 className="h-5 w-5" /></div><div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#0000FF]">Before you certify</p><h2 className="text-2xl font-bold text-black">Requirements and recommended experience</h2></div></div>
+          <section className="rounded-2xl border border-[#01266A]/12 bg-white p-6 shadow-sm sm:p-8">
+            <div className="mb-6 flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#73C2FB] text-white"><FileCheck2 className="h-5 w-5" /></div><div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#01266A]">Before you certify</p><h2 className="text-2xl font-bold text-black">Requirements and recommended experience</h2></div></div>
             <div className="grid gap-3 md:grid-cols-2">
-              {requirements.map((requirement: any, index: number) => <div key={`${requirement.requirement}-${index}`} className="rounded-xl bg-[#2196F3]/[0.06] p-4"><div className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#0000FF]">{requirement.type || requirement.qualifier || 'Requirement'}</div><p className="text-sm leading-6 text-[rgba(0,0,0,0.72)]">{requirement.requirement}</p>{requirement.url && <a href={requirement.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-[#0000FF] hover:underline">Reference <ExternalLink className="h-3 w-3" /></a>}</div>)}
+              {requirements.map((requirement: any, index: number) => <div key={`${requirement.requirement}-${index}`} className="rounded-xl bg-[#73C2FB]/[0.06] p-4"><div className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#01266A]">{requirement.type || requirement.qualifier || 'Requirement'}</div><p className="text-sm leading-6 text-[rgba(0,0,0,0.72)]">{requirement.requirement}</p>{requirement.url && <a href={requirement.url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-[#01266A] hover:underline">Reference <ExternalLink className="h-3 w-3" /></a>}</div>)}
             </div>
           </section>
         )}
 
         {resources.length > 0 && (
-          <section className="rounded-2xl border border-[#0000FF]/12 bg-white p-6 shadow-sm sm:p-8">
-            <div className="mb-6 flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0000FF] text-white"><BookOpen className="h-5 w-5" /></div><div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#0000FF]">Preparation</p><h2 className="text-2xl font-bold text-black">Official learning resources</h2></div></div>
+          <section className="rounded-2xl border border-[#01266A]/12 bg-white p-6 shadow-sm sm:p-8">
+            <div className="mb-6 flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#01266A] text-white"><BookOpen className="h-5 w-5" /></div><div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#01266A]">Preparation</p><h2 className="text-2xl font-bold text-black">Official learning resources</h2></div></div>
             <div className="grid gap-3 md:grid-cols-2">
               {resources.map((resource: any, index: number) => {
-                const content = <><div className="text-[10px] font-bold uppercase tracking-wide text-[#0000FF]">{resource.type || 'Learning resource'}</div><h3 className="mt-1 text-sm font-bold leading-snug text-black">{resource.title}</h3>{(resource.duration || resource.itemCount) && <p className="mt-2 text-xs text-[rgba(0,0,0,0.55)]">{[resource.duration, resource.itemCount].filter(Boolean).join(' · ')}</p>}</>;
-                return resource.url ? <a key={`${resource.title}-${index}`} href={resource.url} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-[#0000FF]/10 bg-[#f9fbff] p-4 transition-colors hover:border-[#0000FF]/30 hover:bg-white">{content}<span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-[#0000FF]">Open resource <ExternalLink className="h-3.5 w-3.5" /></span></a> : <div key={`${resource.title}-${index}`} className="rounded-xl border border-[#0000FF]/10 bg-[#f9fbff] p-4">{content}</div>;
+                const content = <><div className="text-[10px] font-bold uppercase tracking-wide text-[#01266A]">{resource.type || 'Learning resource'}</div><h3 className="mt-1 text-sm font-bold leading-snug text-black">{resource.title}</h3>{(resource.duration || resource.itemCount) && <p className="mt-2 text-xs text-[rgba(0,0,0,0.55)]">{[resource.duration, resource.itemCount].filter(Boolean).join(' · ')}</p>}</>;
+                return resource.url ? <a key={`${resource.title}-${index}`} href={resource.url} target="_blank" rel="noopener noreferrer" className="rounded-xl border border-[#01266A]/10 bg-[#F0F7FF] p-4 transition-colors hover:border-[#01266A]/30 hover:bg-white">{content}<span className="mt-3 inline-flex items-center gap-1 text-xs font-bold text-[#01266A]">Open resource <ExternalLink className="h-3.5 w-3.5" /></span></a> : <div key={`${resource.title}-${index}`} className="rounded-xl border border-[#01266A]/10 bg-[#F0F7FF] p-4">{content}</div>;
               })}
             </div>
           </section>
         )}
 
         {(lifecycle.length > 0 || details.validityRenewal || details.credentialStatus) && (
-          <section className="rounded-2xl border border-[#0000FF]/12 bg-white p-6 shadow-sm sm:p-8">
-            <div className="mb-6 flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2196F3] text-white"><RefreshCw className="h-5 w-5" /></div><div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#0000FF]">Credential lifecycle</p><h2 className="text-2xl font-bold text-black">Status, validity and renewal</h2></div></div>
+          <section className="rounded-2xl border border-[#01266A]/12 bg-white p-6 shadow-sm sm:p-8">
+            <div className="mb-6 flex items-center gap-3"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#73C2FB] text-white"><RefreshCw className="h-5 w-5" /></div><div><p className="text-xs font-bold uppercase tracking-[0.15em] text-[#01266A]">Credential lifecycle</p><h2 className="text-2xl font-bold text-black">Status, validity and renewal</h2></div></div>
             <div className="space-y-3">
-              {details.validityRenewal && <div className="rounded-xl bg-[#2196F3]/[0.06] p-4 text-sm leading-6 text-[rgba(0,0,0,0.72)]"><strong className="text-black">Validity:</strong> {details.validityRenewal}</div>}
-              {lifecycle.map((item: any, index: number) => <div key={index} className="rounded-xl border border-[#0000FF]/10 p-4"><div className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#0000FF]">{item.recordType || item.status || 'Lifecycle information'}</div><p className="text-sm leading-6 text-[rgba(0,0,0,0.70)]">{[item.validityRenewal, item.retirementTransition, item.details, item.action, item.outcome].filter(Boolean).join(' · ')}</p></div>)}
+              {details.validityRenewal && <div className="rounded-xl bg-[#73C2FB]/[0.06] p-4 text-sm leading-6 text-[rgba(0,0,0,0.72)]"><strong className="text-black">Validity:</strong> {details.validityRenewal}</div>}
+              {lifecycle.map((item: any, index: number) => <div key={index} className="rounded-xl border border-[#01266A]/10 p-4"><div className="mb-1 text-[10px] font-bold uppercase tracking-wide text-[#01266A]">{item.recordType || item.status || 'Lifecycle information'}</div><p className="text-sm leading-6 text-[rgba(0,0,0,0.70)]">{[item.validityRenewal, item.retirementTransition, item.details, item.action, item.outcome].filter(Boolean).join(' · ')}</p></div>)}
             </div>
           </section>
         )}
 
-        <section className="overflow-hidden rounded-2xl bg-[#0000FF] p-7 text-white shadow-[0_22px_60px_rgba(0,0,255,0.24)] sm:p-10">
+        <section className="overflow-hidden rounded-2xl bg-[#01266A] p-7 text-white shadow-[0_22px_60px_rgba(1,38,106,0.24)] sm:p-10">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-            <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-200">Corporate certification enablement</p><h2 className="mt-2 text-2xl font-bold sm:text-3xl">Turn this pathway into a team capability plan</h2><p className="mt-3 text-sm leading-6 text-blue-100">We can align the learning path, instructor support, practice environment and delivery schedule to your team’s roles and certification target.</p></div>
-            <button type="button" onClick={() => openRfq('catalogue_certification_bottom_proposal')} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-[#0000FF] transition-transform hover:-translate-y-0.5">Build a training proposal <ArrowRight className="h-4 w-4" /></button>
+            <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#73C2FB]">Corporate certification enablement</p><h2 className="mt-2 text-2xl font-bold sm:text-3xl">Turn this pathway into a team capability plan</h2><p className="mt-3 text-sm leading-6 text-[#F0F7FF]">We can align the learning path, instructor support, practice environment and delivery schedule to your team’s roles and certification target.</p></div>
+            <button type="button" onClick={() => openRfq('catalogue_certification_bottom_proposal')} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-[#01266A] transition-transform hover:-translate-y-0.5">Build a training proposal <ArrowRight className="h-4 w-4" /></button>
           </div>
         </section>
       </main>

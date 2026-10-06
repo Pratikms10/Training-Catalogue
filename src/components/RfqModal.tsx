@@ -93,12 +93,12 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
           initial={{ opacity: 0, scale: 0.96, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: 10 }}
-          className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-[rgba(0,0,255,0.14)] overflow-hidden z-10 my-8"
+          className="relative w-full max-w-xl bg-white rounded-2xl shadow-2xl border border-[rgba(1,38,106,0.14)] overflow-hidden z-10 my-8"
         >
           {/* Header */}
-          <div className="px-6 sm:px-8 pt-6 pb-4 bg-[rgba(33,150,243,0.06)] border-b border-[rgba(0,0,255,0.12)] flex items-start justify-between">
+          <div className="px-6 sm:px-8 pt-6 pb-4 bg-[rgba(115,194,251,0.06)] border-b border-[rgba(1,38,106,0.12)] flex items-start justify-between">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[rgba(33,150,243,0.10)] text-[#000000] text-xs font-bold border border-[rgba(0,0,255,0.12)] mb-2 font-mono">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[rgba(115,194,251,0.10)] text-[#000000] text-xs font-bold border border-[rgba(1,38,106,0.12)] mb-2 font-mono">
                 {isSpecificProgramme ? `${programme?.id} · ${programme?.duration || 'Corporate Training'}` : 'Enterprise Corporate Consultation'}
               </div>
               <h2 className="text-xl font-bold text-[#000000]">
@@ -120,18 +120,18 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
           {submitted ? (
             /* Submission Confirmation */
             <div className="p-8 sm:p-10 text-center">
-              <div className="w-16 h-16 rounded-full bg-[rgba(33,150,243,0.10)] text-[#0000FF] mx-auto flex items-center justify-center mb-4">
-                <CheckCircle2 className="w-9 h-9 text-[#0000FF]" />
+              <div className="w-16 h-16 rounded-full bg-[rgba(115,194,251,0.10)] text-[#01266A] mx-auto flex items-center justify-center mb-4">
+                <CheckCircle2 className="w-9 h-9 text-[#01266A]" />
               </div>
               <h3 className="text-2xl font-bold text-[#000000] mb-2">{isOutlineRequest ? 'Outline Request Received' : 'Proposal Request Received'}</h3>
               <p className="text-sm text-[rgba(0,0,0,0.70)] max-w-md mx-auto mb-6">
                 Thank you, <strong className="text-[#000000]">{formData.name || 'Corporate Partner'}</strong>. Your enquiry {isSpecificProgramme ? <>for <strong className="text-[#000000]">{programme?.id}</strong></> : 'for enterprise corporate training'} has been saved. Please keep the reference below for follow-up.
               </p>
 
-              <div className="bg-[rgba(33,150,243,0.06)] border border-[rgba(0,0,255,0.10)] rounded-xl p-4 max-w-md mx-auto text-left text-xs text-[rgba(0,0,0,0.72)] space-y-1.5 mb-6">
+              <div className="bg-[rgba(115,194,251,0.06)] border border-[rgba(1,38,106,0.10)] rounded-xl p-4 max-w-md mx-auto text-left text-xs text-[rgba(0,0,0,0.72)] space-y-1.5 mb-6">
                 <div className="flex justify-between">
                   <span className="text-[rgba(0,0,0,0.58)] font-medium">Reference Code:</span>
-                  <span className="font-mono font-bold text-[#0000FF]">{reference}</span>
+                  <span className="font-mono font-bold text-[#01266A]">{reference}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[rgba(0,0,0,0.58)] font-medium">Programme / Track:</span>
@@ -150,7 +150,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
               <button
                 type="button"
                 onClick={handleResetAndClose}
-                className="bg-[#0000FF] hover:opacity-90 active:opacity-100 text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-opacity cursor-pointer shadow-xs"
+                className="bg-[#01266A] hover:opacity-90 active:opacity-100 text-white font-semibold text-sm px-6 py-2.5 rounded-lg transition-opacity cursor-pointer shadow-xs"
               >
                 Done
               </button>
@@ -171,7 +171,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
                       placeholder="e.g. Priya Sharma"
                       value={formData.name}
                       onChange={e => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(0,0,255,0.14)] focus:outline-none focus:ring-2 focus:ring-[#0000FF] focus:border-transparent bg-white text-[#000000]"
+                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(1,38,106,0.14)] focus:outline-none focus:ring-2 focus:ring-[#01266A] focus:border-transparent bg-white text-[#000000]"
                     />
                   </div>
                 </div>
@@ -188,7 +188,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
                       placeholder="name@company.com"
                       value={formData.email}
                       onChange={e => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(0,0,255,0.14)] focus:outline-none focus:ring-2 focus:ring-[#0000FF] focus:border-transparent bg-white text-[#000000]"
+                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(1,38,106,0.14)] focus:outline-none focus:ring-2 focus:ring-[#01266A] focus:border-transparent bg-white text-[#000000]"
                     />
                   </div>
                 </div>
@@ -207,7 +207,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
                       placeholder="e.g. Acme Global Technologies"
                       value={formData.company}
                       onChange={e => setFormData({ ...formData, company: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(0,0,255,0.14)] focus:outline-none focus:ring-2 focus:ring-[#0000FF] focus:border-transparent bg-white text-[#000000]"
+                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(1,38,106,0.14)] focus:outline-none focus:ring-2 focus:ring-[#01266A] focus:border-transparent bg-white text-[#000000]"
                     />
                   </div>
                 </div>
@@ -224,7 +224,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
                       placeholder="+91 98765 43210"
                       value={formData.phone}
                       onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(0,0,255,0.14)] focus:outline-none focus:ring-2 focus:ring-[#0000FF] focus:border-transparent bg-white text-[#000000]"
+                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(1,38,106,0.14)] focus:outline-none focus:ring-2 focus:ring-[#01266A] focus:border-transparent bg-white text-[#000000]"
                     />
                   </div>
                 </div>
@@ -240,7 +240,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
                     <select
                       value={formData.learners}
                       onChange={e => setFormData({ ...formData, learners: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(0,0,255,0.14)] focus:outline-none focus:ring-2 focus:ring-[#0000FF] focus:border-transparent bg-white text-[#000000]"
+                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(1,38,106,0.14)] focus:outline-none focus:ring-2 focus:ring-[#01266A] focus:border-transparent bg-white text-[#000000]"
                     >
                       <option>1–10 Participants</option>
                       <option>10–25 Participants</option>
@@ -260,7 +260,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
                     <select
                       value={formData.preferredDelivery}
                       onChange={e => setFormData({ ...formData, preferredDelivery: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(0,0,255,0.14)] focus:outline-none focus:ring-2 focus:ring-[#0000FF] focus:border-transparent bg-white text-[#000000]"
+                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(1,38,106,0.14)] focus:outline-none focus:ring-2 focus:ring-[#01266A] focus:border-transparent bg-white text-[#000000]"
                     >
                       <option>Instructor-Led Virtual</option>
                       <option>On-Premises / Corporate Classroom</option>
@@ -272,7 +272,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
               </div>
 
               {formData.learners === 'Custom cohort size' && (
-                <div className="rounded-lg border border-[rgba(0,0,255,0.12)] bg-[rgba(33,150,243,0.05)] p-3.5">
+                <div className="rounded-lg border border-[rgba(1,38,106,0.12)] bg-[rgba(115,194,251,0.05)] p-3.5">
                   <label className="block text-xs font-semibold text-[#000000] mb-1.5">
                     Custom number of learners *
                   </label>
@@ -286,7 +286,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
                       placeholder="e.g. 75"
                       value={formData.customLearners}
                       onChange={e => setFormData({ ...formData, customLearners: e.target.value })}
-                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(0,0,255,0.14)] focus:outline-none focus:ring-2 focus:ring-[#0000FF] focus:border-transparent bg-white text-[#000000]"
+                      className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(1,38,106,0.14)] focus:outline-none focus:ring-2 focus:ring-[#01266A] focus:border-transparent bg-white text-[#000000]"
                     />
                   </div>
                 </div>
@@ -306,7 +306,7 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
                     placeholder="For example: We need a two-day programme for 30 managers focused on AI-assisted reporting and decision-making, preferably in October..."
                     value={formData.notes}
                     onChange={e => setFormData({ ...formData, notes: e.target.value })}
-                    className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(0,0,255,0.14)] focus:outline-none focus:ring-2 focus:ring-[#0000FF] focus:border-transparent bg-white text-[#000000]"
+                    className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-[rgba(1,38,106,0.14)] focus:outline-none focus:ring-2 focus:ring-[#01266A] focus:border-transparent bg-white text-[#000000]"
                   />
                 </div>
               </div>
@@ -316,14 +316,14 @@ export const RfqModal: React.FC<RfqModalProps> = ({ programme, isOpen, onClose, 
                 <button
                   type="button"
                   onClick={handleResetAndClose}
-                  className="px-4 py-2.5 rounded-lg text-sm font-medium text-[rgba(0,0,0,0.70)] hover:text-[#000000] hover:bg-[rgba(33,150,243,0.06)] transition-colors"
+                  className="px-4 py-2.5 rounded-lg text-sm font-medium text-[rgba(0,0,0,0.70)] hover:text-[#000000] hover:bg-[rgba(115,194,251,0.06)] transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="bg-[#0000FF] hover:opacity-90 active:opacity-100 text-white font-semibold text-sm px-6 py-2.5 rounded-lg inline-flex items-center gap-2 shadow-xs transition-all hover:shadow-[0_4px_12px_rgba(0,0,255,0.2)]"
+                  className="bg-[#01266A] hover:opacity-90 active:opacity-100 text-white font-semibold text-sm px-6 py-2.5 rounded-lg inline-flex items-center gap-2 shadow-xs transition-all hover:shadow-[0_4px_12px_rgba(1,38,106,0.2)]"
                 >
                   {submitting ? 'Saving enquiry…' : isOutlineRequest ? 'Request Tailored Outline' : 'Request Training Proposal'}
                   <ArrowRight className="w-4 h-4" />

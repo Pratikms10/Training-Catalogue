@@ -1,7 +1,7 @@
 .menu-toggle .menu-close-icon{display:none}
 .menu-toggle[aria-expanded="true"] .menu-open-icon{display:none}
 .menu-toggle[aria-expanded="true"] .menu-close-icon{display:block}
-.menu-toggle svg{color:#07143d}
+.menu-toggle svg{color:#01266A}
 
 /* Balanced side columns keep the five links at the viewport centre. */
 .site-header{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);column-gap:24px}

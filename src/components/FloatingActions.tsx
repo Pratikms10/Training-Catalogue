@@ -24,9 +24,9 @@ export const FloatingActions: React.FC = () => {
               x: 0, 
               y: [0, -8, 0],
               boxShadow: [
-                '0 12px 32px rgba(0, 50, 255, 0.40), 0 0 20px rgba(96, 165, 250, 0.35)',
-                '0 18px 44px rgba(0, 50, 255, 0.65), 0 0 28px rgba(96, 165, 250, 0.60)',
-                '0 12px 32px rgba(0, 50, 255, 0.40), 0 0 20px rgba(96, 165, 250, 0.35)'
+                '0 12px 32px rgba(38, 102, 196, 0.40), 0 0 20px rgba(96, 165, 250, 0.35)',
+                '0 18px 44px rgba(38, 102, 196, 0.65), 0 0 28px rgba(96, 165, 250, 0.60)',
+                '0 12px 32px rgba(38, 102, 196, 0.40), 0 0 20px rgba(96, 165, 250, 0.35)'
               ]
             }}
             exit={{ opacity: 0, x: 20, scale: 0.94 }}
@@ -45,7 +45,7 @@ export const FloatingActions: React.FC = () => {
               }
             }}
             whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.2 } }}
-            className="relative w-[184px] max-w-[calc(100vw-36px)] bg-gradient-to-br from-[#0052FF] via-[#0039CB] to-[#002699] rounded-2xl border-2 border-[#60A5FA]/70 p-3 backdrop-blur-md transition-transform duration-200"
+            className="relative w-[184px] max-w-[calc(100vw-36px)] bg-gradient-to-br from-[#2666C4] via-[#2666C4] to-[#01266A] rounded-2xl border-2 border-[#73C2FB]/70 p-3 backdrop-blur-md transition-transform duration-200"
           >
             {/* Top Bar: Close Button */}
             <div className="flex justify-end mb-2">
@@ -83,9 +83,9 @@ export const FloatingActions: React.FC = () => {
                 href={`tel:${CONTACT_PHONES[0].e164}`}
                 aria-label="Call TechnoEdge Corporate Training Desk"
                 title={`Call Enterprise Desk (${CONTACT_PHONES[0].display})`}
-                className="flex items-center justify-center gap-2 py-2 px-2.5 rounded-xl bg-white hover:bg-blue-50 text-[#0038CC] text-xs font-bold shadow-[0_4px_14px_rgba(0,0,0,0.18)] hover:shadow-[0_6px_18px_rgba(255,255,255,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white"
+                className="flex items-center justify-center gap-2 py-2 px-2.5 rounded-xl bg-white hover:bg-[#F0F7FF] text-[#2666C4] text-xs font-bold shadow-[0_4px_14px_rgba(0,0,0,0.18)] hover:shadow-[0_6px_18px_rgba(255,255,255,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white"
               >
-                <Phone className="w-4 h-4 fill-[#0038CC] stroke-[#0038CC] shrink-0" aria-hidden="true" />
+                <Phone className="w-4 h-4 fill-[#2666C4] stroke-[#2666C4] shrink-0" aria-hidden="true" />
                 <span>Call</span>
               </a>
             </div>
@@ -93,7 +93,7 @@ export const FloatingActions: React.FC = () => {
             {/* Speech-tail pointing toward bottom-right in electric blue */}
             <div 
               aria-hidden="true"
-              className="absolute -bottom-[6px] right-4 w-3 h-3 bg-[#002699] border-r-2 border-b-2 border-[#60A5FA]/70 rotate-45 pointer-events-none"
+              className="absolute -bottom-[6px] right-4 w-3 h-3 bg-[#01266A] border-r-2 border-b-2 border-[#73C2FB]/70 rotate-45 pointer-events-none"
             />
           </motion.div>
         ) : (
@@ -108,9 +108,9 @@ export const FloatingActions: React.FC = () => {
               scale: 1, 
               opacity: 1,
               boxShadow: [
-                '0 8px 24px rgba(0, 64, 255, 0.45), 0 0 12px rgba(96, 165, 250, 0.35)',
-                '0 12px 32px rgba(0, 64, 255, 0.65), 0 0 20px rgba(96, 165, 250, 0.55)',
-                '0 8px 24px rgba(0, 64, 255, 0.45), 0 0 12px rgba(96, 165, 250, 0.35)'
+                '0 8px 24px rgba(38, 102, 196, 0.45), 0 0 12px rgba(96, 165, 250, 0.35)',
+                '0 12px 32px rgba(38, 102, 196, 0.65), 0 0 20px rgba(96, 165, 250, 0.55)',
+                '0 8px 24px rgba(38, 102, 196, 0.45), 0 0 12px rgba(96, 165, 250, 0.35)'
               ]
             }}
             exit={{ scale: 0.85, opacity: 0 }}
@@ -123,9 +123,9 @@ export const FloatingActions: React.FC = () => {
             whileTap={{ scale: 0.96 }}
             aria-label="Need Assistance? Click to open support options"
             title="Need Assistance?"
-            className="flex items-center justify-center w-11 h-11 bg-gradient-to-r from-[#0052FF] to-[#0038CC] text-white rounded-full border-2 border-[#60A5FA]/70 transition-all duration-200 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#60A5FA]/70"
+            className="flex items-center justify-center w-11 h-11 bg-gradient-to-r from-[#2666C4] to-[#2666C4] text-white rounded-full border-2 border-[#73C2FB]/70 transition-all duration-200 cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#73C2FB]/70"
           >
-            <div className="w-6 h-6 rounded-full bg-white text-[#0038CC] flex items-center justify-center group-hover:scale-110 transition-transform duration-200 shadow-sm">
+            <div className="w-6 h-6 rounded-full bg-white text-[#2666C4] flex items-center justify-center group-hover:scale-110 transition-transform duration-200 shadow-sm">
               <MessageCircle className="w-3.5 h-3.5 fill-current" aria-hidden="true" />
             </div>
           </motion.button>

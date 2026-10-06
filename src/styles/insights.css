@@ -1,15 +1,15 @@
 .insights-page {
-  --insights-primary: #0b63ce;
-  --insights-primary-hover: #084fa8;
-  --insights-navy: #0f172a;
-  --insights-text: #1f2937;
-  --insights-text-secondary: #667085;
-  --insights-text-muted: #98a2b3;
-  --insights-border: #e5e7eb;
-  --insights-surface-blue: #eef5ff;
-  --insights-surface-hover: #f4f8ff;
-  --insights-surface-alt: #f7f9fc;
-  --insights-surface: #ffffff;
+  --insights-primary: var(--brand-blue);
+  --insights-primary-hover: var(--brand-navy);
+  --insights-navy: var(--brand-navy);
+  --insights-text: var(--brand-black);
+  --insights-text-secondary: var(--brand-text-secondary);
+  --insights-text-muted: var(--brand-text-muted);
+  --insights-border: var(--brand-border);
+  --insights-surface-blue: var(--brand-pale);
+  --insights-surface-hover: color-mix(in srgb, var(--brand-pale) 72%, var(--brand-sky));
+  --insights-surface-alt: var(--brand-warm);
+  --insights-surface: var(--brand-white);
   --insights-content-width: 77.5rem;
 
   width: 100%;
@@ -742,7 +742,7 @@ img.featured-mini-card__image {
   display: inline-flex;
   margin-top: 2rem;
   border-radius: 0.375rem;
-  background: #e8f2ff;
+  background: #F0F7FF;
   padding: 0.375rem 0.625rem;
   color: var(--insights-primary);
   font-size: 0.6875rem;
@@ -795,7 +795,7 @@ img.featured-mini-card__image {
 .insight-article__meta i {
   width: 1px;
   height: 0.875rem;
-  background: #d0d5dd;
+  background: var(--brand-border-strong);
 }
 
 .insight-article-main {
@@ -868,7 +868,7 @@ img.insight-article__image {
 
 .insight-article__takeaways {
   margin-top: 3rem;
-  border: 1px solid #d8e8fb;
+  border: 1px solid var(--brand-border);
   border-left: 0.25rem solid var(--insights-primary);
   border-radius: 0.75rem;
   background: var(--insights-surface-blue);
@@ -977,7 +977,7 @@ img.insight-article__image {
 .insight-comments__field input,
 .insight-comments__field textarea {
   width: 100%;
-  border: 1px solid #d0d5dd;
+  border: 1px solid var(--brand-border-strong);
   border-radius: 0.5rem;
   background: var(--insights-surface);
   padding: 0.75rem 0.875rem;
@@ -1082,7 +1082,7 @@ img.insight-article__image {
 }
 
 .insight-comments__empty {
-  border: 1px dashed #cbd5e1;
+  border: 1px dashed var(--brand-border-strong);
   border-radius: 0.75rem;
   padding: 2rem;
   color: var(--insights-text-secondary);
@@ -1404,7 +1404,7 @@ img.insight-article__image {
 .latest-insights__filter {
   flex: 0 0 auto;
   min-height: 2.5rem;
-  border: 1px solid #d7dce3;
+  border: 1px solid var(--brand-border);
   border-radius: 0.5rem;
   background: var(--insights-surface);
   padding-inline: 1rem;
@@ -1418,8 +1418,8 @@ img.insight-article__image {
 }
 
 .latest-insights__filter:hover:not(.is-active) {
-  border-color: #aeb7c5;
-  background: #fbfcfe;
+  border-color: var(--brand-border-strong);
+  background: #F0F7FF;
 }
 
 .latest-insights__filter.is-active {
@@ -1486,7 +1486,7 @@ img.insight-article__image {
 
 .insights-blog-card:hover,
 .insights-blog-card:focus-within {
-  border-color: #cbd5e1;
+  border-color: var(--brand-border-strong);
   box-shadow: 0 1rem 2.25rem rgba(15, 23, 42, 0.1);
   transform: translateY(-0.25rem);
 }
@@ -1534,7 +1534,7 @@ img.insight-article__image {
 .insights-blog-card__category {
   align-self: flex-start;
   border-radius: 999px;
-  background: #e8f2ff;
+  background: #F0F7FF;
   padding: 0.3125rem 0.5rem;
   color: var(--insights-primary);
   font-size: 0.625rem;
@@ -1608,7 +1608,7 @@ img.insight-article__image {
   width: 1px;
   height: 0.875rem;
   flex: 0 0 auto;
-  background: #d0d5dd;
+  background: var(--brand-border-strong);
 }
 
 .insights-blog-card__cta {
@@ -1646,7 +1646,7 @@ img.insight-article__image {
   align-items: center;
   justify-content: center;
   margin-top: 2.75rem;
-  border-top: 1px solid #dce2ea;
+  border-top: 1px solid var(--brand-border);
   padding-top: 1.5rem;
   column-gap: 0.375rem;
   row-gap: 0.75rem;
@@ -1679,7 +1679,7 @@ img.insight-article__image {
 }
 
 .latest-pagination__page:hover:not(:disabled) {
-  background: #eaf2fd;
+  background: #F0F7FF;
   color: var(--insights-primary);
 }
 
@@ -1717,7 +1717,7 @@ img.insight-article__image {
 }
 
 .latest-pagination__text-button:hover:not(:disabled) {
-  background: #eaf2fd;
+  background: #F0F7FF;
   color: var(--insights-primary);
 }
 

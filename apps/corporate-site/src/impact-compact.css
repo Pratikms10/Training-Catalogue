@@ -1,8 +1,8 @@
-.impact { height: auto; padding: clamp(2.6rem,4vw,3.8rem) clamp(1rem,5vw,5rem); overflow: hidden; background: radial-gradient(circle at 54% -30%, rgba(115,194,251,.68), transparent 48%), linear-gradient(118deg,#174a94 0%,#2666c4 58%,#73c2fb 145%); }
+.impact { height: auto; padding: clamp(2.6rem,4vw,3.8rem) clamp(1rem,5vw,5rem); overflow: hidden; background: radial-gradient(circle at 54% -30%, rgba(115,194,251,.5), transparent 48%), linear-gradient(118deg,#01266A 0%,#2666C4 72%,#73C2FB 155%); }
 .impact .impact-shell { position: relative; top: auto; display: block; width: min(100%,1320px); height: auto; margin: 0 auto; padding: 0; overflow: visible; }
 .impact .impact-intro { display: block; margin-bottom: clamp(1.5rem,2.6vw,2.25rem); }
 .impact .impact-intro h2 { max-width: none; margin: 0; color: #fff; font-size: clamp(1.75rem,3.2vw,3.15rem); line-height: 1; letter-spacing: -.045em; white-space: nowrap; }
-.impact .impact-intro > p { max-width: none; margin: .7rem 0 0; color: #e4f3ff; font-size: clamp(.8rem,1.2vw,1rem); line-height: 1.35; white-space: nowrap; }
+.impact .impact-intro > p { max-width: none; margin: .7rem 0 0; color: #F0F7FF; font-size: clamp(.8rem,1.2vw,1rem); line-height: 1.35; white-space: nowrap; }
 .impact .impact-grid { position: relative; display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); height: auto; min-height: 0; gap: 0; overflow: hidden; border: 1px solid rgba(227,244,255,.42); border-radius: 24px; background: linear-gradient(115deg,rgba(14,55,119,.55),rgba(38,102,196,.38) 58%,rgba(115,194,251,.2)); box-shadow: 0 28px 70px rgba(15,56,119,.34), inset 0 1px 0 rgba(255,255,255,.16); filter: none; backdrop-filter: blur(12px); }
 .impact .impact-grid::before { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg,transparent 10%,rgba(196,232,255,.16) 47%,transparent 72%); animation: impactSweep 4.5s ease-in-out infinite; pointer-events: none; }
 .impact .impact-grid::after { display: none; }
@@ -12,9 +12,9 @@
 .impact .impact-value { display: flex; align-items: flex-start; line-height: .86; }
 .impact .impact-value strong,.impact .impact-value span { color: #fff; background: none; -webkit-background-clip: initial; background-clip: initial; text-shadow: 0 0 28px rgba(96,188,255,.28); }
 .impact .impact-value strong { font-family: News706,Georgia,serif; font-size: clamp(2.8rem,5vw,5.1rem); font-variant-numeric: tabular-nums; letter-spacing: -.05em; }
-.impact .impact-value span { margin-left: .12em; color: #a8ddff; font-size: clamp(1.6rem,2.5vw,2.6rem); }
+.impact .impact-value span { margin-left: .12em; color: #73C2FB; font-size: clamp(1.6rem,2.5vw,2.6rem); }
 .impact .impact-card p { margin: 1rem 0 .35rem; color: #fff; font-size: clamp(.92rem,1.25vw,1.08rem); font-weight: 760; }
-.impact .impact-card small { margin: 0; padding: 0; border: 0; color: #d7edff; font-size: .7rem; line-height: 1.4; }
+.impact .impact-card small { margin: 0; padding: 0; border: 0; color: #F0F7FF; font-size: .7rem; line-height: 1.4; }
 @keyframes impactSweep { 0%,100% { transform: translateX(-55%); opacity: .2; } 50% { transform: translateX(55%); opacity: 1; } }
 @media (max-width: 850px) { .impact .impact-grid { overflow-x: auto; grid-template-columns: repeat(4,minmax(175px,1fr)); scrollbar-width: thin; } }
 @media (max-width: 520px) { .impact { padding-inline: 1rem; } .impact .impact-grid { grid-template-columns: repeat(4,160px); } .impact .impact-card,.impact .impact-card.is-active,.impact .impact-card.is-past,.impact .impact-card.is-upcoming { min-height: 160px; padding: 1.15rem; } .impact .impact-value strong { font-size: clamp(2.3rem,11vw,3.35rem); } .impact .impact-card small { display: none; } }

@@ -17,6 +17,7 @@ import { CareersPage } from './components/careers/CareersPage';
 import { CareerRolePage } from './components/careers/CareerRolePage';
 import { InsightsPage } from './components/insights/InsightsPage';
 import { InsightArticlePage } from './components/insights/InsightArticlePage';
+import { SeoHead } from './components/SeoHead';
 
 export default function App() {
   const location = useLocation();
@@ -24,6 +25,10 @@ export default function App() {
   useEffect(() => {
     if (location.pathname === '/') window.location.replace('/website/');
   }, [location.pathname]);
+  useEffect(() => {
+    if (location.pathname.length <= 1 || !location.pathname.endsWith('/')) return;
+    navigate(`${location.pathname.replace(/\/+$/, '')}${location.search}`, { replace: true });
+  }, [location.pathname, location.search, navigate]);
   const isImportCentre = location.pathname === '/admin/import';
   const isInsightsPage = location.pathname === '/insights';
   const insightArticleSlug = location.pathname.startsWith('/insights/')
@@ -57,7 +62,13 @@ export default function App() {
     const path = location.pathname;
     activeController?.abort();
       if (path.startsWith('/programmes/')) {
-        const id = decodeURIComponent(path.replace('/programmes/', '')).toUpperCase();
+        if (path.endsWith('/')) return;
+        const requestedId = decodeURIComponent(path.replace('/programmes/', ''));
+        const id = requestedId.toUpperCase();
+        if (requestedId !== id) {
+          navigate(`/programmes/${encodeURIComponent(id)}`, { replace: true });
+          return;
+        }
         setProgrammeLoadError(null);
 
         const isLegacyCertificationCode = /^[A-Z0-9]{2,12}-[A-Z0-9][A-Z0-9-]{1,30}$/.test(id) && /\d/.test(id);
@@ -204,7 +215,12 @@ export default function App() {
   }
 
   return (
-    <div id="corporate-catalogue-app" className="min-h-screen bg-white text-[#000000] flex flex-col font-sans antialiased selection:bg-[#0000FF] selection:text-white">
+    <div id="corporate-catalogue-app" className="min-h-screen bg-white text-[#000000] flex flex-col font-sans antialiased selection:bg-[#01266A] selection:text-white">
+      <SeoHead
+        selectedProgramme={selectedProgramme}
+        isProgrammeLoading={isProgrammeLoading}
+        programmeLoadError={programmeLoadError}
+      />
       <HeaderStructure 
         onQuickSearchClick={handleQuickSearchClick}
         onEnterpriseInquiryClick={() => openEnterpriseInquiry('catalogue_header_corporate_enquiry')}
@@ -252,7 +268,7 @@ export default function App() {
             </p>
             <button 
               onClick={handleBack} 
-              className="bg-[#0000FF] hover:opacity-90 active:opacity-100 text-white px-6 py-3 rounded-lg font-semibold transition-opacity focus:outline-none focus:ring-2 focus:ring-[#0000FF]"
+              className="bg-[#01266A] hover:opacity-90 active:opacity-100 text-white px-6 py-3 rounded-lg font-semibold transition-opacity focus:outline-none focus:ring-2 focus:ring-[#01266A]"
             >
               Back to Catalogue
             </button>

@@ -30,12 +30,12 @@ export const TechnoEdgeLogo: React.FC<TechnoEdgeLogoProps> = ({
   const isWatermark = variant === 'watermark';
   const isMonochrome = variant === 'monochrome';
 
-  // Primary colors: Vibrant Sky Blue (#3B9EFF) and Light Pastel Blue (#96CBFF)
+  // Primary colors: Vibrant Sky Blue (#73C2FB) and Light Pastel Blue (#73C2FB)
   const primaryFill = color 
     ? color 
     : (isWatermark || isMonochrome) 
       ? 'currentColor' 
-      : '#3B9EFF';
+      : '#73C2FB';
 
   const secondaryFill = color
     ? color
@@ -43,7 +43,7 @@ export const TechnoEdgeLogo: React.FC<TechnoEdgeLogoProps> = ({
       ? 'currentColor'
       : isWatermark
         ? 'currentColor'
-        : '#96CBFF';
+        : '#73C2FB';
 
   const primaryOpacity = isWatermark ? 0.95 : 1;
   const secondaryOpacity = isWatermark ? 0.55 : 1;

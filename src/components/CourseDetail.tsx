@@ -91,24 +91,24 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
     if (programme.id.startsWith('RB')) {
       return {
         label: 'Role-Based Programme',
-        icon: <Users className="w-3.5 h-3.5 text-[#0000FF]" />,
+        icon: <Users className="w-3.5 h-3.5 text-[#01266A]" />,
       };
     }
     if (programme.id.startsWith('PP')) {
       return {
         label: programme.category === 'process-based' ? 'Process Based' : 'People & Behavioural',
-        icon: <Target className="w-3.5 h-3.5 text-[#0000FF]" />,
+        icon: <Target className="w-3.5 h-3.5 text-[#01266A]" />,
       };
     }
     if (programme.category === 'certifications') {
       return {
         label: `${details.provider || 'Certification'} Programme`,
-        icon: <Award className="w-3.5 h-3.5 text-[#0000FF]" />,
+        icon: <Award className="w-3.5 h-3.5 text-[#01266A]" />,
       };
     }
     return {
       label: 'Tool or Technology',
-      icon: <Cpu className="w-3.5 h-3.5 text-[#0000FF]" />,
+      icon: <Cpu className="w-3.5 h-3.5 text-[#01266A]" />,
     };
   };
 
@@ -121,11 +121,11 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
     ? programme.title.slice(titleSeparatorIndex + 1).trim()
     : null;
 
-  // Approved alternating module tile colors: Primary Blue (#0000FF) / Support Blue (#2196F3)
+  // Approved alternating module tile colors: Primary Blue (#01266A) / Support Blue (#73C2FB)
   const getModuleTileStyle = (index: number) => {
     return index % 2 === 0
-      ? 'bg-[#0000FF] text-white'
-      : 'bg-[#2196F3] text-white';
+      ? 'bg-[#01266A] text-white'
+      : 'bg-[#73C2FB] text-white';
   };
 
   // Helper to render newlines cleanly
@@ -151,14 +151,14 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
     <div className="w-full bg-white min-h-screen pb-24 font-sans antialiased text-[#000000]">
       
       {/* TOP NAVIGATION */}
-      <nav aria-label="Breadcrumb Navigation" className="w-full bg-white border-b border-[rgba(0,0,255,0.12)] sticky top-0 z-30 shadow-xs">
+      <nav aria-label="Breadcrumb Navigation" className="w-full bg-white border-b border-[rgba(1,38,106,0.12)] sticky top-0 z-30 shadow-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 py-3 flex items-center justify-between">
           <button 
             id="back-to-catalogue-btn"
             onClick={onBack}
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[rgba(0,0,0,0.70)] hover:text-[#0000FF]/70 transition-colors py-1.5 px-2.5 rounded-md hover:bg-[rgba(33,150,243,0.06)]"
+            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[rgba(0,0,0,0.70)] hover:text-[#01266A]/70 transition-colors py-1.5 px-2.5 rounded-md hover:bg-[rgba(115,194,251,0.06)]"
           >
-            <ChevronLeft className="w-4 h-4 text-[#0000FF]" />
+            <ChevronLeft className="w-4 h-4 text-[#01266A]" />
             Back to Catalogue
           </button>
         </div>
@@ -168,9 +168,9 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
       <header 
         id="course-hero-section"
         style={{
-          background: 'linear-gradient(135deg, rgba(33,150,243,0.06) 0%, rgba(33,150,243,0.02) 42%, #FFFFFF 100%)'
+          background: 'linear-gradient(135deg, rgba(115,194,251,0.06) 0%, rgba(115,194,251,0.02) 42%, #FFFFFF 100%)'
         }}
-        className="relative w-full border-b border-[rgba(0,0,255,0.12)] overflow-hidden"
+        className="relative w-full border-b border-[rgba(1,38,106,0.12)] overflow-hidden"
       >
         {/* Refined High-Impact Background Logo Watermark */}
         <div 
@@ -178,7 +178,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
           aria-hidden="true"
         >
           {/* Subtle glowing aura behind the watermark */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-[#2196F3] opacity-[0.03] blur-[80px] rounded-full"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-[#73C2FB] opacity-[0.03] blur-[80px] rounded-full"></div>
           
           <img
             src="/hero-logo.png"
@@ -200,13 +200,13 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
             {/* Badges row */}
             <div className="flex flex-wrap items-center gap-2.5 mb-3.5">
               {/* Programme Badge */}
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[rgba(33,150,243,0.10)] text-[#0000FF] text-xs font-semibold border border-[rgba(0,0,255,0.14)] shadow-2xs">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[rgba(115,194,251,0.10)] text-[#01266A] text-xs font-semibold border border-[rgba(1,38,106,0.14)] shadow-2xs">
                 {badgeInfo.icon}
                 <span>{badgeInfo.label}</span>
               </div>
 
               {/* Programme ID Tag */}
-              <div className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white border border-[rgba(0,0,255,0.14)] font-mono font-bold text-xs tracking-wider text-[#000000] shadow-2xs">
+              <div className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-white border border-[rgba(1,38,106,0.14)] font-mono font-bold text-xs tracking-wider text-[#000000] shadow-2xs">
                 <span>{programme.id}</span>
               </div>
             </div>
@@ -228,8 +228,8 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
               <OriginButton 
                 id="hero-rfq-button"
                 onClick={() => openRfq('catalogue_course_hero_proposal')}
-                fillClassName="bg-[#22c55e]"
-                className="bg-[#0000FF] border-none text-white font-semibold text-sm sm:text-base py-3.5 px-7 rounded-lg inline-flex items-center gap-2.5 shadow-xs transition-all hover:shadow-[0_6px_22px_rgba(0,0,255,0.40)] hover:ring-2 hover:ring-[#2196F3]/70 hover:-translate-y-0.5 focus:outline-none focus:ring-3 focus:ring-[#0000FF]/25 text-white hover:text-white cursor-pointer"
+                fillClassName="bg-[#2666C4]"
+                className="bg-[#01266A] border-none text-white font-semibold text-sm sm:text-base py-3.5 px-7 rounded-lg inline-flex items-center gap-2.5 shadow-xs transition-all hover:shadow-[0_6px_22px_rgba(1,38,106,0.40)] hover:ring-2 hover:ring-[#73C2FB]/70 hover:-translate-y-0.5 focus:outline-none focus:ring-3 focus:ring-[#01266A]/25 text-white hover:text-white cursor-pointer"
               >
                 <span>Get Corporate Training Proposal</span>
                 <ArrowRight className="w-4 h-4 text-white" />
@@ -240,7 +240,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
           {/* 9. Hero Right-side Visual (Desktop + Mobile) */}
           <div className="w-full md:w-[35%] lg:w-[40%] flex flex-col items-center md:items-end justify-center z-10 mt-8 md:mt-0">
-            <div className="w-full max-w-sm aspect-[4/3] rounded-2xl overflow-hidden shadow-[0_6px_18px_rgba(0,0,0,0.08)] border border-[rgba(0,0,255,0.12)] bg-white flex items-center justify-center p-1.5 relative">
+            <div className="w-full max-w-sm aspect-[4/3] rounded-2xl overflow-hidden shadow-[0_6px_18px_rgba(0,0,0,0.08)] border border-[rgba(1,38,106,0.12)] bg-white flex items-center justify-center p-1.5 relative">
               {((programme as any).imageUrl || (programme as any).toolLogoUrl) ? (
                 <img 
                   src={((programme as any).imageUrl || (programme as any).toolLogoUrl)}
@@ -251,11 +251,11 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                   }}
                 />
               ) : (
-                <div className="w-full h-full bg-[rgba(33,150,243,0.03)] rounded-xl flex items-center justify-center text-[10px] font-bold text-[rgba(0,0,0,0.3)] tracking-widest uppercase border border-dashed border-[rgba(0,0,255,0.15)] text-center leading-relaxed">
+                <div className="w-full h-full bg-[rgba(115,194,251,0.03)] rounded-xl flex items-center justify-center text-[10px] font-bold text-[rgba(0,0,0,0.3)] tracking-widest uppercase border border-dashed border-[rgba(1,38,106,0.15)] text-center leading-relaxed">
                   {programme.category === 'certifications'
-                    ? <div className="flex flex-col items-center gap-3 text-[#0000FF]"><Award className="h-16 w-16"/><span>{details.provider || 'Certification'}</span></div>
+                    ? <div className="flex flex-col items-center gap-3 text-[#01266A]"><Award className="h-16 w-16"/><span>{details.provider || 'Certification'}</span></div>
                     : ['ai-tools', 'tools-technology'].includes(programme.category)
-                      ? <div className="flex flex-col items-center gap-3 text-[#0000FF]"><Cpu className="h-16 w-16"/><span>{(programme as any).toolName || 'Technology'}</span></div>
+                      ? <div className="flex flex-col items-center gap-3 text-[#01266A]"><Cpu className="h-16 w-16"/><span>{(programme as any).toolName || 'Technology'}</span></div>
                       : 'IMAGE REQUIRED'}
                 </div>
               )}
@@ -272,14 +272,14 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
         <section 
           id="course-metadata-strip"
           aria-label="Course Metadata"
-          className="bg-white rounded-xl border border-[rgba(0,0,255,0.12)] shadow-[0_6px_18px_rgba(0,0,0,0.08)] p-5 sm:p-6 -mt-10 sm:-mt-12 mb-10 relative z-20"
+          className="bg-white rounded-xl border border-[rgba(1,38,106,0.12)] shadow-[0_6px_18px_rgba(0,0,0,0.08)] p-5 sm:p-6 -mt-10 sm:-mt-12 mb-10 relative z-20"
         >
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 divide-y lg:divide-y-0 lg:divide-x divide-[rgba(0,0,255,0.10)]">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 divide-y lg:divide-y-0 lg:divide-x divide-[rgba(1,38,106,0.10)]">
             
             {/* Duration */}
             <div className="flex items-center gap-3.5 px-2 sm:px-4">
-              <div className="w-10 h-10 rounded-lg bg-[rgba(33,150,243,0.08)] border border-[rgba(0,0,255,0.12)] flex items-center justify-center shrink-0">
-                <Clock className="w-5 h-5 text-[#0000FF]" />
+              <div className="w-10 h-10 rounded-lg bg-[rgba(115,194,251,0.08)] border border-[rgba(1,38,106,0.12)] flex items-center justify-center shrink-0">
+                <Clock className="w-5 h-5 text-[#01266A]" />
               </div>
               <div>
                 <div className="text-[11px] font-semibold text-[rgba(0,0,0,0.58)] uppercase tracking-wider mb-0.5">
@@ -293,8 +293,8 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
             {/* Level */}
             <div className="flex items-center gap-3.5 px-2 sm:px-4 pt-4 sm:pt-0">
-              <div className="w-10 h-10 rounded-lg bg-[rgba(33,150,243,0.08)] border border-[rgba(0,0,255,0.12)] flex items-center justify-center shrink-0">
-                <BarChart3 className="w-5 h-5 text-[#0000FF]" />
+              <div className="w-10 h-10 rounded-lg bg-[rgba(115,194,251,0.08)] border border-[rgba(1,38,106,0.12)] flex items-center justify-center shrink-0">
+                <BarChart3 className="w-5 h-5 text-[#01266A]" />
               </div>
               <div>
                 <div className="text-[11px] font-semibold text-[rgba(0,0,0,0.58)] uppercase tracking-wider mb-0.5">
@@ -308,8 +308,8 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
             {/* Delivery */}
             <div className="flex items-center gap-3.5 px-2 sm:px-4 pt-4 lg:pt-0">
-              <div className="w-10 h-10 rounded-lg bg-[rgba(33,150,243,0.08)] border border-[rgba(0,0,255,0.12)] flex items-center justify-center shrink-0">
-                <MonitorPlay className="w-5 h-5 text-[#0000FF]" />
+              <div className="w-10 h-10 rounded-lg bg-[rgba(115,194,251,0.08)] border border-[rgba(1,38,106,0.12)] flex items-center justify-center shrink-0">
+                <MonitorPlay className="w-5 h-5 text-[#01266A]" />
               </div>
               <div>
                 <div className="text-[11px] font-semibold text-[rgba(0,0,0,0.58)] uppercase tracking-wider mb-0.5">
@@ -323,8 +323,8 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
             {/* Format */}
             <div id="course-metadata-approach-item" className="flex items-center gap-3.5 px-2 sm:px-4 pt-4 lg:pt-0">
-              <div className="w-10 h-10 rounded-lg bg-[rgba(33,150,243,0.08)] border border-[rgba(0,0,255,0.12)] flex items-center justify-center shrink-0">
-                <Layers className="w-5 h-5 text-[#0000FF]" />
+              <div className="w-10 h-10 rounded-lg bg-[rgba(115,194,251,0.08)] border border-[rgba(1,38,106,0.12)] flex items-center justify-center shrink-0">
+                <Layers className="w-5 h-5 text-[#01266A]" />
               </div>
               <div>
                 <div id="course-metadata-approach-label" className="text-[11px] font-semibold text-[rgba(0,0,0,0.58)] uppercase tracking-wider mb-0.5">
@@ -343,23 +343,23 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
         <div className="space-y-6">
 
           {/* 11. ABOUT ACCORDION SECTION */}
-          <section id="section-about" className="bg-white rounded-xl border border-[rgba(0,0,255,0.12)] overflow-hidden shadow-xs">
+          <section id="section-about" className="bg-white rounded-xl border border-[rgba(1,38,106,0.12)] overflow-hidden shadow-xs">
             <button 
               type="button"
               onClick={() => toggleSection('about')}
               aria-expanded={expandedSections.about}
-              className={`w-full px-6 sm:px-8 py-5 flex items-center justify-between bg-white hover:bg-[rgba(33,150,243,0.04)] transition-colors text-left select-none border-b ${
-                expandedSections.about ? 'border-b-2 border-[#0000FF]' : 'border-[rgba(0,0,255,0.12)]'
+              className={`w-full px-6 sm:px-8 py-5 flex items-center justify-between bg-white hover:bg-[rgba(115,194,251,0.04)] transition-colors text-left select-none border-b ${
+                expandedSections.about ? 'border-b-2 border-[#01266A]' : 'border-[rgba(1,38,106,0.12)]'
               }`}
             >
-              <h2 className={`text-lg sm:text-xl font-bold tracking-tight ${expandedSections.about ? 'text-[#0000FF]' : 'text-[#000000]'}`}>
+              <h2 className={`text-lg sm:text-xl font-bold tracking-tight ${expandedSections.about ? 'text-[#01266A]' : 'text-[#000000]'}`}>
                 About
               </h2>
-              <div className="w-7 h-7 rounded-full bg-[rgba(33,150,243,0.06)] border border-[rgba(0,0,255,0.10)] flex items-center justify-center text-[#0000FF]">
+              <div className="w-7 h-7 rounded-full bg-[rgba(115,194,251,0.06)] border border-[rgba(1,38,106,0.10)] flex items-center justify-center text-[#01266A]">
                 {expandedSections.about ? (
-                  <ChevronUp className="w-4 h-4 text-[#0000FF]" />
+                  <ChevronUp className="w-4 h-4 text-[#01266A]" />
                 ) : (
-                  <ChevronDown className="w-4 h-4 text-[#0000FF]" />
+                  <ChevronDown className="w-4 h-4 text-[#01266A]" />
                 )}
               </div>
             </button>
@@ -386,7 +386,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                             <ul className="space-y-2.5">
                               {details.objectives.map((objective: string, index: number) => (
                                 <li key={index} className="flex items-start gap-2.5">
-                                  <Check className="w-4 h-4 text-[#0000FF] shrink-0 mt-1" />
+                                  <Check className="w-4 h-4 text-[#01266A] shrink-0 mt-1" />
                                   <span>{objective}</span>
                                 </li>
                               ))}
@@ -399,7 +399,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                     )}
 
                     {programme.category === 'certifications' && details.providerCourseCode && (
-                      <div className="rounded-xl border border-[rgba(0,0,255,0.08)] bg-[rgba(33,150,243,0.06)] p-5 sm:p-6">
+                      <div className="rounded-xl border border-[rgba(1,38,106,0.08)] bg-[rgba(115,194,251,0.06)] p-5 sm:p-6">
                         <h4 className="mb-2 text-sm font-bold text-[#000000]">Official provider reference</h4>
                         <p className="mb-2 font-mono text-sm font-semibold text-[#000000]">
                           {details.provider || 'Provider'} course code: {details.providerCourseCode}
@@ -410,7 +410,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                             href={details.courseUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0000FF] hover:underline"
+                            className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#01266A] hover:underline"
                           >
                             View official provider page
                             <ArrowRight className="h-4 w-4" />
@@ -421,16 +421,16 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
                     {/* 12 & 13. Light-Blue Content Panel: Tools Covered */}
                     {details.toolsCovered && details.toolsCovered.length > 0 && (
-                      <div className="bg-[rgba(33,150,243,0.06)] p-5 sm:p-6 rounded-xl border border-[rgba(0,0,255,0.08)]">
+                      <div className="bg-[rgba(115,194,251,0.06)] p-5 sm:p-6 rounded-xl border border-[rgba(1,38,106,0.08)]">
                         <h4 className="text-sm font-bold text-[#000000] mb-3 flex items-center gap-2">
-                          <Wrench className="w-4 h-4 text-[#0000FF]" />
+                          <Wrench className="w-4 h-4 text-[#01266A]" />
                           <span>{programme.category === 'certifications' ? 'Products & technologies' : programme.id.startsWith('TT') ? 'Technology covered' : 'Tools covered'}</span>
                         </h4>
                         <div className="flex flex-wrap gap-2">
                           {details.toolsCovered.map((tool: string, idx: number) => (
                             <span 
                               key={idx} 
-                              className="bg-[rgba(33,150,243,0.12)] border border-[rgba(0,0,255,0.08)] text-[#000000] text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-[rgba(33,150,243,0.18)] transition-colors"
+                              className="bg-[rgba(115,194,251,0.12)] border border-[rgba(1,38,106,0.08)] text-[#000000] text-xs font-semibold px-3 py-1.5 rounded-md hover:bg-[rgba(115,194,251,0.18)] transition-colors"
                             >
                               {tool}
                             </span>
@@ -441,15 +441,15 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
                     {/* 12 & 14. Light-Blue Content Panel: Who Should Attend */}
                     {details.audience && details.audience.length > 0 && (
-                      <div className="bg-[rgba(33,150,243,0.06)] p-5 sm:p-6 rounded-xl border border-[rgba(0,0,255,0.08)]">
+                      <div className="bg-[rgba(115,194,251,0.06)] p-5 sm:p-6 rounded-xl border border-[rgba(1,38,106,0.08)]">
                         <h4 className="text-sm font-bold text-[#000000] mb-3 flex items-center gap-2">
-                          <Users className="w-4 h-4 text-[#0000FF]" />
+                          <Users className="w-4 h-4 text-[#01266A]" />
                           <span>Who should attend</span>
                         </h4>
                         <ul className="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-sm text-[rgba(0,0,0,0.72)]">
                           {details.audience.map((item: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2.5">
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#0000FF] shrink-0 mt-2" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#01266A] shrink-0 mt-2" />
                               <span>{item}</span>
                             </li>
                           ))}
@@ -464,23 +464,23 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
           </section>
 
           {/* 12. PREREQUISITES ACCORDION SECTION */}
-          <section id="section-prerequisites" className="bg-white rounded-xl border border-[rgba(0,0,255,0.12)] overflow-hidden shadow-xs">
+          <section id="section-prerequisites" className="bg-white rounded-xl border border-[rgba(1,38,106,0.12)] overflow-hidden shadow-xs">
             <button 
               type="button"
               onClick={() => toggleSection('prerequisites')}
               aria-expanded={expandedSections.prerequisites}
-              className={`w-full px-6 sm:px-8 py-5 flex items-center justify-between bg-white hover:bg-[rgba(33,150,243,0.04)] transition-colors text-left select-none border-b ${
-                expandedSections.prerequisites ? 'border-b-2 border-[#0000FF]' : 'border-[rgba(0,0,255,0.12)]'
+              className={`w-full px-6 sm:px-8 py-5 flex items-center justify-between bg-white hover:bg-[rgba(115,194,251,0.04)] transition-colors text-left select-none border-b ${
+                expandedSections.prerequisites ? 'border-b-2 border-[#01266A]' : 'border-[rgba(1,38,106,0.12)]'
               }`}
             >
-              <h2 className={`text-lg sm:text-xl font-bold tracking-tight ${expandedSections.prerequisites ? 'text-[#0000FF]' : 'text-[#000000]'}`}>
+              <h2 className={`text-lg sm:text-xl font-bold tracking-tight ${expandedSections.prerequisites ? 'text-[#01266A]' : 'text-[#000000]'}`}>
                 Prerequisites
               </h2>
-              <div className="w-7 h-7 rounded-full bg-[rgba(33,150,243,0.06)] border border-[rgba(0,0,255,0.10)] flex items-center justify-center text-[#0000FF]">
+              <div className="w-7 h-7 rounded-full bg-[rgba(115,194,251,0.06)] border border-[rgba(1,38,106,0.10)] flex items-center justify-center text-[#01266A]">
                 {expandedSections.prerequisites ? (
-                  <ChevronUp className="w-4 h-4 text-[#0000FF]" />
+                  <ChevronUp className="w-4 h-4 text-[#01266A]" />
                 ) : (
-                  <ChevronDown className="w-4 h-4 text-[#0000FF]" />
+                  <ChevronDown className="w-4 h-4 text-[#01266A]" />
                 )}
               </div>
             </button>
@@ -495,16 +495,16 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                   className="bg-white"
                 >
                   <div className="px-6 sm:px-8 py-6 sm:py-7">
-                    <div className="bg-[rgba(33,150,243,0.06)] p-5 sm:p-6 rounded-xl border border-[rgba(0,0,255,0.08)]">
+                    <div className="bg-[rgba(115,194,251,0.06)] p-5 sm:p-6 rounded-xl border border-[rgba(1,38,106,0.08)]">
                       <h4 className="text-sm font-bold text-[#000000] mb-3 flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-[#0000FF]" />
+                        <FileText className="w-4 h-4 text-[#01266A]" />
                         <span>Prerequisites & Participant Readiness</span>
                       </h4>
                       {details.prerequisitesList && details.prerequisitesList.length > 0 ? (
                         <ul className="space-y-2 text-sm text-[rgba(0,0,0,0.72)]">
                           {details.prerequisitesList.map((item: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2.5">
-                              <Check className="w-4 h-4 text-[#0000FF] shrink-0 mt-0.5" />
+                              <Check className="w-4 h-4 text-[#01266A] shrink-0 mt-0.5" />
                               <span>{item}</span>
                             </li>
                           ))}
@@ -522,23 +522,23 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
           </section>
 
           {/* 15, 16, 17, 18. TOC MODULES ACCORDION SECTION */}
-          <section id="section-modules" className="bg-white rounded-xl border border-[rgba(0,0,255,0.12)] overflow-hidden shadow-xs">
+          <section id="section-modules" className="bg-white rounded-xl border border-[rgba(1,38,106,0.12)] overflow-hidden shadow-xs">
             <button 
               type="button"
               onClick={() => toggleSection('modules')}
               aria-expanded={expandedSections.modules}
-              className={`w-full px-6 sm:px-8 py-5 flex items-center justify-between bg-white hover:bg-[rgba(33,150,243,0.04)] transition-colors text-left select-none border-b ${
-                expandedSections.modules ? 'border-b-2 border-[#0000FF]' : 'border-[rgba(0,0,255,0.12)]'
+              className={`w-full px-6 sm:px-8 py-5 flex items-center justify-between bg-white hover:bg-[rgba(115,194,251,0.04)] transition-colors text-left select-none border-b ${
+                expandedSections.modules ? 'border-b-2 border-[#01266A]' : 'border-[rgba(1,38,106,0.12)]'
               }`}
             >
-              <h2 className={`text-lg sm:text-xl font-bold tracking-tight ${expandedSections.modules ? 'text-[#0000FF]' : 'text-[#000000]'}`}>
+              <h2 className={`text-lg sm:text-xl font-bold tracking-tight ${expandedSections.modules ? 'text-[#01266A]' : 'text-[#000000]'}`}>
                 Modules
               </h2>
-              <div className="w-7 h-7 rounded-full bg-[rgba(33,150,243,0.06)] border border-[rgba(0,0,255,0.10)] flex items-center justify-center text-[#0000FF]">
+              <div className="w-7 h-7 rounded-full bg-[rgba(115,194,251,0.06)] border border-[rgba(1,38,106,0.10)] flex items-center justify-center text-[#01266A]">
                 {expandedSections.modules ? (
-                  <ChevronUp className="w-4 h-4 text-[#0000FF]" />
+                  <ChevronUp className="w-4 h-4 text-[#01266A]" />
                 ) : (
-                  <ChevronDown className="w-4 h-4 text-[#0000FF]" />
+                  <ChevronDown className="w-4 h-4 text-[#01266A]" />
                 )}
               </div>
             </button>
@@ -555,20 +555,20 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                   <div className="px-6 sm:px-8 py-6 sm:py-7">
                     
                     {/* TOC Header with Expand All toggle */}
-                    <div className="flex items-center justify-between mb-4 pb-2 border-b border-[rgba(0,0,255,0.12)]">
+                    <div className="flex items-center justify-between mb-4 pb-2 border-b border-[rgba(1,38,106,0.12)]">
                       <h3 className="text-base sm:text-lg font-bold text-[#000000]">
                         TOC Modules
                       </h3>
                       <button 
                         type="button"
                         onClick={handleToggleAllModules}
-                        className="text-xs font-semibold text-[#0000FF] hover:underline inline-flex items-center gap-1 uppercase tracking-wider py-1 px-2 rounded hover:bg-[rgba(33,150,243,0.06)] transition-colors"
+                        className="text-xs font-semibold text-[#01266A] hover:underline inline-flex items-center gap-1 uppercase tracking-wider py-1 px-2 rounded hover:bg-[rgba(115,194,251,0.06)] transition-colors"
                       >
                         <span>{allModulesExpanded ? 'Collapse all' : 'Expand all'}</span>
                         {allModulesExpanded ? (
-                          <ChevronUp className="w-3.5 h-3.5 text-[#0000FF]" />
+                          <ChevronUp className="w-3.5 h-3.5 text-[#01266A]" />
                         ) : (
-                          <ChevronDown className="w-3.5 h-3.5 text-[#0000FF]" />
+                          <ChevronDown className="w-3.5 h-3.5 text-[#01266A]" />
                         )}
                       </button>
                     </div>
@@ -585,13 +585,13 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                         return (
                           <div 
                             key={module.id} 
-                            className="bg-white border border-[rgba(0,0,255,0.16)] rounded-lg overflow-hidden transition-shadow hover:shadow-xs"
+                            className="bg-white border border-[rgba(1,38,106,0.16)] rounded-lg overflow-hidden transition-shadow hover:shadow-xs"
                           >
                             {/* Module Header Row */}
                             <button
                               type="button"
                               onClick={(e) => toggleModule(module.id, e)}
-                              className="w-full flex items-center bg-white hover:bg-[rgba(33,150,243,0.04)] transition-colors text-left"
+                              className="w-full flex items-center bg-white hover:bg-[rgba(115,194,251,0.04)] transition-colors text-left"
                             >
                               {/* Left Square Accent Icon Block (Alternating approved blues only) */}
                               <div className={`w-12 h-12 sm:w-14 sm:h-14 shrink-0 flex items-center justify-center font-mono font-bold text-base sm:text-lg ${tileStyle}`}>
@@ -611,11 +611,11 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                               </div>
 
                               {/* Right Blue Arrow */}
-                              <div className="px-4 text-[#0000FF] shrink-0">
+                              <div className="px-4 text-[#01266A] shrink-0">
                                 {isExpanded ? (
-                                  <ChevronUp className="w-4 h-4 text-[#0000FF]" />
+                                  <ChevronUp className="w-4 h-4 text-[#01266A]" />
                                 ) : (
-                                  <ChevronDown className="w-4 h-4 text-[#0000FF]" />
+                                  <ChevronDown className="w-4 h-4 text-[#01266A]" />
                                 )}
                               </div>
                             </button>
@@ -628,11 +628,11 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                                   animate={{ height: 'auto', opacity: 1 }}
                                   exit={{ height: 0, opacity: 0 }}
                                   transition={{ duration: 0.2, ease: 'easeInOut' }}
-                                  className="border-t border-[rgba(0,0,255,0.10)] bg-[rgba(33,150,243,0.05)]"
+                                  className="border-t border-[rgba(1,38,106,0.10)] bg-[rgba(115,194,251,0.05)]"
                                 >
                                   <div className="p-5 pl-16 sm:pl-20 pr-6">
                                     {module.learningPathTitle && (
-                                      <div className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-[#0000FF]">
+                                      <div className="mb-3 text-[11px] font-semibold uppercase tracking-wider text-[#01266A]">
                                         Learning Path: {module.learningPathTitle}
                                       </div>
                                     )}
@@ -642,14 +642,14 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                                       </p>
                                     )}
                                     {module.learningOutcomes && module.learningOutcomes.length > 0 && (
-                                      <div className="mb-4 rounded-lg border border-[rgba(0,0,255,0.08)] bg-white/80 p-4">
+                                      <div className="mb-4 rounded-lg border border-[rgba(1,38,106,0.08)] bg-white/80 p-4">
                                         <div className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-[rgba(0,0,0,0.58)]">
                                           Learning objectives
                                         </div>
                                         <ul className="space-y-1.5 text-xs sm:text-sm text-[rgba(0,0,0,0.72)]">
                                           {module.learningOutcomes.map((outcome, outcomeIndex) => (
                                             <li key={outcomeIndex} className="flex items-start gap-2 leading-relaxed">
-                                              <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#0000FF]" />
+                                              <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#01266A]" />
                                               <span>{outcome}</span>
                                             </li>
                                           ))}
@@ -661,9 +661,9 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                                     {hasStructuredLearning ? (
                                       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
                                         {module.concepts && module.concepts.length > 0 && (
-                                          <div className="bg-white/80 p-4 rounded-lg border border-[rgba(0,0,255,0.08)]">
+                                          <div className="bg-white/80 p-4 rounded-lg border border-[rgba(1,38,106,0.08)]">
                                             <div className="text-[11px] font-semibold text-[rgba(0,0,0,0.58)] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                                              <Lightbulb className="w-3.5 h-3.5 text-[#0000FF]" />
+                                              <Lightbulb className="w-3.5 h-3.5 text-[#01266A]" />
                                               <span>{programme.category === 'certifications' ? 'Topics / units' : 'Concepts'}</span>
                                             </div>
                                             <ul className="list-disc pl-4 space-y-1.5 text-xs sm:text-sm text-[rgba(0,0,0,0.72)]">
@@ -677,15 +677,15 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                                         )}
 
                                         {module.practicalActivities && module.practicalActivities.length > 0 && (
-                                          <div className="bg-white/80 p-4 rounded-lg border border-[rgba(0,0,255,0.08)]">
+                                          <div className="bg-white/80 p-4 rounded-lg border border-[rgba(1,38,106,0.08)]">
                                             <div className="text-[11px] font-semibold text-[rgba(0,0,0,0.58)] uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                                              <Target className="w-3.5 h-3.5 text-[#0000FF]" />
+                                              <Target className="w-3.5 h-3.5 text-[#01266A]" />
                                               <span>Practical activities</span>
                                             </div>
                                             <ul className="space-y-1.5 text-xs sm:text-sm text-[rgba(0,0,0,0.72)]">
                                               {module.practicalActivities.map((activity, activityIndex) => (
                                                 <li key={activityIndex} className="flex items-start gap-2 leading-relaxed">
-                                                  <Check className="w-3.5 h-3.5 text-[#0000FF] shrink-0 mt-0.5" />
+                                                  <Check className="w-3.5 h-3.5 text-[#01266A] shrink-0 mt-0.5" />
                                                   <span>{activity}</span>
                                                 </li>
                                               ))}
@@ -710,9 +710,9 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
                                     {/* Applied Exercise (if present) */}
                                     {module.appliedExercise && (
-                                      <div className="bg-white p-4 rounded-lg border border-[rgba(0,0,255,0.10)] shadow-2xs mt-3">
-                                        <h5 className="text-xs font-bold text-[#0000FF] flex items-center gap-1.5 uppercase tracking-wider mb-1.5">
-                                          <Target className="w-3.5 h-3.5 text-[#0000FF]" />
+                                      <div className="bg-white p-4 rounded-lg border border-[rgba(1,38,106,0.10)] shadow-2xs mt-3">
+                                        <h5 className="text-xs font-bold text-[#01266A] flex items-center gap-1.5 uppercase tracking-wider mb-1.5">
+                                          <Target className="w-3.5 h-3.5 text-[#01266A]" />
                                           <span>{module.appliedExercise.title}</span>
                                         </h5>
                                         <div className="text-xs sm:text-sm text-[rgba(0,0,0,0.72)] leading-relaxed">
@@ -720,7 +720,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                                             <ul className="space-y-1">
                                               {module.appliedExercise.content.map((cLine, cIdx) => (
                                                 <li key={cIdx} className={cLine === '' ? 'h-2' : 'flex items-start gap-1.5'}>
-                                                  {cLine !== '' && <span className="text-[#0000FF]">•</span>}
+                                                  {cLine !== '' && <span className="text-[#01266A]">•</span>}
                                                   <span>{cLine}</span>
                                                 </li>
                                               ))}
@@ -741,7 +741,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                       })}
 
                       {modules.length === 0 && (
-                        <p className="text-xs text-[rgba(0,0,0,0.58)] italic p-4 bg-[rgba(33,150,243,0.06)] rounded-lg">
+                        <p className="text-xs text-[rgba(0,0,0,0.58)] italic p-4 bg-[rgba(115,194,251,0.06)] rounded-lg">
                           Detailed syllabus modules are available upon quotation inquiry.
                         </p>
                       )}
@@ -752,7 +752,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                       id="custom-training-plan-button"
                       type="button"
                       onClick={() => openRfq('catalogue_course_training_plan')}
-                      className="group mt-6 flex w-full flex-col items-start justify-between gap-4 overflow-hidden rounded-xl border border-[#0000FF] bg-[linear-gradient(135deg,#0000FF_0%,#075DEB_60%,#2196F3_100%)] px-5 py-5 text-left shadow-[0_10px_28px_rgba(0,0,255,0.20)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(0,0,255,0.28)] focus:outline-none focus:ring-3 focus:ring-[#2196F3]/35 sm:flex-row sm:items-center sm:px-6"
+                      className="group mt-6 flex w-full flex-col items-start justify-between gap-4 overflow-hidden rounded-xl border border-[#01266A] bg-[linear-gradient(135deg,#01266A_0%,#075DEB_60%,#73C2FB_100%)] px-5 py-5 text-left shadow-[0_10px_28px_rgba(1,38,106,0.20)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(1,38,106,0.28)] focus:outline-none focus:ring-3 focus:ring-[#73C2FB]/35 sm:flex-row sm:items-center sm:px-6"
                     >
                       <div>
                         <h3 className="text-lg font-bold tracking-tight text-white sm:text-xl">
@@ -762,9 +762,9 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                           Adapt the modules, duration and delivery format to your team&apos;s requirements.
                         </p>
                       </div>
-                      <span className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-bold text-[#0000FF] shadow-sm transition-transform group-hover:translate-x-0.5">
+                      <span className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-bold text-[#01266A] shadow-sm transition-transform group-hover:translate-x-0.5">
                         Get a proposal
-                        <ArrowRight className="h-4 w-4 text-[#0000FF]" />
+                        <ArrowRight className="h-4 w-4 text-[#01266A]" />
                       </span>
                     </button>
 
@@ -775,23 +775,23 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
           </section>
 
           {/* 19. APPLIED BUSINESS SCENARIOS (USE CASES) SECTION */}
-          <section id="section-use-cases" className="bg-white rounded-xl border border-[rgba(0,0,255,0.12)] overflow-hidden shadow-xs">
+          <section id="section-use-cases" className="bg-white rounded-xl border border-[rgba(1,38,106,0.12)] overflow-hidden shadow-xs">
             <button 
               type="button"
               onClick={() => toggleSection('useCases')}
               aria-expanded={expandedSections.useCases}
-              className={`w-full px-6 sm:px-8 py-5 flex items-center justify-between bg-white hover:bg-[rgba(33,150,243,0.04)] transition-colors text-left select-none border-b ${
-                expandedSections.useCases ? 'border-b-2 border-[#0000FF]' : 'border-[rgba(0,0,255,0.12)]'
+              className={`w-full px-6 sm:px-8 py-5 flex items-center justify-between bg-white hover:bg-[rgba(115,194,251,0.04)] transition-colors text-left select-none border-b ${
+                expandedSections.useCases ? 'border-b-2 border-[#01266A]' : 'border-[rgba(1,38,106,0.12)]'
               }`}
             >
-              <h2 className={`text-lg sm:text-xl font-bold tracking-tight ${expandedSections.useCases ? 'text-[#0000FF]' : 'text-[#000000]'}`}>
+              <h2 className={`text-lg sm:text-xl font-bold tracking-tight ${expandedSections.useCases ? 'text-[#01266A]' : 'text-[#000000]'}`}>
                 Applied Business Scenario
               </h2>
-              <div className="w-7 h-7 rounded-full bg-[rgba(33,150,243,0.06)] border border-[rgba(0,0,255,0.10)] flex items-center justify-center text-[#0000FF]">
+              <div className="w-7 h-7 rounded-full bg-[rgba(115,194,251,0.06)] border border-[rgba(1,38,106,0.10)] flex items-center justify-center text-[#01266A]">
                 {expandedSections.useCases ? (
-                  <ChevronUp className="w-4 h-4 text-[#0000FF]" />
+                  <ChevronUp className="w-4 h-4 text-[#01266A]" />
                 ) : (
-                  <ChevronDown className="w-4 h-4 text-[#0000FF]" />
+                  <ChevronDown className="w-4 h-4 text-[#01266A]" />
                 )}
               </div>
             </button>
@@ -808,10 +808,10 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                   <div className="px-6 sm:px-8 py-6 sm:py-8">
                     
                     {/* 19. Light-Blue Parent Panel */}
-                    <div className="bg-[rgba(33,150,243,0.06)] border border-[rgba(0,0,255,0.08)] rounded-xl p-5 sm:p-7">
+                    <div className="bg-[rgba(115,194,251,0.06)] border border-[rgba(1,38,106,0.08)] rounded-xl p-5 sm:p-7">
                       
                       <h3 className="text-base sm:text-lg font-bold text-[#000000] mb-5 flex items-center gap-2">
-                        <Lightbulb className="w-5 h-5 text-[#0000FF]" />
+                        <Lightbulb className="w-5 h-5 text-[#01266A]" />
                         <span>Scenarios</span>
                       </h3>
 
@@ -820,17 +820,17 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                           {scenarios.map((scenario, sIdx) => (
                             <div 
                               key={sIdx} 
-                              className="bg-white p-5 sm:p-6 rounded-xl border border-[rgba(0,0,255,0.08)] shadow-2xs flex flex-col gap-3"
+                              className="bg-white p-5 sm:p-6 rounded-xl border border-[rgba(1,38,106,0.08)] shadow-2xs flex flex-col gap-3"
                             >
-                              <div className="w-9 h-9 rounded-lg bg-[rgba(33,150,243,0.12)] text-[#0000FF] flex items-center justify-center shrink-0">
-                                <Lightbulb className="w-4 h-4 text-[#0000FF]" />
+                              <div className="w-9 h-9 rounded-lg bg-[rgba(115,194,251,0.12)] text-[#01266A] flex items-center justify-center shrink-0">
+                                <Lightbulb className="w-4 h-4 text-[#01266A]" />
                               </div>
                               <div>
                                 <h4 className="text-sm sm:text-base font-bold text-[#000000] mb-2">
                                   {scenario.title}
                                 </h4>
                                 {scenario.workflow && (
-                                  <div className="bg-[rgba(33,150,243,0.08)] border border-[rgba(0,0,255,0.08)] rounded-lg px-3 py-2.5 mb-3 text-xs font-semibold text-[#0000FF] leading-relaxed">
+                                  <div className="bg-[rgba(115,194,251,0.08)] border border-[rgba(1,38,106,0.08)] rounded-lg px-3 py-2.5 mb-3 text-xs font-semibold text-[#01266A] leading-relaxed">
                                     {scenario.workflow}
                                   </div>
                                 )}
@@ -862,12 +862,12 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
           {/* Course-specific close: gives the TOC a purposeful next step before the site footer. */}
           <section
             aria-labelledby="course-next-steps-heading"
-            className="relative overflow-hidden rounded-2xl border border-[rgba(0,0,255,0.18)] bg-[linear-gradient(135deg,#F5FAFF_0%,#FFFFFF_52%,#EEF7FF_100%)] px-6 py-8 shadow-[0_16px_40px_rgba(0,70,180,0.08)] sm:px-8 sm:py-10"
+            className="relative overflow-hidden rounded-2xl border border-[rgba(1,38,106,0.18)] bg-[linear-gradient(135deg,#F5FAFF_0%,#FFFFFF_52%,#EEF7FF_100%)] px-6 py-8 shadow-[0_16px_40px_rgba(0,70,180,0.08)] sm:px-8 sm:py-10"
           >
-            <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-24 h-56 w-56 rounded-full bg-[rgba(33,150,243,0.12)] blur-3xl" />
+            <div aria-hidden="true" className="pointer-events-none absolute -right-20 -top-24 h-56 w-56 rounded-full bg-[rgba(115,194,251,0.12)] blur-3xl" />
             <div className="relative grid gap-7 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
               <div className="max-w-2xl">
-                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#0000FF]">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#01266A]">
                   Take the next step
                 </p>
                 <h2 id="course-next-steps-heading" className="mt-2 text-2xl font-bold tracking-tight text-[#000000] sm:text-3xl">
@@ -880,7 +880,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                   {['Instructor-led', 'Virtual', 'Hybrid'].map((option) => (
                     <span
                       key={option}
-                      className="rounded-full border border-[rgba(0,0,255,0.14)] bg-white/80 px-3 py-1.5 text-xs font-semibold text-[#164B7A]"
+                    className="rounded-full border border-[rgba(38,102,196,0.18)] bg-white/80 px-3 py-1.5 text-xs font-semibold text-[#01266A]"
                     >
                       {option}
                     </span>
@@ -893,7 +893,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                   id="discuss-programme-button"
                   type="button"
                   onClick={() => openRfq('catalogue_course_bottom_discuss')}
-                  className="group inline-flex items-center gap-2 rounded-lg bg-[#0000FF] px-5 py-3 text-sm font-bold text-white shadow-[0_10px_24px_rgba(0,0,255,0.20)] transition-all hover:-translate-y-0.5 hover:bg-[#0808D9] hover:shadow-[0_14px_28px_rgba(0,0,255,0.28)] focus:outline-none focus:ring-3 focus:ring-[#2196F3]/35"
+                      className="group inline-flex items-center gap-2 rounded-lg bg-[#01266A] px-5 py-3 text-sm font-bold text-white shadow-[0_10px_24px_rgba(1,38,106,0.20)] transition-all hover:-translate-y-0.5 hover:bg-[#2666C4] hover:shadow-[0_14px_28px_rgba(1,38,106,0.28)] focus:outline-none focus:ring-3 focus:ring-[#73C2FB]/35"
                 >
                   Discuss this programme
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
@@ -901,13 +901,13 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                 <button
                   type="button"
                   onClick={() => openRfq('catalogue_course_bottom_outline', 'outline')}
-                  className="text-sm font-semibold text-[#0000FF] underline decoration-[#0000FF]/35 underline-offset-4 transition-colors hover:text-[#075DEB]"
+                    className="text-sm font-semibold text-[#01266A] underline decoration-[#01266A]/35 underline-offset-4 transition-colors hover:text-[#2666C4]"
                 >
                   Request a tailored course outline
                 </button>
               </div>
             </div>
-            <p className="relative mt-7 border-t border-[rgba(0,0,255,0.12)] pt-4 text-xs font-medium text-[rgba(0,0,0,0.58)]">
+            <p className="relative mt-7 border-t border-[rgba(1,38,106,0.12)] pt-4 text-xs font-medium text-[rgba(0,0,0,0.58)]">
               Designed around your roles, tools and real workflows.
             </p>
           </section>

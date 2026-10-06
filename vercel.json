@@ -4,10 +4,35 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "redirects": [
-    { "source": "/", "destination": "/website/", "permanent": false }
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "technoedgels.com" }],
+      "destination": "https://www.technoedgels.com/:path*",
+      "permanent": true
+    },
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/website", "destination": "/", "permanent": true },
+    { "source": "/website/", "destination": "/", "permanent": true },
+    { "source": "/website/index.html", "destination": "/", "permanent": true },
+    { "source": "/e-learning", "destination": "/e-learning/", "permanent": true },
+    { "source": "/e-learning/index.html", "destination": "/e-learning/", "permanent": true },
+    { "source": "/catalogue/", "destination": "/catalogue", "permanent": true },
+    { "source": "/insights/", "destination": "/insights", "permanent": true },
+    { "source": "/careers/", "destination": "/careers", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/admin/:path*",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }]
+    },
+    {
+      "source": "/api/:path*",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    }
   ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index" },
+    { "source": "/", "destination": "/website/index.html" },
     { "source": "/website/:path*", "destination": "/website/index.html" },
     { "source": "/e-learning/:path*", "destination": "/e-learning/index.html" },
     { "source": "/catalogue", "destination": "/index.html" },

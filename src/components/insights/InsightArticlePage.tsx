@@ -16,14 +16,6 @@ export const InsightArticlePage: React.FC<InsightArticlePageProps> = ({ slug, on
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
-    const previousTitle = document.title;
-    document.title = article
-      ? `${article.title} | TechnoEdge Insights`
-      : 'Insight not found | TechnoEdge';
-
-    return () => {
-      document.title = previousTitle;
-    };
   }, [article]);
 
   if (!article) {

@@ -1,13 +1,19 @@
 @import "tailwindcss";
+@import "./styles/brand-tokens.css";
 
 @theme {
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --color-brand-navy: #01266A;
+  --color-brand-blue: #2666C4;
+  --color-brand-sky: #73C2FB;
+  --color-brand-pale: #F0F7FF;
+  --color-brand-warm: #FEF4F1;
 }
 
 :root {
-  --color-primary-blue: #0000FF;
-  --color-support-blue: #2196F3;
+  --color-primary-blue: var(--brand-navy);
+  --color-support-blue: var(--brand-blue);
 
   --color-alert-background: #FAD4D4;
   --color-alert-heading: #8B0000;
@@ -15,21 +21,21 @@
 
   --color-whatsapp: #25D366;
 
-  --color-text-primary: #000000;
-  --color-background: #FFFFFF;
+  --color-text-primary: var(--brand-black);
+  --color-background: var(--brand-white);
 
   --color-text-secondary: rgba(0, 0, 0, 0.70);
   --color-text-muted: rgba(0, 0, 0, 0.58);
 
-  --color-blue-surface-soft: rgba(33, 150, 243, 0.05);
-  --color-blue-surface: rgba(33, 150, 243, 0.08);
-  --color-blue-surface-strong: rgba(33, 150, 243, 0.13);
+  --color-blue-surface-soft: rgba(115, 194, 251, 0.08);
+  --color-blue-surface: rgba(115, 194, 251, 0.14);
+  --color-blue-surface-strong: rgba(115, 194, 251, 0.24);
 
-  --color-blue-border: rgba(0, 0, 255, 0.14);
-  --color-blue-border-active: rgba(0, 0, 255, 0.42);
+  --color-blue-border: var(--brand-border);
+  --color-blue-border-active: var(--brand-border-strong);
 
-  --color-divider: rgba(0, 0, 255, 0.12);
-  --color-shadow: rgba(0, 0, 0, 0.08);
+  --color-divider: var(--brand-divider);
+  --color-shadow: var(--brand-shadow);
 }
 
 /* Corporate catalogue hero */
@@ -60,7 +66,7 @@
 
 .catalogue-hero__headline {
   margin: 0;
-  color: #070707;
+  color: #01266A;
   font-size: clamp(3.375rem, 4vw, 4rem);
   font-weight: 800;
   letter-spacing: -0.052em;
@@ -73,7 +79,7 @@
 
 .catalogue-hero__headline span:last-child {
   margin-top: 0.1em;
-  color: #0000ff;
+  color: #01266A;
 }
 
 .catalogue-hero__supporting-copy {
@@ -90,7 +96,7 @@
   left: 0;
   width: 3px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #0000ff 0%, #2196f3 100%);
+  background: linear-gradient(180deg, #01266A 0%, #73C2FB 100%);
   content: '';
 }
 
@@ -108,13 +114,13 @@
   min-height: 3.625rem;
   margin-top: 2.25rem;
   padding: 0.75rem 1.4rem;
-  border: 1px solid rgba(0, 0, 255, 0.2);
+  border: 1px solid rgba(1, 38, 106, 0.2);
   border-radius: 0.875rem;
   background: rgba(255, 255, 255, 0.94);
 }
 
 .catalogue-hero__metric-value {
-  color: #0000ff;
+  color: #01266A;
   font-size: clamp(1.35rem, 1.8vw, 1.65rem);
   font-weight: 800;
   letter-spacing: -0.035em;
@@ -126,7 +132,7 @@
   width: 1px;
   min-height: 1.45rem;
   margin-inline: 1rem;
-  background: rgba(0, 0, 255, 0.18);
+  background: rgba(1, 38, 106, 0.18);
 }
 
 .catalogue-hero__metric-label {
@@ -143,7 +149,7 @@
   inset: 0 0 0 auto;
   width: 62%;
   overflow: hidden;
-  background: #f3f7ff;
+  background: #F0F7FF;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0 7.5rem,
@@ -345,7 +351,7 @@
 
 .careers-section-label {
   margin: 0 0 1rem;
-  color: #0000ff;
+  color: #01266A;
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -354,7 +360,7 @@
 }
 
 .careers-section-label--light {
-  color: #a9c8ff;
+  color: #73C2FB;
 }
 
 .careers-primary-button,
@@ -372,17 +378,17 @@
 }
 
 .careers-primary-button {
-  border: 1px solid #0000ff;
-  background: #0000ff;
+  border: 1px solid #01266A;
+  background: #01266A;
   color: #ffffff;
-  box-shadow: 0 0.8rem 2rem rgba(0, 0, 255, 0.16);
+  box-shadow: 0 0.8rem 2rem rgba(1, 38, 106, 0.16);
 }
 
 .careers-primary-button:hover,
 .careers-primary-button:focus-visible {
   transform: translateY(-2px);
-  background: #003bb5;
-  box-shadow: 0 1rem 2.4rem rgba(0, 0, 255, 0.22);
+  background: #2666C4;
+  box-shadow: 0 1rem 2.4rem rgba(1, 38, 106, 0.22);
   outline: none;
 }
 
@@ -390,13 +396,13 @@
   flex: 0 0 auto;
   border: 1px solid rgba(255, 255, 255, 0.65);
   background: #ffffff;
-  color: #0000ff;
+  color: #01266A;
 }
 
 .careers-secondary-button:hover,
 .careers-secondary-button:focus-visible {
   transform: translateY(-2px);
-  background: #eef5ff;
+  background: #F0F7FF;
   outline: none;
 }
 
@@ -404,16 +410,16 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border-bottom: 1px solid rgba(0, 0, 255, 0.1);
+  border-bottom: 1px solid rgba(1, 38, 106, 0.1);
   background:
-    linear-gradient(108deg, #ffffff 0%, #ffffff 44%, #f7fbff 66%, #eef6ff 100%);
+    linear-gradient(108deg, #ffffff 0%, #ffffff 44%, #F0F7FF 66%, #F0F7FF 100%);
 }
 
 .careers-hero::before {
   position: absolute;
   z-index: -1;
   inset: 0;
-  background-image: linear-gradient(rgba(0, 0, 255, 0.032) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 255, 0.032) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(1, 38, 106, 0.032) 1px, transparent 1px), linear-gradient(90deg, rgba(1, 38, 106, 0.032) 1px, transparent 1px);
   background-size: 4.5rem 4.5rem;
   content: '';
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 65%, #000);
@@ -441,7 +447,7 @@
 .careers-hero h1 {
   max-width: 15ch;
   margin: 0;
-  color: #080b12;
+  color: #000000;
   font-size: clamp(3.45rem, 4.35vw, 5rem);
   font-weight: 800;
   letter-spacing: -0.058em;
@@ -546,12 +552,12 @@
   width: min(100%, 38rem);
   aspect-ratio: 1.04;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 255, 0.16);
+  border: 1px solid rgba(1, 38, 106, 0.16);
   border-radius: 44% 56% 61% 39% / 40% 36% 64% 60%;
   background:
     radial-gradient(circle at 67% 28%, rgba(102, 189, 255, 0.72), transparent 22%),
-    radial-gradient(circle at 34% 76%, rgba(0, 0, 255, 0.28), transparent 30%),
-    linear-gradient(135deg, #f7fbff 0%, #dcecff 46%, #b9d9ff 100%);
+    radial-gradient(circle at 34% 76%, rgba(1, 38, 106, 0.28), transparent 30%),
+    linear-gradient(135deg, #F0F7FF 0%, color-mix(in srgb, #F0F7FF 62%, #73C2FB) 46%, #73C2FB 100%);
   box-shadow: 0 2rem 5rem rgba(4, 48, 132, 0.17);
   animation: careers-liquid-morph 13s ease-in-out infinite alternate;
   isolation: isolate;
@@ -561,8 +567,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0, 0, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 255, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(1, 38, 106, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(1, 38, 106, 0.08) 1px, transparent 1px);
   background-size: 3.2rem 3.2rem;
   -webkit-mask-image: radial-gradient(circle, #000 20%, transparent 78%);
   mask-image: radial-gradient(circle, #000 20%, transparent 78%);
@@ -573,9 +579,9 @@
   left: -18%;
   width: 136%;
   height: 42%;
-  border: 1px solid rgba(0, 0, 255, 0.2);
+  border: 1px solid rgba(1, 38, 106, 0.2);
   border-radius: 50%;
-  background: linear-gradient(90deg, transparent 8%, rgba(255, 255, 255, 0.54), rgba(33, 150, 243, 0.17), transparent 88%);
+  background: linear-gradient(90deg, transparent 8%, rgba(255, 255, 255, 0.54), rgba(115, 194, 251, 0.17), transparent 88%);
   animation: careers-motion-ribbon 8s ease-in-out infinite alternate;
 }
 
@@ -603,7 +609,7 @@
   border-radius: 42% 58% 55% 45% / 48% 41% 59% 52%;
   background: rgba(255, 255, 255, 0.76);
   box-shadow: 0 1.6rem 4rem rgba(0, 37, 128, 0.16);
-  color: #0000ff;
+  color: #01266A;
   font-size: clamp(1.25rem, 2vw, 1.8rem);
   font-weight: 800;
   letter-spacing: -0.04em;
@@ -614,7 +620,7 @@
 
 .careers-hero__motion-core span:nth-child(2) {
   margin-left: 1.2rem;
-  color: #080b12;
+  color: #000000;
 }
 
 .careers-hero__motion-node,
@@ -625,8 +631,8 @@
   aspect-ratio: 1;
   border: 3px solid rgba(255, 255, 255, 0.86);
   border-radius: 50%;
-  background: #0000ff;
-  box-shadow: 0 0.5rem 1.4rem rgba(0, 0, 255, 0.32);
+  background: #01266A;
+  box-shadow: 0 0.5rem 1.4rem rgba(1, 38, 106, 0.32);
   animation: careers-node-float 5s ease-in-out infinite alternate;
 }
 
@@ -636,7 +642,7 @@
 
 .careers-hero__orbit {
   position: absolute;
-  border: 1px solid rgba(0, 0, 255, 0.17);
+  border: 1px solid rgba(1, 38, 106, 0.17);
   border-radius: 50%;
   animation: careers-orbit-drift 9s ease-in-out infinite alternate;
 }
@@ -650,12 +656,13 @@
   width: min(88%, 34rem);
   aspect-ratio: 1;
   border-style: dashed;
-  border-color: rgba(33, 150, 243, 0.32);
+  border-color: rgba(115, 194, 251, 0.32);
   animation-delay: -3s;
 }
 
 .careers-editorial-section {
   padding-block: clamp(5rem, 9vw, 8rem);
+  background: #FEF4F1;
 }
 
 .careers-editorial-section__grid {
@@ -669,7 +676,7 @@
 .careers-openings-section h2,
 .careers-open-application h2 {
   margin: 0;
-  color: #080b12;
+  color: #01266A;
   font-size: clamp(2.4rem, 4vw, 4.2rem);
   font-weight: 800;
   letter-spacing: -0.05em;
@@ -692,8 +699,8 @@
 
 .careers-why-section {
   overflow: hidden;
-  border-block: 1px solid rgba(0, 0, 255, 0.08);
-  background: #f7faff;
+  border-block: 1px solid rgba(1, 38, 106, 0.08);
+  background: #F0F7FF;
   padding-block: clamp(5rem, 9vw, 8.5rem);
 }
 
@@ -777,7 +784,7 @@
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.72);
   border-radius: clamp(0.9rem, 1.4vw, 1.25rem);
-  background: #dfeaff;
+  background: #F0F7FF;
   box-shadow: 0 0.8rem 2rem rgba(17, 59, 133, 0.14);
 }
 
@@ -807,8 +814,8 @@
   position: absolute;
   margin: 0;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 255, 0.14);
-  background: #dfeaff;
+  border: 1px solid rgba(1, 38, 106, 0.14);
+  background: #F0F7FF;
   box-shadow: 0 1.75rem 4rem rgba(16, 53, 117, 0.15);
   isolation: isolate;
   transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -826,9 +833,9 @@
   border-radius: 37% 63% 47% 53% / 54% 34% 66% 46%;
   animation: careers-liquid-morph 15s ease-in-out infinite alternate;
   background:
-    radial-gradient(circle at 30% 35%, rgba(0, 0, 255, 0.38), transparent 26%),
-    radial-gradient(circle at 76% 62%, rgba(33, 150, 243, 0.4), transparent 30%),
-    linear-gradient(135deg, #fafdff, #c8e1ff);
+    radial-gradient(circle at 30% 35%, rgba(1, 38, 106, 0.38), transparent 26%),
+    radial-gradient(circle at 76% 62%, rgba(115, 194, 251, 0.4), transparent 30%),
+    linear-gradient(135deg, #FFFFFF, #F0F7FF);
 }
 
 .career-team-image--portrait {
@@ -840,8 +847,8 @@
   border-radius: 56% 44% 63% 37% / 42% 58% 42% 58%;
   animation: careers-liquid-morph-alt 12s ease-in-out infinite alternate;
   background:
-    radial-gradient(circle at 66% 32%, rgba(0, 0, 255, 0.34), transparent 26%),
-    linear-gradient(145deg, #d8eaff, #f8fcff);
+    radial-gradient(circle at 66% 32%, rgba(1, 38, 106, 0.34), transparent 26%),
+    linear-gradient(145deg, #F0F7FF, color-mix(in srgb, #F0F7FF 66%, #73C2FB));
 }
 
 .career-team-image--detail {
@@ -853,8 +860,8 @@
   border-radius: 63% 37% 39% 61% / 45% 38% 62% 55%;
   animation: careers-liquid-morph 10s ease-in-out infinite alternate-reverse;
   background:
-    radial-gradient(circle at 38% 70%, rgba(33, 150, 243, 0.4), transparent 28%),
-    linear-gradient(125deg, #ffffff, #bcdcff);
+    radial-gradient(circle at 38% 70%, rgba(115, 194, 251, 0.4), transparent 28%),
+    linear-gradient(125deg, #FFFFFF, #F0F7FF);
 }
 
 .career-team-image__grid,
@@ -866,15 +873,15 @@
 .career-team-image__grid {
   inset: 0;
   background-image:
-    linear-gradient(rgba(0, 0, 255, 0.085) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 255, 0.085) 1px, transparent 1px);
+    linear-gradient(rgba(1, 38, 106, 0.085) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(1, 38, 106, 0.085) 1px, transparent 1px);
   background-size: 2.8rem 2.8rem;
   -webkit-mask-image: radial-gradient(circle, #000, transparent 78%);
   mask-image: radial-gradient(circle, #000, transparent 78%);
 }
 
 .career-team-image__orbit {
-  border: 1px solid rgba(0, 0, 255, 0.22);
+  border: 1px solid rgba(1, 38, 106, 0.22);
   border-radius: 50%;
   animation: careers-orbit-drift 8s ease-in-out infinite alternate;
 }
@@ -908,7 +915,7 @@
 .career-team-image__node--three { right: 37%; bottom: 18%; animation-delay: -3s; }
 
 .career-team-image__liquid {
-  background: linear-gradient(120deg, rgba(0, 0, 255, 0.16), transparent 38%, rgba(33, 150, 243, 0.18));
+  background: linear-gradient(120deg, rgba(1, 38, 106, 0.16), transparent 38%, rgba(115, 194, 251, 0.18));
   mix-blend-mode: color;
 }
 
@@ -937,7 +944,7 @@
   height: 2px;
   flex: 1;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, #0000ff, #2196f3, transparent);
+  background: linear-gradient(90deg, transparent, #01266A, #73C2FB, transparent);
   animation: careers-wave-shift 5s ease-in-out infinite alternate;
 }
 
@@ -970,7 +977,7 @@
 
 .careers-principles__path path {
   fill: none;
-  stroke: rgba(0, 0, 255, 0.22);
+  stroke: rgba(1, 38, 106, 0.22);
   stroke-dasharray: 12 12;
   stroke-width: 2;
   animation: careers-path-flow 18s linear infinite;
@@ -984,7 +991,7 @@
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 255, 0.16);
+  border: 1px solid rgba(1, 38, 106, 0.16);
   border-radius: 1.5rem;
   background: rgba(255, 255, 255, 0.94);
   padding: clamp(1.5rem, 2.6vw, 2rem);
@@ -998,15 +1005,15 @@
   inset: auto -25% -55% -25%;
   height: 65%;
   border-radius: 50%;
-  background: linear-gradient(180deg, rgba(33, 150, 243, 0.08), rgba(0, 0, 255, 0.18));
+  background: linear-gradient(180deg, rgba(115, 194, 251, 0.08), rgba(1, 38, 106, 0.18));
   content: '';
   transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .career-flashcard:hover,
 .career-flashcard:focus-visible {
-  border-color: rgba(0, 0, 255, 0.4);
-  box-shadow: 0 1.75rem 4.5rem rgba(0, 0, 255, 0.13);
+  border-color: rgba(1, 38, 106, 0.4);
+  box-shadow: 0 1.75rem 4.5rem rgba(1, 38, 106, 0.13);
   transform: translateY(calc(var(--career-card-order) * 2.25rem - 0.75rem));
   outline: none;
 }
@@ -1017,17 +1024,17 @@
 }
 
 .career-flashcard--blue {
-  border-color: #0000ff;
-  background: #0000ff;
+  border-color: #01266A;
+  background: #01266A;
   color: #ffffff;
 }
 
 .career-flashcard--blue::before {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(33, 150, 243, 0.42));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(115, 194, 251, 0.42));
 }
 
 .career-flashcard--soft {
-  background: linear-gradient(145deg, #ffffff, #edf5ff);
+  background: linear-gradient(145deg, #ffffff, #F0F7FF);
 }
 
 .career-flashcard__topline {
@@ -1039,7 +1046,7 @@
 }
 
 .career-flashcard__number {
-  color: #0000ff;
+  color: #01266A;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 700;
@@ -1047,7 +1054,7 @@
 }
 
 .career-flashcard--blue .career-flashcard__number {
-  color: #b8d2ff;
+  color: #73C2FB;
 }
 
 .career-flashcard__motion-mark {
@@ -1055,9 +1062,9 @@
   width: 2.25rem;
   height: 2.25rem;
   place-items: center;
-  border: 1px solid rgba(0, 0, 255, 0.16);
+  border: 1px solid rgba(1, 38, 106, 0.16);
   border-radius: 50%;
-  color: #0000ff;
+  color: #01266A;
 }
 
 .career-flashcard--blue .career-flashcard__motion-mark {
@@ -1069,7 +1076,7 @@
   position: relative;
   z-index: 2;
   margin: 0 0 1rem;
-  color: #080b12;
+  color: #000000;
   font-size: clamp(2rem, 3vw, 3rem);
   font-weight: 800;
   letter-spacing: -0.045em;
@@ -1106,7 +1113,7 @@
 }
 
 .careers-job-list {
-  border-top: 1px solid rgba(0, 0, 255, 0.18);
+  border-top: 1px solid rgba(1, 38, 106, 0.18);
 }
 
 .careers-job-row {
@@ -1114,18 +1121,18 @@
   grid-template-columns: 4rem minmax(0, 1fr) auto;
   align-items: center;
   gap: clamp(1rem, 3vw, 2.5rem);
-  border-bottom: 1px solid rgba(0, 0, 255, 0.14);
+  border-bottom: 1px solid rgba(1, 38, 106, 0.14);
   padding-block: 1.75rem;
   transition: background-color 220ms ease, padding 220ms ease;
 }
 
 .careers-job-row:hover {
-  background: rgba(33, 150, 243, 0.05);
+  background: rgba(115, 194, 251, 0.05);
   padding-inline: 1rem;
 }
 
 .careers-job-row__number {
-  color: #0000ff;
+  color: #01266A;
   font-family: var(--font-mono);
   font-size: 0.78rem;
   font-weight: 700;
@@ -1133,7 +1140,7 @@
 
 .careers-job-row__main h3 {
   margin: 0;
-  color: #080b12;
+  color: #000000;
   font-size: clamp(1.25rem, 2vw, 1.65rem);
   font-weight: 750;
   letter-spacing: -0.025em;
@@ -1149,7 +1156,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  color: #0000ff;
+  color: #01266A;
   font-size: 0.88rem;
   font-weight: 750;
   cursor: pointer;
@@ -1165,7 +1172,7 @@
 .careers-open-application {
   position: relative;
   overflow: hidden;
-  background: #071c51;
+  background: #01266A;
   color: #ffffff;
 }
 
@@ -1217,7 +1224,7 @@
 
 .career-role-page {
   min-height: 65vh;
-  background: linear-gradient(135deg, #ffffff, #edf5ff);
+  background: linear-gradient(135deg, #ffffff, #F0F7FF);
   padding-block: clamp(4rem, 8vw, 7rem);
 }
 
@@ -1240,7 +1247,7 @@
 
 .career-role-page h1 {
   margin: 0;
-  color: #080b12;
+  color: #000000;
   font-size: clamp(3rem, 6vw, 6rem);
   font-weight: 800;
   letter-spacing: -0.06em;

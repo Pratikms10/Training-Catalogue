@@ -587,7 +587,7 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
       {!isPlannedCategory && (
         <div
           id="sticky-catalogue-search-bar-wrapper"
-          className="sticky top-[64px] z-30 w-full bg-white/95 backdrop-blur-md border-b border-[rgba(0,0,255,0.12)] shadow-[0_6px_22px_rgba(0,0,255,0.07)] px-4 sm:px-8 lg:px-10 py-3 sm:py-4 transition-all"
+          className="sticky top-[64px] z-30 w-full bg-white/95 backdrop-blur-md border-b border-[rgba(1,38,106,0.12)] shadow-[0_6px_22px_rgba(1,38,106,0.07)] px-4 sm:px-8 lg:px-10 py-3 sm:py-4 transition-all"
         >
           <div className="max-w-7xl mx-auto">
             <CatalogueToolbar

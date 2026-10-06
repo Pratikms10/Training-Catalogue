@@ -1,10 +1,10 @@
 .media-world .media-recognition {
   padding: 0;
   overflow: hidden;
-  border: 1px solid #d9e1ea;
+  border: 1px solid rgba(38,102,196,.18);
   border-radius: 14px;
   background: #fff;
-  box-shadow: 0 14px 34px rgba(18, 42, 72, .12);
+  box-shadow: 0 14px 34px rgba(1, 38, 106, .12);
 }
 
 .media-world .media-recognition::after {
@@ -21,7 +21,7 @@
   max-height: min(54vh, 400px);
   aspect-ratio: 4 / 5;
   object-fit: contain;
-  background: #f4f6f8;
+  background: #F0F7FF;
   border-radius: 0;
 }
 
@@ -30,8 +30,8 @@
   min-height: 58px;
   margin: 0;
   padding: .8rem .9rem;
-  border-top: 1px solid #e2e7ed;
-  color: #203755;
+  border-top: 1px solid rgba(38,102,196,.14);
+  color: #01266A;
   background: #fff;
   font-size: .72rem;
   font-weight: 750;
@@ -43,8 +43,8 @@
 }
 
 .media-world .media-node.is-focus.media-recognition {
-  border-color: #afbdcb;
-  box-shadow: 0 20px 42px rgba(18, 42, 72, .16);
+  border-color: #73C2FB;
+  box-shadow: 0 20px 42px rgba(1, 38, 106, .16);
 }
 
 @media (max-width: 760px), (prefers-reduced-motion: reduce) {
