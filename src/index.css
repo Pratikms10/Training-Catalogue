@@ -8,7 +8,7 @@
   --color-brand-blue: #2666C4;
   --color-brand-sky: #73C2FB;
   --color-brand-pale: #F0F7FF;
-  --color-brand-warm: #FEF4F1;
+  --color-brand-warm: #F0F7FF;
 }
 
 :root {
@@ -662,7 +662,7 @@
 
 .careers-editorial-section {
   padding-block: clamp(5rem, 9vw, 8rem);
-  background: #FEF4F1;
+  background: #F0F7FF;
 }
 
 .careers-editorial-section__grid {

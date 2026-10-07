@@ -3,7 +3,8 @@
   --brand-blue: #2666C4;
   --brand-sky: #73C2FB;
   --brand-pale: #F0F7FF;
-  --brand-warm: #FEF4F1;
+  /* Retained alias for alternate surfaces; the warm tint is intentionally retired. */
+  --brand-warm: #F0F7FF;
   --brand-black: #000000;
   --brand-white: #FFFFFF;
 

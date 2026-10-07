@@ -1,7 +1,7 @@
 .contact-redesign.section {
   display: block;
   padding: clamp(3.5rem, 6vw, 6rem) clamp(1.25rem, 5vw, 5rem);
-  background: linear-gradient(180deg, #FEF4F1, #F0F7FF);
+  background: linear-gradient(180deg, #FFFFFF, #F0F7FF);
 }
 .contact-shell {
   display: grid;
