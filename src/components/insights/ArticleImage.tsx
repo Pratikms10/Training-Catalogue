@@ -9,7 +9,7 @@ interface ArticleImageProps {
 
 export const ArticleImage: React.FC<ArticleImageProps> = ({ image, alt, className }) => {
   if (image) {
-    return <img src={image} alt={alt} className={className} loading="lazy" />;
+    return <img src={image} alt={alt} className={className} loading="lazy" decoding="async" />;
   }
 
   return (

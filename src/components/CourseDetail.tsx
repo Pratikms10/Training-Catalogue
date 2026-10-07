@@ -30,6 +30,13 @@ interface Props {
   onSelectProgramme?: (programme: BaseProgramme) => void;
 }
 
+const durationFormatNames: Record<string, string> = {
+  '4 Hours': 'Awareness Session',
+  '8 Hours': 'Workshop',
+  '16 Hours': 'Capability Training',
+  '32 Hours': 'Capability Development',
+};
+
 export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
   // Accordion Section States: All major sections open by default for rich discoverability
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
@@ -46,6 +53,14 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
   const details = programme.details || {};
   const modules: ProgrammeModule[] = details.modules || [];
   const scenarios = details.scenarios || [];
+  const isAiToolsOrRoleBased = programme.id.startsWith('TT') || programme.id.startsWith('RB');
+  const durationBasedFormat = isAiToolsOrRoleBased
+    ? durationFormatNames[programme.duration?.trim() || '']
+    : undefined;
+  const formatValue = durationBasedFormat
+    || details.format
+    || programme.format
+    || (programme.category === 'certifications' ? 'Certification Course' : 'Programme');
 
   // Individual Module Dropdowns state
   const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({
@@ -331,7 +346,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                   Format
                 </div>
                 <div id="course-metadata-approach-value" className="font-bold text-[#000000] text-sm sm:text-base">
-                  {details.format || programme.format || (programme.category === 'certifications' ? 'Certification Course' : 'Programme')}
+                  {formatValue}
                 </div>
               </div>
             </div>

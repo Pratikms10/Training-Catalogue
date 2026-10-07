@@ -29,7 +29,7 @@ export const CategoryToggleGroup: React.FC<CategoryToggleGroupProps> = ({
         <button
           key={category}
           ref={(element) => { tabsRef.current[index] = element; }}
-          id={`featured-tab-${category.toLowerCase()}`}
+          id={`featured-tab-${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
           type="button"
           role="tab"
           aria-selected={activeCategory === category}

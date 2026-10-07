@@ -8,7 +8,7 @@ import { CategoryToggleGroup } from './CategoryToggleGroup';
 import { FeaturedMiniCard } from './FeaturedMiniCard';
 import { GroupNavigation } from './GroupNavigation';
 
-const categories: readonly FeaturedCategory[] = ['AI', 'Latest', 'Popular'];
+const categories: readonly FeaturedCategory[] = ['Latest', 'AI', 'Security'];
 const postsPerGroup = 5;
 
 type TransitionDirection = 'forward' | 'backward';
@@ -18,7 +18,7 @@ const getGroup = (category: FeaturedCategory, group: number) => (
 );
 
 export const FeaturedPostsPanel: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<FeaturedCategory>('AI');
+  const [activeCategory, setActiveCategory] = useState<FeaturedCategory>('Latest');
   const [activeGroup, setActiveGroup] = useState(0);
   const [direction, setDirection] = useState<TransitionDirection>('forward');
   const [outgoingPosts, setOutgoingPosts] = useState<FeaturedPost[] | null>(null);
