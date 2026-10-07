@@ -163,7 +163,8 @@ export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'produc
       throw new Error(`Static build directory not found: ${distDirectory}. Run npm run build first.`);
     }
     app.get('/', (_request, response) => response.sendFile(path.join(distDirectory, 'website', 'index.html')));
-    app.get(['/website', '/website/'], (_request, response) => response.redirect(308, '/'));
+    app.get(/^\/website$/, (_request, response) => response.redirect(308, '/website/'));
+    app.get(/^\/website\/$/, (_request, response) => response.sendFile(path.join(distDirectory, 'website', 'index.html')));
     app.use(express.static(distDirectory));
     app.use((request, response, next) => {
       if (request.method !== 'GET' || request.path.startsWith('/api/') || !request.accepts('html')) {

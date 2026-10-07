@@ -10,7 +10,7 @@ const heroSlides = [
     heading: 'Turn AI ambition into',
     accent: 'role-ready capability.',
     description: 'Equip teams across IT, operations, sales and leadership to use AI safely, practically and at scale.',
-    image: '/website/assets/hero-ai-capability-ascent.png',
+    image: '/website/assets/hero-ai-capability-ascent-optimized.jpg',
     variant: 'ai',
     primaryAction: { label: 'Explore AI capability', href: '#ai-journey' },
     secondaryAction: { label: 'Talk to us', href: '#contact' },
@@ -20,7 +20,7 @@ const heroSlides = [
     heading: 'Skills that move',
     accent: 'business forward.',
     description: 'Role-based learning and practical AI support built for measurable outcomes.',
-    image: '/website/assets/hero-career-growth-v2.png',
+    image: '/website/assets/hero-career-growth-v2-optimized.jpg',
     variant: 'workforce',
     primaryAction: { label: 'Explore our services', href: '#services' },
     secondaryAction: { label: 'Talk to us', href: '#contact' },
@@ -32,6 +32,7 @@ export default function HeroRotator() {
   const [isHovering, setIsHovering] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [loadSecondaryImage, setLoadSecondaryImage] = useState(false);
   const isPaused = isHovering || hasFocus;
   const activeSlide = heroSlides[activeIndex];
 
@@ -41,6 +42,11 @@ export default function HeroRotator() {
     updatePreference();
     mediaQuery.addEventListener('change', updatePreference);
     return () => mediaQuery.removeEventListener('change', updatePreference);
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setLoadSecondaryImage(true), 1_500);
+    return () => window.clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -69,7 +75,9 @@ export default function HeroRotator() {
         {heroSlides.map((slide, index) => (
           <div
             className={`hero-background hero-background-${slide.variant}${index === activeIndex ? ' is-active' : ''}`}
-            style={{ backgroundImage: `url(${slide.image})` }}
+            style={index === 0 || loadSecondaryImage || index === activeIndex
+              ? { backgroundImage: `url(${slide.image})` }
+              : undefined}
             key={slide.eyebrow}
           />
         ))}

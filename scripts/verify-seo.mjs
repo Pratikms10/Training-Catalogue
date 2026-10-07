@@ -78,8 +78,8 @@ assert.match(learningHtml, /<link rel="canonical" href="https:\/\/www\.technoedg
 assert.doesNotMatch(sharedHtml, /<link rel="canonical"/, 'The shared SPA shell must not hard-code one route as canonical.');
 
 const vercel = JSON.parse(await readFile(path.join(projectRoot, 'vercel.json'), 'utf8'));
-assert.ok(vercel.redirects.some((rule) => rule.source === '/website/' && rule.destination === '/' && rule.permanent === true));
-assert.ok(vercel.redirects.some((rule) => rule.source === '/website/index.html' && rule.destination === '/' && rule.permanent === true));
+assert.ok(vercel.redirects.some((rule) => rule.source === '/website' && rule.destination === '/website/' && rule.permanent === true));
+assert.ok(vercel.redirects.some((rule) => rule.source === '/website/index.html' && rule.destination === '/website/' && rule.permanent === true));
 assert.ok(vercel.redirects.some((rule) => rule.source === '/e-learning' && rule.destination === '/e-learning/' && rule.permanent === true));
 assert.ok(vercel.rewrites.some((rule) => rule.source === '/' && rule.destination === '/website/index.html'));
 

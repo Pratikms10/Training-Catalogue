@@ -30,7 +30,7 @@ function LogoRow({ logos, row }: { logos: GalleryLogo[]; row: number }) {
       <div className="client-logo-track" role="list" aria-label={`Client logos, row ${row + 1}`}>
         {logos.map((logo) => (
           <div className={`client-logo-card${logo.featured ? ' is-featured' : ''}`} role="listitem" key={logo.src} title={logo.name}>
-            <img src={logo.src} alt={`${logo.name} logo`} loading="lazy" decoding="async" />
+            <img src={logo.src} alt={`${logo.name} logo`} loading="lazy" decoding="async" fetchPriority="low" />
           </div>
         ))}
       </div>

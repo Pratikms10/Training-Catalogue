@@ -224,7 +224,7 @@ function CorporateHome() {
         <a href={`tel:${phone.e164}`} key={`call-${phone.number}`}><b>Call our team</b><span>{phone.display}</span></a>
       ))}
     </div>
-    <button className="ai-bot-button" aria-expanded="false" aria-controls="contact-choices"><img src="/website/assets/contact-host.png" alt="A welcoming TechnoEdge host—open contact options" /><span>Talk to us</span></button>
+    <button className="ai-bot-button" aria-expanded="false" aria-controls="contact-choices"><img src="/website/assets/contact-host-optimized.png" alt="A welcoming TechnoEdge host—open contact options" decoding="async" /><span>Talk to us</span></button>
   </div>
   <a className="back-top" href="#top" aria-label="Back to top"><ArrowUp size={20} aria-hidden="true" /></a>
   

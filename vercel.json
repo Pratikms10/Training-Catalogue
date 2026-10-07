@@ -11,9 +11,8 @@
       "permanent": true
     },
     { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/website", "destination": "/", "permanent": true },
-    { "source": "/website/", "destination": "/", "permanent": true },
-    { "source": "/website/index.html", "destination": "/", "permanent": true },
+    { "source": "/website", "destination": "/website/", "permanent": true },
+    { "source": "/website/index.html", "destination": "/website/", "permanent": true },
     { "source": "/e-learning", "destination": "/e-learning/", "permanent": true },
     { "source": "/e-learning/index.html", "destination": "/e-learning/", "permanent": true },
     { "source": "/catalogue/", "destination": "/catalogue", "permanent": true },
@@ -28,6 +27,10 @@
     {
       "source": "/api/:path*",
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/website/assets/:path*",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }]
     }
   ],
   "rewrites": [
