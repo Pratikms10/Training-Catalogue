@@ -1,4 +1,4 @@
-const allowedCategories = new Set(['role-based', 'people-process', 'tools-technology', 'certifications', 'technical-training']);
+const allowedCategories = new Set(['role-based', 'people-process', 'people-behavioural', 'tools-technology', 'certifications', 'technical-training']);
 const allowedLevels = new Set(['Awareness', 'Beginner', 'Basic', 'Intermediate', 'Advanced', 'Expert']);
 const sortExpressions = {
   Recommended: 'c.published_at DESC NULLS LAST, c.course_id ASC',
@@ -21,6 +21,12 @@ function baseProgramme(row) {
     ? 'ai-tools'
     : row.category_code === 'technical-training'
       ? 'tools-technology'
+      : row.category_code === 'people-process'
+        ? row.sub_type === 'Process'
+          ? 'process-based'
+          : 'people-behavioural'
+      : row.category_code === 'people-behavioural'
+        ? 'people-behavioural'
       : row.category_code;
   const programme = {
     id: row.course_id,
@@ -102,8 +108,9 @@ function baseProgramme(row) {
 
   return {
     ...programme,
-    badge: 'People and Process',
-    topicCategory: row.topic_category || 'People and Process',
+    category: publicCategory,
+    badge: publicCategory === 'process-based' ? 'Process Based' : 'People & Behavioural',
+    topicCategory: row.topic_category || (publicCategory === 'process-based' ? 'Process Based' : 'People & Behavioural'),
     imageUrl: row.image_url || '',
     subType: row.sub_type || undefined,
     portfolio: row.portfolio || undefined,
@@ -131,6 +138,10 @@ function buildFilters(filters) {
   }
   if (filters.industries?.length) conditions.push(`rb.industry = ANY(${addValue(filters.industries)}::text[])`);
   if (filters.departments?.length) conditions.push(`rb.department = ANY(${addValue(filters.departments)}::text[])`);
+  if (filters.subTypes?.length) conditions.push(`pp.sub_type = ANY(${addValue(filters.subTypes)}::text[])`);
+  if (filters.portfolios?.length) {
+    conditions.push(`(pp.portfolio = ANY(${addValue(filters.portfolios)}::text[]) OR pp.topic_category = ANY(${addValue(filters.portfolios)}::text[]))`);
+  }
   if (filters.providers?.length) conditions.push(`cert.provider = ANY(${addValue(filters.providers)}::text[])`);
   if (filters.productTechnologies?.length) {
     conditions.push(`cert.product_technologies && ${addValue(filters.productTechnologies)}::text[]`);
@@ -205,6 +216,7 @@ const catalogueSelect = `
   LEFT JOIN catalogue.tools_technology_details tt ON tt.course_id = c.course_id
   LEFT JOIN catalogue.technical_training_details tech ON tech.course_id = c.course_id
   LEFT JOIN catalogue.role_based_details rb ON rb.course_id = c.course_id
+  LEFT JOIN catalogue.people_process_details pp ON pp.course_id = c.course_id
   LEFT JOIN catalogue.certification_details cert ON cert.course_id = c.course_id
 `;
 
@@ -226,6 +238,7 @@ export async function listCourses(pool, filters) {
     LEFT JOIN catalogue.tools_technology_details tt ON tt.course_id = c.course_id
     LEFT JOIN catalogue.technical_training_details tech ON tech.course_id = c.course_id
     LEFT JOIN catalogue.role_based_details rb ON rb.course_id = c.course_id
+    LEFT JOIN catalogue.people_process_details pp ON pp.course_id = c.course_id
     LEFT JOIN catalogue.certification_details cert ON cert.course_id = c.course_id
     WHERE ${whereSql}
   `;
@@ -458,9 +471,42 @@ export async function getCourseById(pool, courseId) {
   return programme;
 }
 
-export async function getCatalogueFilters(pool, category) {
+export async function getCatalogueFilters(pool, category, { subType } = {}) {
   if (!allowedCategories.has(category)) throw new Error('Invalid category filter.');
-  if (category === 'people-process') return { groups: [] };
+  if (category === 'people-process' || category === 'people-behavioural') {
+    const result = await pool.query(`
+      SELECT 'portfolio' AS group_id, COALESCE(pp.portfolio, pp.topic_category) AS value, count(*)::integer AS count
+      FROM catalogue.courses c
+      JOIN catalogue.people_process_details pp ON pp.course_id = c.course_id
+      WHERE c.status = 'published' AND c.category_code = $1
+        AND ($2::text IS NULL OR pp.sub_type = $2)
+      GROUP BY COALESCE(pp.portfolio, pp.topic_category)
+      UNION ALL
+      SELECT 'duration' AS group_id, c.duration_minutes::text AS value, count(*)::integer AS count
+      FROM catalogue.courses c
+      JOIN catalogue.people_process_details pp ON pp.course_id = c.course_id
+      WHERE c.status = 'published' AND c.category_code = $1
+        AND ($2::text IS NULL OR pp.sub_type = $2)
+      GROUP BY c.duration_minutes
+    `, [category, subType || null]);
+    const definitions = [
+      { id: 'portfolio', title: 'Category', initialVisibleCount: 9 },
+      { id: 'duration', title: 'Duration' },
+    ];
+    return {
+      groups: definitions.map((definition) => ({
+        ...definition,
+        allowMultiple: true,
+        options: result.rows
+          .filter((row) => row.group_id === definition.id)
+          .map((row) => ({
+            id: definition.id === 'duration' ? durationLabel(Number(row.value)) : row.value,
+            label: definition.id === 'duration' ? durationLabel(Number(row.value)) : row.value,
+            count: row.count,
+          })),
+      })),
+    };
+  }
 
   if (category === 'certifications') {
     const result = await pool.query(`

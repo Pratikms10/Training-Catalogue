@@ -1,8 +1,9 @@
-import { AnyProgramme, CertificationProgramme, RoleBasedProgramme, ToolsTechProgramme } from '../types';
+import { AnyProgramme, CertificationProgramme, PeopleProcessProgramme, RoleBasedProgramme, ToolsTechProgramme } from '../types';
 import {
   CertificationFilterState,
   FilterGroupConfig,
   RoleBasedFilterState,
+  PeopleProcessFilterState,
   SortOption,
   ToolsTechnologyFilterState,
 } from '../types/filters';
@@ -49,6 +50,16 @@ interface RoleCourseQuery {
 interface CertificationCourseQuery {
   query: string;
   filters: CertificationFilterState;
+  sort: SortOption;
+  page: number;
+  signal?: AbortSignal;
+}
+
+interface PeopleProcessCourseQuery {
+  category: 'people-process' | 'people-behavioural';
+  subType: 'People' | 'Process';
+  query: string;
+  filters: PeopleProcessFilterState;
   sort: SortOption;
   page: number;
   signal?: AbortSignal;
@@ -176,6 +187,44 @@ export function fetchRoleProgrammes({ query, filters, sort, page, signal }: Role
 export async function fetchRoleFilterGroups(signal?: AbortSignal) {
   const response = await requestJson<FilterGroupsResponse>(
     '/api/catalogue/filters?category=role-based',
+    signal,
+  );
+  return response.groups;
+}
+
+export function fetchPeopleProcessProgrammes({
+  category,
+  subType,
+  query,
+  filters,
+  sort,
+  page,
+  signal,
+}: PeopleProcessCourseQuery) {
+  const params = new URLSearchParams({
+    category,
+    subType,
+    page: String(page),
+    pageSize: String(CATALOGUE_PAGE_SIZE),
+  });
+  if (query.trim()) params.set('q', query.trim());
+  filters.portfolios.forEach((value) => params.append('portfolio', value));
+  filters.durations.forEach((value) => {
+    const minutes = durationToMinutes(value);
+    if (minutes) params.append('durationMinutes', String(minutes));
+  });
+  if (['Awareness', 'Basic', 'Intermediate', 'Advanced'].includes(sort)) params.set('level', sort);
+  else params.set('sort', sort);
+  return requestJson<CourseListResponse<PeopleProcessProgramme>>(`/api/courses?${params}`, signal);
+}
+
+export async function fetchPeopleProcessFilterGroups(
+  category: 'people-process' | 'people-behavioural',
+  subType: 'People' | 'Process',
+  signal?: AbortSignal,
+) {
+  const response = await requestJson<FilterGroupsResponse>(
+    `/api/catalogue/filters?category=${encodeURIComponent(category)}&subType=${encodeURIComponent(subType)}`,
     signal,
   );
   return response.groups;

@@ -9,9 +9,6 @@ import {
   ToolsTechProgramme,
 } from '../types';
 import {
-  peopleProcessProgrammes,
-} from '../data/actualProgrammes';
-import {
   FilterGroupConfig,
   SortOption,
   RoleBasedFilterState,
@@ -20,7 +17,6 @@ import {
   CertificationFilterState,
 } from '../types/filters';
 import {
-  filterPeopleProcessProgrammes,
   getRoleBasedActiveChips,
   getToolsTechnologyActiveChips,
   getPeopleProcessActiveChips,
@@ -36,6 +32,8 @@ import {
   fetchTechnicalProgrammes,
   fetchCertificationFilterGroups,
   fetchCertificationProgrammes,
+  fetchPeopleProcessFilterGroups,
+  fetchPeopleProcessProgrammes,
 } from '../api/catalogueApi';
 import { CatalogueToolbar } from './discovery/CatalogueToolbar';
 import { DynamicFilterPanel } from './discovery/DynamicFilterPanel';
@@ -69,14 +67,6 @@ const INITIAL_CERTIFICATION_FILTERS: CertificationFilterState = {
   productTechnologies: [],
   durations: [],
 };
-
-const processBasedProgrammes: PeopleProcessProgramme[] = peopleProcessProgrammes
-  .filter((programme) => programme.subType === 'Process')
-  .map((programme) => ({ ...programme, category: 'process-based', badge: 'Process Based' }));
-
-const peopleBehaviouralProgrammes: PeopleProcessProgramme[] = peopleProcessProgrammes
-  .filter((programme) => programme.subType === 'People')
-  .map((programme) => ({ ...programme, category: 'people-behavioural', badge: 'People & Behavioural' }));
 
 export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail }) => {
   const isPeopleCategory = activeCategoryId === 'process-based' || activeCategoryId === 'people-behavioural';
@@ -128,6 +118,16 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
   const [certificationError, setCertificationError] = useState<string | null>(null);
   const [certificationReloadToken, setCertificationReloadToken] = useState(0);
 
+  // Process and People & Behavioural catalogue records are database-backed so
+  // each track can scale without embedding course TOCs in the browser bundle.
+  const [peopleProcessProgrammes, setPeopleProcessProgrammes] = useState<PeopleProcessProgramme[]>([]);
+  const [peopleProcessTotal, setPeopleProcessTotal] = useState(0);
+  const [peopleProcessPage, setPeopleProcessPage] = useState(1);
+  const [peopleProcessFilterGroups, setPeopleProcessFilterGroups] = useState<FilterGroupConfig[]>([]);
+  const [peopleProcessLoading, setPeopleProcessLoading] = useState(false);
+  const [peopleProcessError, setPeopleProcessError] = useState<string | null>(null);
+  const [peopleProcessReloadToken, setPeopleProcessReloadToken] = useState(0);
+
   // Requirement 20 & 21: Reset filters, search query, and sort on category change
   useEffect(() => {
     setSearchQuery('');
@@ -137,10 +137,12 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
     setTechnicalFilters(INITIAL_TT_FILTERS);
     setPeopleProcessFilters(INITIAL_PP_FILTERS);
     setCertificationFilters(INITIAL_CERTIFICATION_FILTERS);
+    setPeopleProcessFilterGroups([]);
     setToolsPage(1);
     setTechnicalPage(1);
     setRolePage(1);
     setCertificationPage(1);
+    setPeopleProcessPage(1);
     setIsMobileFiltersOpen(false);
   }, [activeCategoryId]);
 
@@ -195,6 +197,21 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
 
     return () => controller.abort();
   }, [activeCategoryId, certificationFilterGroups.length, certificationReloadToken]);
+
+  useEffect(() => {
+    if (!isPeopleCategory || peopleProcessFilterGroups.length > 0) return;
+    const controller = new AbortController();
+    const subType = activeCategoryId === 'process-based' ? 'Process' : 'People';
+    const category = activeCategoryId === 'process-based' ? 'people-process' : 'people-behavioural';
+
+    fetchPeopleProcessFilterGroups(category, subType, controller.signal)
+      .then(setPeopleProcessFilterGroups)
+      .catch((error: Error) => {
+        if (error.name !== 'AbortError') setPeopleProcessError(error.message);
+      });
+
+    return () => controller.abort();
+  }, [activeCategoryId, isPeopleCategory, peopleProcessFilterGroups.length, peopleProcessReloadToken]);
 
   useEffect(() => {
     if (activeCategoryId !== 'ai-tools') return;
@@ -320,6 +337,45 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
     return () => controller.abort();
   }, [activeCategoryId, certificationFilters, certificationPage, certificationReloadToken, debouncedSearchQuery, sortBy]);
 
+  useEffect(() => {
+    if (!isPeopleCategory) return;
+    const controller = new AbortController();
+    const subType = activeCategoryId === 'process-based' ? 'Process' : 'People';
+    const category = activeCategoryId === 'process-based' ? 'people-process' : 'people-behavioural';
+    setPeopleProcessLoading(true);
+    setPeopleProcessError(null);
+
+    fetchPeopleProcessProgrammes({
+      category,
+      subType,
+      query: debouncedSearchQuery,
+      filters: peopleProcessFilters,
+      sort: sortBy,
+      page: peopleProcessPage,
+      signal: controller.signal,
+    })
+      .then((response) => {
+        setPeopleProcessProgrammes(response.data.map((programme) => ({
+          ...programme,
+          category: activeCategoryId,
+          badge: activeCategoryId === 'process-based' ? 'Process Based' : 'People & Behavioural',
+        })));
+        setPeopleProcessTotal(response.pagination.total);
+      })
+      .catch((error: Error) => {
+        if (error.name !== 'AbortError') {
+          setPeopleProcessProgrammes([]);
+          setPeopleProcessTotal(0);
+          setPeopleProcessError(error.message);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setPeopleProcessLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [activeCategoryId, debouncedSearchQuery, isPeopleCategory, peopleProcessFilters, peopleProcessPage, peopleProcessReloadToken, sortBy]);
+
   // Handle filter toggles dynamically by group ID
   const handleToggleFilter = (groupId: string, value: string) => {
     if (activeCategoryId === 'role-based') {
@@ -378,6 +434,7 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
         return prev;
       });
     } else if (isPeopleCategory) {
+      setPeopleProcessPage(1);
       setPeopleProcessFilters((prev) => {
         if (groupId === 'category') {
           const exists = prev.categories.includes(value);
@@ -428,6 +485,7 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
       setTechnicalPage(1);
       setTechnicalFilters(INITIAL_TT_FILTERS);
     } else if (isPeopleCategory) {
+      setPeopleProcessPage(1);
       setPeopleProcessFilters(INITIAL_PP_FILTERS);
     } else if (activeCategoryId === 'certifications') {
       setCertificationPage(1);
@@ -511,32 +569,27 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
     if (activeCategoryId === 'tools-technology') {
       return technicalProgrammes;
     }
-    if (activeCategoryId === 'process-based') {
-      return filterPeopleProcessProgrammes(processBasedProgrammes, debouncedSearchQuery, peopleProcessFilters, sortBy);
-    }
-    if (activeCategoryId === 'people-behavioural') {
-      return filterPeopleProcessProgrammes(peopleBehaviouralProgrammes, debouncedSearchQuery, peopleProcessFilters, sortBy);
-    }
+    if (isPeopleCategory) return peopleProcessProgrammes;
     if (activeCategoryId === 'certifications') return certificationProgrammes;
     return [];
-  }, [activeCategoryId, certificationProgrammes, debouncedSearchQuery, sortBy, roleBasedFilters, peopleProcessFilters, roleProgrammes, technicalProgrammes, toolsProgrammes]);
+  }, [activeCategoryId, certificationProgrammes, isPeopleCategory, peopleProcessProgrammes, roleProgrammes, technicalProgrammes, toolsProgrammes]);
 
   // Category Total Metadata
   const totalCategoryCount = useMemo(() => {
     if (activeCategoryId === 'role-based') return roleTotal;
     if (activeCategoryId === 'ai-tools') return toolsTotal;
     if (activeCategoryId === 'tools-technology') return technicalTotal;
-    if (activeCategoryId === 'process-based') return processBasedProgrammes.length;
-    if (activeCategoryId === 'people-behavioural') return peopleBehaviouralProgrammes.length;
+    if (isPeopleCategory) return peopleProcessTotal;
     if (activeCategoryId === 'certifications') return certificationTotal;
     return 0;
-  }, [activeCategoryId, certificationTotal, roleTotal, technicalTotal, toolsTotal]);
+  }, [activeCategoryId, certificationTotal, isPeopleCategory, peopleProcessTotal, roleTotal, technicalTotal, toolsTotal]);
 
   const handleSearchChange = (value: string) => {
     if (activeCategoryId === 'ai-tools') setToolsPage(1);
     if (activeCategoryId === 'tools-technology') setTechnicalPage(1);
     if (activeCategoryId === 'role-based') setRolePage(1);
     if (activeCategoryId === 'certifications') setCertificationPage(1);
+    if (isPeopleCategory) setPeopleProcessPage(1);
     setSearchQuery(value);
   };
 
@@ -545,6 +598,7 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
     if (activeCategoryId === 'tools-technology') setTechnicalPage(1);
     if (activeCategoryId === 'role-based') setRolePage(1);
     if (activeCategoryId === 'certifications') setCertificationPage(1);
+    if (isPeopleCategory) setPeopleProcessPage(1);
     setSortBy(value);
   };
 
@@ -560,11 +614,10 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
     if (activeCategoryId === 'role-based') return 3000;
     if (activeCategoryId === 'ai-tools') return 188;
     if (activeCategoryId === 'tools-technology') return technicalTotal;
-    if (activeCategoryId === 'process-based') return processBasedProgrammes.length;
-    if (activeCategoryId === 'people-behavioural') return peopleBehaviouralProgrammes.length;
+    if (isPeopleCategory) return peopleProcessTotal;
     if (activeCategoryId === 'certifications') return certificationTotal;
     return 0;
-  }, [activeCategoryId, certificationTotal, technicalTotal]);
+  }, [activeCategoryId, certificationTotal, isPeopleCategory, peopleProcessTotal, technicalTotal]);
 
   const hasActiveSearch = searchQuery.trim().length > 0;
   const hasActiveFilters = activeChips.length > 0;
@@ -654,6 +707,18 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
             </button>
           </div>
         )}
+        {isPeopleCategory && peopleProcessError && (
+          <div className="mb-6 flex items-center justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
+            <span>Unable to load the {activeCategoryId === 'process-based' ? 'Process-Based' : 'People & Behavioural'} catalogue: {peopleProcessError}</span>
+            <button
+              type="button"
+              className="shrink-0 font-semibold underline"
+              onClick={() => setPeopleProcessReloadToken((value) => value + 1)}
+            >
+              Retry
+            </button>
+          </div>
+        )}
         {/* MAIN BODY: Dynamic Filter Sidebar + Catalogue Results */}
         <div className="flex flex-col lg:flex-row gap-8 items-start w-full">
           {/* Dynamic Filter Panel (Desktop Sidebar & Mobile Drawer) */}
@@ -674,7 +739,9 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
                   ? roleTotal
                   : activeCategoryId === 'certifications'
                     ? certificationTotal
-                    : filteredProgrammes.length}
+                    : isPeopleCategory
+                      ? peopleProcessTotal
+                      : filteredProgrammes.length}
               groupsOverride={activeCategoryId === 'ai-tools' && toolsFilterGroups.length > 0
                 ? toolsFilterGroups
                 : activeCategoryId === 'tools-technology' && technicalFilterGroups.length > 0
@@ -683,6 +750,8 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
                   ? roleFilterGroups
                   : activeCategoryId === 'certifications' && certificationFilterGroups.length > 0
                     ? certificationFilterGroups
+                    : isPeopleCategory && peopleProcessFilterGroups.length > 0
+                      ? peopleProcessFilterGroups
                     : undefined}
             />
           )}
@@ -710,6 +779,8 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
                 ? roleTotal
                 : activeCategoryId === 'certifications'
                   ? certificationTotal
+                  : isPeopleCategory
+                    ? peopleProcessTotal
                   : undefined}
             currentPage={activeCategoryId === 'ai-tools'
               ? toolsPage
@@ -719,8 +790,10 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
                 ? rolePage
                 : activeCategoryId === 'certifications'
                   ? certificationPage
+                  : isPeopleCategory
+                    ? peopleProcessPage
                   : undefined}
-            pageSize={['ai-tools', 'tools-technology', 'role-based', 'certifications'].includes(activeCategoryId) ? CATALOGUE_PAGE_SIZE : undefined}
+            pageSize={['ai-tools', 'tools-technology', 'role-based', 'certifications', 'process-based', 'people-behavioural'].includes(activeCategoryId) ? CATALOGUE_PAGE_SIZE : undefined}
             onPageChange={activeCategoryId === 'ai-tools'
               ? setToolsPage
               : activeCategoryId === 'tools-technology'
@@ -729,6 +802,8 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
                 ? setRolePage
                 : activeCategoryId === 'certifications'
                   ? setCertificationPage
+                  : isPeopleCategory
+                    ? setPeopleProcessPage
                   : undefined}
             isLoading={activeCategoryId === 'ai-tools'
               ? toolsLoading
@@ -738,6 +813,8 @@ export const CatalogueGrid: React.FC<Props> = ({ activeCategoryId, onViewDetail 
                 ? roleLoading
                 : activeCategoryId === 'certifications'
                   ? certificationLoading
+                  : isPeopleCategory
+                    ? peopleProcessLoading
                   : undefined}
             isCataloguePlanned={isPlannedCategory}
           />

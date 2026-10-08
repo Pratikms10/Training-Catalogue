@@ -12,7 +12,7 @@ export type CategoryId =
 
 export type LegacyCategoryId = 'people-process';
 
-export type ProgrammePrefix = 'RB' | 'PP' | 'TT' | 'TC' | 'CER';
+export type ProgrammePrefix = 'RB' | 'PP' | 'PI' | 'BS' | 'TT' | 'TC' | 'CER';
 
 export type ProficiencyLevel = 'Awareness' | 'Basic' | 'Intermediate' | 'Advanced' | 'Expert';
 

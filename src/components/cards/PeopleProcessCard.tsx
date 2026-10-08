@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { PeopleProcessProgramme } from '../../types';
-import { ArrowRight, BarChart } from 'lucide-react';
+import { ArrowRight, BarChart, Workflow } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface Props {
@@ -75,7 +75,14 @@ export const PeopleProcessCard: React.FC<Props> = ({ programme, onViewDetail }) 
             }}
           />
         ) : (
-          <div className="text-[10px] font-bold text-[rgba(0,0,0,0.3)] tracking-widest uppercase">IMAGE REQUIRED</div>
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[radial-gradient(circle_at_18%_18%,rgba(115,194,251,0.42),transparent_32%),linear-gradient(135deg,#F0F7FF_0%,#FFFFFF_48%,rgba(115,194,251,0.18)_100%)] text-[#01266A]">
+            <span className="grid h-12 w-12 place-items-center rounded-xl border border-[rgba(1,38,106,0.16)] bg-white/80 shadow-sm">
+              <Workflow className="h-6 w-6" aria-hidden="true" />
+            </span>
+            <span className="max-w-[80%] text-center text-[10px] font-bold uppercase tracking-[0.16em] text-[#01266A]/70">
+              {programme.topicCategory || 'Process Capability'}
+            </span>
+          </div>
         )}
         <div className="absolute top-3 left-3 bg-white/95 backdrop-blur text-[10px] font-bold px-2 py-0.5 rounded shadow-2xs text-[#000000] group-hover:text-[#2666C4] group-hover:border-[#2666C4] uppercase tracking-wider border border-[rgba(1,38,106,0.14)] transition-colors duration-200">
           {programme.id}

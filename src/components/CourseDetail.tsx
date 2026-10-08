@@ -110,7 +110,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack, relatedProgra
         icon: <Users className="w-3.5 h-3.5 text-[#01266A]" />,
       };
     }
-    if (programme.id.startsWith('PP')) {
+    if (programme.id.startsWith('PP') || programme.id.startsWith('PI') || programme.id.startsWith('BS')) {
       return {
         label: programme.category === 'process-based' ? 'Process Based' : 'People & Behavioural',
         icon: <Target className="w-3.5 h-3.5 text-[#01266A]" />,

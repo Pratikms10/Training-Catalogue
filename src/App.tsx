@@ -108,13 +108,17 @@ export default function App({ initialData }: AppProps) {
         }
 
         const isLegacyCertificationCode = /^[A-Z0-9]{2,12}-[A-Z0-9][A-Z0-9-]{1,30}$/.test(id) && /\d/.test(id);
-        if (id.startsWith('TT') || id.startsWith('TC') || id.startsWith('RB') || id.startsWith('CER') || isLegacyCertificationCode) {
+        if (id.startsWith('TT') || id.startsWith('TC') || id.startsWith('RB') || id.startsWith('PI') || id.startsWith('BS') || id.startsWith('CER') || isLegacyCertificationCode) {
           const displayCategory: CategoryId = id.startsWith('TT')
             ? 'ai-tools'
             : id.startsWith('TC')
               ? 'tools-technology'
-            : id.startsWith('RB')
-              ? 'role-based'
+              : id.startsWith('RB')
+                ? 'role-based'
+              : id.startsWith('PI')
+                ? 'process-based'
+              : id.startsWith('BS')
+                ? 'people-behavioural'
               : 'certifications';
           setActiveCategoryId(displayCategory);
           setSelectedProgramme(null);

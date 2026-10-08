@@ -144,6 +144,8 @@ export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'produc
         tools: stringValues(request.query.tool),
         industries: stringValues(request.query.industry),
         departments: stringValues(request.query.department),
+        subTypes: stringValues(request.query.subType),
+        portfolios: stringValues(request.query.portfolio),
         providers: stringValues(request.query.provider),
         productTechnologies: stringValues(request.query.productTechnology),
         technologyCategories: stringValues(request.query.technologyCategory),
@@ -161,7 +163,9 @@ export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'produc
   app.get('/api/catalogue/filters', async (request, response, next) => {
     try {
       const category = request.query.category?.toString() || 'tools-technology';
-      response.json(await getCatalogueFilters(pool, category));
+      response.json(await getCatalogueFilters(pool, category, {
+        subType: request.query.subType?.toString(),
+      }));
     } catch (error) {
       next(error);
     }
@@ -220,7 +224,7 @@ export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'produc
     try {
       const courseId = request.params.courseId.trim().toUpperCase();
       const isLegacyCertificationCode = /^[A-Z0-9]{2,12}-[A-Z0-9][A-Z0-9-]{1,30}$/.test(courseId) && /\d/.test(courseId);
-      if (!(/^(RB|PP|TT|TC|CER)\d{4,}$/.test(courseId) || isLegacyCertificationCode)) {
+      if (!(/^(RB|PP|PI|BS|TT|TC|CER)\d{4,}$/.test(courseId) || isLegacyCertificationCode)) {
         return response.status(400).json({ error: 'Invalid course ID.' });
       }
       const course = await getCourseById(pool, courseId);
