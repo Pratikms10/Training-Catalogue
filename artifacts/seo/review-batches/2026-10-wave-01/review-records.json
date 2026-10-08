@@ -1,0 +1,1416 @@
+[
+  {
+    "courseId": "CER0118",
+    "pageUrl": "https://www.technoedgels.com/programmes/CER0118",
+    "category": "certifications",
+    "title": "GitHub Advanced Security Certification Exam",
+    "level": "Intermediate",
+    "duration": "100 Minutes",
+    "delivery": "Certification",
+    "summary": "This exam is designed for experienced professionals in the field of software development and security. This certification is designed for individuals who have a deep understanding of GitHub and its security features, as well as hands-on experience in securing software development workflows.",
+    "audience": [
+      "Administrator",
+      "Developer",
+      "DevOps Engineer",
+      "Solution Architect",
+      "Student"
+    ],
+    "outcomes": [
+      "Describe GitHub Security Suites, Features, and Ecosystem",
+      "Configure and Use Secret Protection (formerly secret scanning)",
+      "Configure and Use Supply Chain Security (formerly Dependabot/Dependency Review)",
+      "Configure and Use Code Security (formerly Code Scanning with CodeQL)",
+      "Security Operations: Best Practices, Prioritization, and Remediation",
+      "GitHub Security Suites Administration"
+    ],
+    "prerequisites": [],
+    "modules": [],
+    "scenarios": [],
+    "provider": "Microsoft",
+    "examCode": "GH-500",
+    "officialSourceUrl": "https://learn.microsoft.com/en-us/credentials/certifications/github-advanced-security/",
+    "sourceReference": "import-batch:27:CERT-0003",
+    "suggestedSeoTitle": "GitHub Advanced Security Certification Exam … | TechnoEdge",
+    "suggestedSeoDescription": "This exam is designed for experienced professionals in the field of software development and security. This certification is designed for individuals who have…"
+  },
+  {
+    "courseId": "CER0120",
+    "pageUrl": "https://www.technoedgels.com/programmes/CER0120",
+    "category": "certifications",
+    "title": "GitHub Copilot Certification Exam",
+    "level": "Intermediate",
+    "duration": "100 Minutes",
+    "delivery": "Certification",
+    "summary": "The GitHub Copilot certification exam evaluates your skill in using the AI-driven code completion tool in various programming languages, certifying your capability to optimize software development workflows efficiently.",
+    "audience": [
+      "App Maker",
+      "Developer",
+      "DevOps Engineer",
+      "Technology Manager"
+    ],
+    "outcomes": [
+      "Use GitHub Copilot responsibly",
+      "Use GitHub Copilot features",
+      "GitHub Copilot features",
+      "Understand GitHub Copilot data and architecture",
+      "Apply prompt engineering and context crafting",
+      "Improve developer productivity with GitHub Copilot",
+      "Configure privacy, content exclusions, and safeguards"
+    ],
+    "prerequisites": [],
+    "modules": [],
+    "scenarios": [],
+    "provider": "Microsoft",
+    "examCode": "GH-300",
+    "officialSourceUrl": "https://learn.microsoft.com/en-us/credentials/certifications/github-copilot/",
+    "sourceReference": "import-batch:27:CERT-0005",
+    "suggestedSeoTitle": "GitHub Copilot Certification Exam — Certification | TechnoEdge",
+    "suggestedSeoDescription": "The GitHub Copilot certification exam evaluates your skill in using the AI-driven code completion tool in various programming languages, certifying your…"
+  },
+  {
+    "courseId": "CER0121",
+    "pageUrl": "https://www.technoedgels.com/programmes/CER0121",
+    "category": "certifications",
+    "title": "GitHub Foundations Certification Exam",
+    "level": "Beginner",
+    "duration": "100 Minutes",
+    "delivery": "Certification",
+    "summary": "This exam is targeted towards GitHub users who want to validate their understanding of the foundational topics, products, and concepts of collaborating, contributing, and working on GitHub.",
+    "audience": [
+      "Administrator",
+      "App Maker",
+      "Developer",
+      "DevOps Engineer",
+      "Solution Architect"
+    ],
+    "outcomes": [
+      "Understand Git and GitHub basics",
+      "Work with GitHub repositories",
+      "Collaborate using GitHub",
+      "Apply modern development practices",
+      "Manage projects with GitHub",
+      "Understand privacy, security, and administration",
+      "Explore the GitHub community"
+    ],
+    "prerequisites": [],
+    "modules": [],
+    "scenarios": [],
+    "provider": "Microsoft",
+    "examCode": "GH-900",
+    "officialSourceUrl": "https://learn.microsoft.com/en-us/credentials/certifications/github-foundations/",
+    "sourceReference": "import-batch:27:CERT-0006",
+    "suggestedSeoTitle": "GitHub Foundations Certification Exam — Certification | TechnoEdge",
+    "suggestedSeoDescription": "This exam is targeted towards GitHub users who want to validate their understanding of the foundational topics, products, and concepts of collaborating…"
+  },
+  {
+    "courseId": "RB0419",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0419",
+    "category": "role-based",
+    "title": "Meta AI & Manus for Information Technology: AI-Assisted Technical Research, Troubleshooting & Agentic IT Workflows — Awareness Programme (4 Hours)",
+    "level": "Awareness",
+    "duration": "4 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Understand how Meta AI and Manus can support technical research, IT documentation, troubleshooting, and operational productivity.",
+    "audience": [
+      "IT Managers",
+      "IT Operations Professionals",
+      "System Administrators",
+      "Infrastructure Professionals",
+      "Application Support Professionals",
+      "Service Desk Professionals",
+      "Technical Support Engineers",
+      "IT Service Management Professionals",
+      "IT Analysts",
+      "Cloud Operations Professionals",
+      "DevOps Professionals",
+      "Information Technology Team Leads"
+    ],
+    "outcomes": [
+      "Understand how Meta AI and Manus can support technical research, IT documentation, troubleshooting, and operational productivity.",
+      "Explore practical AI-assisted approaches for analysing technical files, consolidating information, and preparing IT support outputs.",
+      "Experience Meta AI for research and information synthesis and Manus for multi-step agentic IT tasks.",
+      "Identify opportunities to support incident analysis, technical planning, documentation, and repetitive IT workflows.",
+      "Recognise security, confidentiality, access-control, technical validation, and human-approval requirements when using AI for IT activities."
+    ],
+    "prerequisites": [
+      "Basic understanding of IT operations, infrastructure, applications, or technical support",
+      "Familiarity with incidents, troubleshooting, technical documentation, or IT service processes",
+      "Basic familiarity with generative AI is helpful but not mandatory",
+      "No programming expertise required",
+      "No previous Meta AI or Manus experience required",
+      "Organisational policies should be followed before providing credentials, confidential data, source code, security information, or sensitive infrastructure details to external AI platforms"
+    ],
+    "modules": [
+      "Meta AI & Manus Foundations for Information Technology",
+      "Effective Prompting for Technical & IT Tasks",
+      "Technical Research, Files & Knowledge Synthesis",
+      "Incident, Troubleshooting & IT Support Assistance",
+      "Agentic IT Tasks with Manus Agent Mode & Plan Mode",
+      "IT Use Cases, Security & Responsible AI Practice"
+    ],
+    "scenarios": [
+      "Technical Issue to Troubleshooting Guide",
+      "IT Requirement to Controlled Agentic Task"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Meta AI & Manus for Information Technology — Awareness | TechnoEdge",
+    "suggestedSeoDescription": "Understand how Meta AI and Manus can support technical research, IT documentation, troubleshooting, and operational productivity."
+  },
+  {
+    "courseId": "RB0420",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0420",
+    "category": "role-based",
+    "title": "Meta AI & Manus for Information Technology: AI-Assisted Technical Research, Troubleshooting & Agentic IT Workflows — Basic Programme (8 Hours)",
+    "level": "Basic",
+    "duration": "8 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Build practical capability in using Meta AI and Manus for technical research, IT support, troubleshooting, documentation, and operational analysis.",
+    "audience": [
+      "IT Managers",
+      "IT Operations Professionals",
+      "System Administrators",
+      "Infrastructure Engineers",
+      "Cloud Operations Professionals",
+      "Network Engineers",
+      "Application Support Professionals",
+      "Service Desk Professionals",
+      "Technical Support Engineers",
+      "DevOps Professionals",
+      "IT Analysts",
+      "IT Automation Professionals",
+      "Technology Consultants",
+      "IT Team Leads"
+    ],
+    "outcomes": [
+      "Build practical capability in using Meta AI and Manus for technical research, IT support, troubleshooting, documentation, and operational analysis.",
+      "Use AI to synthesize technical documentation, logs, error information, system requirements, and research into structured IT outputs.",
+      "Apply conversational and agentic workflows to incident investigation, technology comparison, configuration research, and repetitive technical tasks.",
+      "Use Manus for structured multi-step research and browser-based IT activities while maintaining clear authorization and human control.",
+      "Apply cybersecurity, privacy, source validation, credential protection, technical verification, and responsible AI practices."
+    ],
+    "prerequisites": [
+      "Basic understanding of IT systems, applications, infrastructure, or technical support",
+      "Familiarity with incidents, troubleshooting, technical documentation, or system administration",
+      "Basic experience using generative AI tools is helpful",
+      "Ability to understand technical instructions and validate AI-generated recommendations",
+      "No advanced programming expertise required",
+      "No previous Meta AI or Manus training required"
+    ],
+    "modules": [
+      "Meta AI & Manus Foundations for IT Teams",
+      "Technical Prompting & IT Task Delegation",
+      "Technical Research & Technology Evaluation",
+      "Incident Triage, Errors & Troubleshooting Support",
+      "IT Documentation, Runbooks & Knowledge Management",
+      "Multi-Step Technical Research with Manus Agents",
+      "Browser-Based IT Tasks & Controlled Agentic Operations",
+      "End-to-End IT Workflow, Security & Responsible AI"
+    ],
+    "scenarios": [
+      "Production Issue to Technical Resolution",
+      "Technology Requirement to Platform Evaluation"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Meta AI & Manus for Information Technology — Basic | TechnoEdge",
+    "suggestedSeoDescription": "Build practical capability in using Meta AI and Manus for technical research, IT support, troubleshooting, documentation, and operational analysis."
+  },
+  {
+    "courseId": "RB0516",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0516",
+    "category": "role-based",
+    "title": "Gemini for Google Workspace for Finance & Accounting: AI-Assisted Financial Analysis, Reporting & Finance Workflows — Basic Programme (8 Hours)",
+    "level": "Basic",
+    "duration": "8 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Build foundational capability to use Gemini across Google Workspace for financial analysis, reporting, documentation, and finance coordination.",
+    "audience": [
+      "Finance Managers",
+      "Accounting Managers",
+      "Financial Analysts",
+      "Management Accountants",
+      "Finance Executives",
+      "Accounts Payable Professionals",
+      "Accounts Receivable Professionals",
+      "FP&A Professionals",
+      "Budgeting & Planning Professionals",
+      "Finance Operations Professionals",
+      "Financial Reporting Professionals",
+      "Finance & Accounting Team Leads"
+    ],
+    "outcomes": [
+      "Build foundational capability to use Gemini across Google Workspace for financial analysis, reporting, documentation, and finance coordination.",
+      "Use Gemini in Sheets to create formulas, analyse structured finance data, build pivot tables, and generate management-ready charts.",
+      "Transform financial information, supporting documents, and email discussions into concise summaries, variance explanations, and action points.",
+      "Create reusable workflows for budgeting support, expense analysis, reconciliations, management reporting, and finance reviews.",
+      "Apply financial-data confidentiality, source validation, calculation verification, segregation of duties, and human approval to AI-assisted finance work."
+    ],
+    "prerequisites": [
+      "Basic understanding of finance and accounting processes",
+      "Familiarity with budgets, expenses, invoices, reconciliations, financial reports, or management accounts",
+      "Basic familiarity with Google Workspace applications",
+      "Basic spreadsheet knowledge",
+      "No AI or programming expertise required",
+      "No previous Gemini experience required"
+    ],
+    "modules": [
+      "Gemini for Google Workspace Foundations for Finance",
+      "Financial Data Analysis with Gemini in Sheets",
+      "Budget, Actual & Variance Analysis",
+      "Reconciliation & Transaction Review Support",
+      "Financial Reporting & Management Commentary",
+      "Finance Documentation & Communication with Docs and Gmail",
+      "Finance Reviews, Meetings & Action Tracking",
+      "End-to-End Finance & Accounting Workflow"
+    ],
+    "scenarios": [
+      "Monthly Financial Performance to Management Review",
+      "Reconciliation Exceptions to Resolution"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Gemini for Google Workspace for Finance & Accounting … | TechnoEdge",
+    "suggestedSeoDescription": "Build foundational capability to use Gemini across Google Workspace for financial analysis, reporting, documentation, and finance coordination."
+  },
+  {
+    "courseId": "RB0517",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0517",
+    "category": "role-based",
+    "title": "Gemini for Google Workspace for Finance & Accounting: AI-Assisted Financial Analysis, Reporting & Finance Workflows — Intermediate Programme (16 Hours)",
+    "level": "Intermediate",
+    "duration": "16 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Develop practical proficiency in using Gemini across Google Workspace for financial analysis, accounting support, reporting, planning, and finance operations.",
+    "audience": [
+      "Finance Managers",
+      "Accounting Managers",
+      "Financial Analysts",
+      "FP&A Professionals",
+      "Management Accountants",
+      "Financial Reporting Professionals",
+      "Accounts Payable Professionals",
+      "Accounts Receivable Professionals",
+      "Controllership Professionals",
+      "Finance Operations Professionals",
+      "Shared Services Finance Professionals",
+      "Commercial Finance Professionals",
+      "Finance Transformation Professionals",
+      "Finance Team Leads"
+    ],
+    "outcomes": [
+      "Develop practical proficiency in using Gemini across Google Workspace for financial analysis, accounting support, reporting, planning, and finance operations.",
+      "Use approved financial information, policies, spreadsheets, reports, emails, and documents to create accurate and decision-ready outputs.",
+      "Apply Gemini to reconciliations, variance analysis, budgeting, forecasting support, management reporting, accounts payable, accounts receivable, and period-end activities.",
+      "Build reusable AI-assisted workflows across Sheets, Docs, Gmail, Drive, Slides, and Meet for finance coordination and reporting.",
+      "Apply financial-data validation, confidentiality, segregation of duties, approval controls, auditability, and human professional judgement."
+    ],
+    "prerequisites": [
+      "Working knowledge of finance or accounting processes",
+      "Familiarity with financial statements, budgets, reconciliations, invoices, or management reporting",
+      "Basic working knowledge of Google Workspace applications",
+      "Comfortable working with spreadsheets, formulas, and financial data",
+      "No programming expertise required",
+      "No previous Gemini training required"
+    ],
+    "modules": [
+      "Gemini for Google Workspace Foundations for Finance",
+      "Financial Knowledge, Policies & Source-Grounded Analysis",
+      "Financial Data Preparation & Analysis with Google Sheets",
+      "Reconciliation & Exception Analysis",
+      "Accounts Payable & Expense Management Support",
+      "Accounts Receivable, Collections & Cash Visibility",
+      "Variance Analysis & Management Accounting",
+      "Budgeting, Forecasting & Scenario Support",
+      "Period-End Close & Financial Reporting Coordination",
+      "Financial Reporting & Executive Management Information",
+      "Finance Meetings, Decision Support & Stakeholder Communication",
+      "Integrated Finance Workflow, Governance & Capstone"
+    ],
+    "scenarios": [
+      "Monthly Financial Close to Management Reporting",
+      "Budget Variance to Forecast Action"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Gemini for Google Workspace for Finance & Accounting … | TechnoEdge",
+    "suggestedSeoDescription": "Develop practical proficiency in using Gemini across Google Workspace for financial analysis, accounting support, reporting, planning, and finance operations."
+  },
+  {
+    "courseId": "RB0551",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0551",
+    "category": "role-based",
+    "title": "Gemini for Google Workspace for Senior Leadership: Executive Productivity, Decision Support & Strategic Communication — Awareness Programme (4 Hours)",
+    "level": "Awareness",
+    "duration": "4 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Understand how Gemini for Google Workspace can support executive communication, meeting productivity, strategic review, and leadership decision preparation.",
+    "audience": [
+      "Chief Executive Officers",
+      "CXOs & Executive Committee Members",
+      "Business Unit Heads",
+      "Functional Heads",
+      "Vice Presidents",
+      "Senior Directors",
+      "General Managers",
+      "Country / Regional Heads",
+      "Strategy Leaders",
+      "Transformation Leaders",
+      "Senior Programme Sponsors",
+      "Leadership Team Members"
+    ],
+    "outcomes": [
+      "Understand how Gemini for Google Workspace can support executive communication, meeting productivity, strategic review, and leadership decision preparation.",
+      "Explore practical Gemini capabilities across Gmail, Docs, Sheets, Slides, Meet, and Drive.",
+      "Experience summarising complex information, drafting executive communication, analysing business data, and preparing leadership presentations.",
+      "Discover cross-Workspace workflows for moving from information to insight, communication, and action.",
+      "Recognise the importance of executive judgement, data confidentiality, factual validation, and responsible AI use."
+    ],
+    "prerequisites": [
+      "Basic familiarity with Google Workspace applications",
+      "Experience with executive communication, meetings, reports, or business reviews",
+      "Basic understanding of organisational objectives and business performance",
+      "No AI or technical expertise required",
+      "No previous Gemini experience required",
+      "Gemini capabilities require an eligible Google Workspace plan and organisational enablement"
+    ],
+    "modules": [
+      "Gemini for Google Workspace – Leadership Foundations",
+      "Executive Email & Communication with Gemini in Gmail",
+      "Strategy Documents & Executive Briefs with Gemini in Docs",
+      "Business Data & Decision Support with Gemini in Sheets",
+      "Leadership Presentations & Meeting Productivity",
+      "Executive Information-to-Decision Workflow"
+    ],
+    "scenarios": [
+      "Business Review to Executive Decision",
+      "Leadership Meeting to Organisational Action"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Gemini for Google Workspace for Senior Leadership … | TechnoEdge",
+    "suggestedSeoDescription": "Understand how Gemini for Google Workspace can support executive communication, meeting productivity, strategic review, and leadership decision preparation."
+  },
+  {
+    "courseId": "RB0552",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0552",
+    "category": "role-based",
+    "title": "Gemini for Google Workspace for Senior Leadership: Executive Productivity, Decision Support & Strategic Communication — Basic Programme (8 Hours)",
+    "level": "Basic",
+    "duration": "8 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Build practical capability in using Gemini across Google Workspace for executive communication, information synthesis, business reviews, and leadership productivity.",
+    "audience": [
+      "Chief Executive Officers",
+      "Chief Operating Officers",
+      "Chief Financial Officers",
+      "Chief Human Resources Officers",
+      "Chief Technology Officers",
+      "Chief Information Officers",
+      "Business Unit Heads",
+      "Functional Heads",
+      "Country Heads",
+      "Vice Presidents",
+      "Senior Vice Presidents",
+      "General Managers",
+      "Directors",
+      "Senior Leadership Team Members",
+      "Executive Management Professionals"
+    ],
+    "outcomes": [
+      "Build practical capability in using Gemini across Google Workspace for executive communication, information synthesis, business reviews, and leadership productivity.",
+      "Retrieve and synthesize relevant information from approved emails, documents, spreadsheets, presentations, and Drive sources for faster decision preparation.",
+      "Create executive briefs, strategic documents, KPI insights, presentations, meeting summaries, and stakeholder communications with AI assistance.",
+      "Apply structured prompting to improve the quality, relevance, and actionability of leadership outputs.",
+      "Use Gemini responsibly with confidential business information while maintaining source validation, human judgement, and decision accountability."
+    ],
+    "prerequisites": [
+      "Familiarity with Google Workspace applications",
+      "Experience working with business reports, emails, meetings, presentations, or management information",
+      "Basic understanding of organizational strategy and decision-making",
+      "Access to an eligible Google Workspace environment with Gemini capabilities",
+      "No technical or programming expertise required",
+      "No previous Gemini training required"
+    ],
+    "modules": [
+      "Gemini for Google Workspace – Executive Foundations",
+      "Executive Knowledge Retrieval & Cross-Source Synthesis",
+      "Gmail, Calendar & Executive Communication",
+      "Executive Briefs, Strategy Papers & Decision Documents",
+      "KPI Analysis & Management Insight with Google Sheets",
+      "Executive Presentations & Leadership Storytelling",
+      "Meetings, Leadership Reviews & Action Capture",
+      "Integrated Executive Workflow, Governance & Responsible AI"
+    ],
+    "scenarios": [
+      "Business Performance Review to Executive Decision",
+      "Leadership Meeting to Coordinated Executive Follow-Through"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Gemini for Google Workspace for Senior Leadership — Basic | TechnoEdge",
+    "suggestedSeoDescription": "Build practical capability in using Gemini across Google Workspace for executive communication, information synthesis, business reviews, and leadership…"
+  },
+  {
+    "courseId": "RB0577",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0577",
+    "category": "role-based",
+    "title": "Microsoft Copilot Studio for Customer Service & Customer Success: Build AI Agents for Self-Service, Support & Customer Engagement — Awareness Programme (4 Hours)",
+    "level": "Awareness",
+    "duration": "4 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Understand how Microsoft Copilot Studio can support customer self-service, support, onboarding, and customer-success interactions.",
+    "audience": [
+      "Customer Service Managers",
+      "Customer Success Managers",
+      "Customer Support Professionals",
+      "Customer Experience Professionals",
+      "Customer Success Executives",
+      "Contact Centre Professionals",
+      "Service Desk Professionals",
+      "Customer Onboarding Specialists",
+      "Customer Operations Professionals",
+      "Service Delivery Professionals",
+      "Technical Support Professionals",
+      "Customer Service Transformation Professionals"
+    ],
+    "outcomes": [
+      "Understand how Microsoft Copilot Studio can support customer self-service, support, onboarding, and customer-success interactions.",
+      "Explore agents grounded in approved product, service, FAQ, policy, and knowledge-base information.",
+      "Understand how generative orchestration, topics, tools, and agent flows can combine customer conversations with business actions.",
+      "Explore escalation and live-agent handoff for situations that require human assistance.",
+      "Recognise the importance of accuracy, customer privacy, authentication, access control, quality monitoring, and human oversight."
+    ],
+    "prerequisites": [
+      "Basic understanding of customer service or customer-success processes",
+      "Familiarity with FAQs, knowledge bases, support requests, or customer journeys",
+      "Basic awareness of generative AI concepts is helpful",
+      "Familiarity with Microsoft 365 or Power Platform is beneficial",
+      "No coding expertise required",
+      "Access to Microsoft Copilot Studio is recommended for hands-on activities"
+    ],
+    "modules": [
+      "Copilot Studio Foundations for Customer Engagement",
+      "Knowledge-Grounded Customer Self-Service",
+      "Customer Conversations with Generative Orchestration",
+      "Service Actions & Agent Flows",
+      "Human Handoff, Escalation & Customer Success",
+      "Quality, Governance & Customer-Service Application"
+    ],
+    "scenarios": [
+      "Customer Self-Service & Support Agent",
+      "Customer Request & Status Assistant"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Microsoft Copilot Studio for Customer Service & Customer… | TechnoEdge",
+    "suggestedSeoDescription": "Understand how Microsoft Copilot Studio can support customer self-service, support, onboarding, and customer-success interactions."
+  },
+  {
+    "courseId": "RB0578",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0578",
+    "category": "role-based",
+    "title": "Microsoft Copilot Studio for Customer Service & Customer Success: Build AI Agents for Self-Service, Support & Customer Engagement — Basic Programme (8 Hours)",
+    "level": "Basic",
+    "duration": "8 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Build foundational capability in using Microsoft Copilot Studio to create customer-service and customer-success agents.",
+    "audience": [
+      "Customer Service Managers",
+      "Customer Success Managers",
+      "Customer Support Professionals",
+      "Customer Experience Professionals",
+      "Service Operations Professionals",
+      "Customer Success Operations Professionals",
+      "Technical Support Professionals",
+      "Customer Onboarding Professionals",
+      "Knowledge Management Professionals",
+      "Contact Centre Professionals",
+      "Customer Service Team Leads",
+      "Customer Success Team Leads"
+    ],
+    "outcomes": [
+      "Build foundational capability in using Microsoft Copilot Studio to create customer-service and customer-success agents.",
+      "Create knowledge-grounded self-service experiences for FAQs, product guidance, policies, support information, and customer education.",
+      "Configure agents to retrieve live customer information, trigger approved business actions, and coordinate service workflows.",
+      "Apply escalation, human handoff, testing, evaluation, and analytics to improve customer experience and service quality.",
+      "Build reusable Customer Need → Knowledge / Action → Resolution → Escalation → Follow-Up workflows with appropriate governance."
+    ],
+    "prerequisites": [
+      "Basic understanding of customer service or customer-success processes",
+      "Familiarity with FAQs, support requests, cases, customer journeys, or service workflows",
+      "Basic awareness of CRM, helpdesk, or customer-engagement applications is helpful",
+      "General awareness of AI or workflow automation is beneficial",
+      "No programming expertise required",
+      "No previous Microsoft Copilot Studio experience required"
+    ],
+    "modules": [
+      "Copilot Studio Foundations for Customer Service & Success",
+      "Building Knowledge-Grounded Customer Self-Service",
+      "Customer Request Intake, Intent & Case Routing",
+      "Tools, APIs & Customer-System Integration",
+      "Agent Flows for Customer Service Automation",
+      "Human Handoff, Escalation & Customer Experience",
+      "Testing, Evaluation & Customer-Service Analytics",
+      "End-to-End Customer Agent Workflow & Governance"
+    ],
+    "scenarios": [
+      "Customer Support Question to Self-Service Resolution",
+      "Customer Service Request to Controlled Case Workflow"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Microsoft Copilot Studio for Customer Service & Customer… | TechnoEdge",
+    "suggestedSeoDescription": "Build foundational capability in using Microsoft Copilot Studio to create customer-service and customer-success agents."
+  },
+  {
+    "courseId": "RB0784",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0784",
+    "category": "role-based",
+    "title": "Zapier for Legal & Compliance: Automate Reviews, Approvals & Compliance Workflows — Awareness Programme (4 Hours)",
+    "level": "Awareness",
+    "duration": "4 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Understand how Zapier can automate repetitive legal and compliance coordination across connected business applications.",
+    "audience": [
+      "Legal Managers",
+      "Legal Operations Professionals",
+      "Corporate Legal Professionals",
+      "Compliance Managers",
+      "Compliance Officers",
+      "Regulatory Compliance Professionals",
+      "Contract Management Professionals",
+      "Governance Professionals",
+      "Policy & Compliance Coordinators",
+      "Legal Operations Analysts",
+      "Risk & Compliance Professionals",
+      "Legal & Compliance Team Leads"
+    ],
+    "outcomes": [
+      "Understand how Zapier can automate repetitive legal and compliance coordination across connected business applications.",
+      "Explore workflows for legal requests, contract reviews, policy acknowledgements, compliance actions, approvals, and deadline tracking.",
+      "Understand how Forms, Tables, Filters, Paths, and scheduling can organise and route legal and compliance work.",
+      "Explore AI-assisted summarisation, classification, and information extraction while preserving professional legal judgement.",
+      "Apply confidentiality, access control, auditability, human approval, and responsible automation principles."
+    ],
+    "prerequisites": [
+      "Basic understanding of legal, compliance, contract, or policy-related workflows",
+      "Familiarity with approvals, deadlines, document reviews, or compliance tracking",
+      "Basic awareness of email, forms, spreadsheets, document-management, or collaboration applications",
+      "No programming expertise required",
+      "No previous Zapier experience required"
+    ],
+    "modules": [
+      "Zapier Foundations for Legal & Compliance",
+      "Legal Request Intake & Matter Routing",
+      "Contract Review & Approval Coordination",
+      "Compliance Obligations, Policies & Deadline Tracking",
+      "AI-Assisted Legal & Compliance Processing",
+      "Controlled Legal & Compliance Automation"
+    ],
+    "scenarios": [
+      "Contract Request to Legal Approval",
+      "Compliance Obligation to Verified Closure"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Zapier for Legal & Compliance — Awareness | TechnoEdge",
+    "suggestedSeoDescription": "Understand how Zapier can automate repetitive legal and compliance coordination across connected business applications."
+  },
+  {
+    "courseId": "RB0825",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0825",
+    "category": "role-based",
+    "title": "Make.com for Product & Service Management: Automate Product Workflows, Feedback & Service Operations — Intermediate Programme (16 Hours)",
+    "level": "Intermediate",
+    "duration": "16 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Develop functional proficiency in using Make.com to automate recurring product and service-management workflows.",
+    "audience": [
+      "Product Managers",
+      "Product Owners",
+      "Technical Product Managers",
+      "Digital Product Managers",
+      "Service Managers",
+      "Product Operations Professionals",
+      "Product Analysts",
+      "Business Analysts",
+      "Customer Experience Managers",
+      "Product Support Managers",
+      "Implementation Managers",
+      "Product & Service Team Leads"
+    ],
+    "outcomes": [
+      "Develop functional proficiency in using Make.com to automate recurring product and service-management workflows.",
+      "Build integrated scenarios connecting product requests, customer feedback, CRM, service platforms, databases, and collaboration tools.",
+      "Automate requirement intake, classification, routing, approvals, notifications, and product follow-through.",
+      "Apply AI-assisted workflows for feedback analysis, requirement extraction, summarisation, and product insight generation.",
+      "Design reliable automations using reusable logic, human review, error handling, monitoring, and governance controls."
+    ],
+    "prerequisites": [
+      "Basic understanding of product or service-management activities",
+      "Familiarity with customer feedback, product requests, issues, and delivery workflows",
+      "Basic experience with CRM, forms, spreadsheets, or work-management applications",
+      "Basic awareness of APIs and workflow automation is helpful",
+      "No advanced programming knowledge required",
+      "No previous Make.com experience required"
+    ],
+    "modules": [
+      "Make.com Foundations for Product & Service Management",
+      "Product Request & Feedback Intake Automation",
+      "Data Transformation & Product Information Processing",
+      "Routers, Filters & Product Workflow Logic",
+      "Product-System Integration with APIs & Webhooks",
+      "Customer Feedback & Voice-of-Customer Automation",
+      "AI-Assisted Product Analysis with Make AI Agents",
+      "Product Issues, Escalations & Service Workflows",
+      "Approval & Human-in-the-Loop Product Workflows",
+      "Product Documentation & Stakeholder Communication Automation",
+      "Error Handling, Monitoring & Reliable Product Automation",
+      "End-to-End Product & Service Automation Capstone"
+    ],
+    "scenarios": [
+      "Customer Feedback to Product Action",
+      "Product Issue to Controlled Resolution"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Make.com for Product & Service Management — Intermediate | TechnoEdge",
+    "suggestedSeoDescription": "Develop functional proficiency in using Make.com to automate recurring product and service-management workflows."
+  },
+  {
+    "courseId": "RB0829",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0829",
+    "category": "role-based",
+    "title": "n8n for Marketing: Automate Campaigns, Lead Workflows & Marketing Operations — Awareness Programme (4 Hours)",
+    "level": "Awareness",
+    "duration": "4 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Understand how n8n can automate repetitive marketing activities across campaigns, lead management, content workflows, and reporting.",
+    "audience": [
+      "Marketing Managers",
+      "Digital Marketing Professionals",
+      "Marketing Operations Professionals",
+      "Campaign Managers",
+      "Demand Generation Professionals",
+      "Growth Marketing Professionals",
+      "Content Marketing Professionals",
+      "CRM Marketing Professionals",
+      "Lead Generation Professionals",
+      "Product Marketing Professionals",
+      "Marketing Analysts",
+      "Marketing Team Leads"
+    ],
+    "outcomes": [
+      "Understand how n8n can automate repetitive marketing activities across campaigns, lead management, content workflows, and reporting.",
+      "Explore practical workflows connecting forms, CRM, email, collaboration, and marketing applications.",
+      "Understand how AI-assisted steps can support lead classification, content processing, summarisation, and campaign coordination.",
+      "Recognise opportunities to automate campaign triggers, lead routing, follow-ups, and marketing-data updates.",
+      "Apply human review, brand controls, data privacy, and approval checkpoints to marketing automation."
+    ],
+    "prerequisites": [
+      "Basic understanding of marketing campaigns, leads, content, or customer-engagement activities",
+      "Familiarity with CRM, email marketing, forms, or collaboration platforms",
+      "Basic awareness of marketing data and campaign workflows",
+      "No programming expertise required",
+      "No previous n8n experience required"
+    ],
+    "modules": [
+      "n8n Foundations for Marketing Teams",
+      "Lead Capture, Qualification & Routing",
+      "Campaign Workflow Automation",
+      "AI-Assisted Content & Marketing Operations",
+      "Marketing Data, CRM & Cross-System Integration",
+      "End-to-End Marketing Automation Workflow"
+    ],
+    "scenarios": [
+      "Campaign Lead to Sales Handoff",
+      "Marketing Request to Approved Content Workflow"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "n8n for Marketing — Awareness | TechnoEdge",
+    "suggestedSeoDescription": "Understand how n8n can automate repetitive marketing activities across campaigns, lead management, content workflows, and reporting."
+  },
+  {
+    "courseId": "RB0831",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0831",
+    "category": "role-based",
+    "title": "n8n for Marketing: Automate Campaigns, Lead Workflows & Marketing Operations — Intermediate Programme (16 Hours)",
+    "level": "Intermediate",
+    "duration": "16 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Develop functional proficiency in using n8n to automate recurring marketing and campaign-management workflows.",
+    "audience": [
+      "Marketing Managers",
+      "Digital Marketing Managers",
+      "Marketing Operations Professionals",
+      "Campaign Managers",
+      "Demand Generation Professionals",
+      "Growth Marketing Professionals",
+      "Performance Marketing Professionals",
+      "CRM & Lifecycle Marketing Professionals",
+      "Content Marketing Professionals",
+      "Marketing Analysts",
+      "Lead Generation Professionals",
+      "Marketing Automation Specialists"
+    ],
+    "outcomes": [
+      "Develop functional proficiency in using n8n to automate recurring marketing and campaign-management workflows.",
+      "Build integrated workflows connecting lead sources, CRM systems, forms, email platforms, content tools, and reporting systems.",
+      "Automate lead capture, enrichment, segmentation, campaign routing, follow-ups, and marketing notifications.",
+      "Apply AI-assisted workflows for content processing, lead classification, campaign insights, and customer-feedback analysis.",
+      "Design reliable marketing automations using approvals, error handling, monitoring, and data-governance practices."
+    ],
+    "prerequisites": [
+      "Basic understanding of marketing campaigns, leads, and customer journeys",
+      "Familiarity with CRM, email marketing, forms, or digital marketing platforms",
+      "Basic understanding of campaign data and customer segmentation is helpful",
+      "Basic awareness of APIs and workflow automation is beneficial",
+      "No advanced programming knowledge required",
+      "No previous n8n experience required"
+    ],
+    "modules": [
+      "n8n Foundations for Marketing Automation",
+      "Lead Capture & Marketing Data Intake",
+      "Lead Enrichment, Qualification & Segmentation",
+      "CRM & Marketing-System Integration",
+      "Campaign Workflow Automation",
+      "AI-Assisted Marketing Workflows",
+      "Content Operations & Approval Workflows",
+      "Customer Journey & Lifecycle Automation",
+      "Event, Webinar & Campaign Follow-Up Automation",
+      "Marketing Feedback & Campaign Insight Automation",
+      "Error Handling, Monitoring & Marketing Governance",
+      "End-to-End Marketing Automation Capstone"
+    ],
+    "scenarios": [
+      "Campaign Lead to Qualified Opportunity",
+      "Webinar to Automated Nurture Workflow"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "n8n for Marketing — Intermediate | TechnoEdge",
+    "suggestedSeoDescription": "Develop functional proficiency in using n8n to automate recurring marketing and campaign-management workflows."
+  },
+  {
+    "courseId": "RB0838",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0838",
+    "category": "role-based",
+    "title": "n8n for Finance & Accounting: Automate Financial Workflows, Approvals & Reporting — Awareness Programme (4 Hours)",
+    "level": "Awareness",
+    "duration": "4 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Understand how n8n can automate repetitive finance and accounting activities across connected business systems.",
+    "audience": [
+      "Finance Managers",
+      "Accounting Managers",
+      "Financial Analysts",
+      "Accounts Payable Professionals",
+      "Accounts Receivable Professionals",
+      "Management Accountants",
+      "Financial Reporting Professionals",
+      "Finance Operations Professionals",
+      "Record-to-Report Professionals",
+      "Procure-to-Pay Professionals",
+      "Order-to-Cash Professionals",
+      "Finance Shared Services Professionals"
+    ],
+    "outcomes": [
+      "Understand how n8n can automate repetitive finance and accounting activities across connected business systems.",
+      "Explore workflows for invoice processing, approvals, reconciliations, reporting, reminders, and financial-data movement.",
+      "Understand how rule-based and AI-assisted steps can classify, extract, summarise, and route financial information.",
+      "Recognise opportunities to connect finance applications, spreadsheets, email, ERP, and collaboration platforms.",
+      "Apply validation, approval, confidentiality, auditability, and human oversight to financial automation."
+    ],
+    "prerequisites": [
+      "Basic understanding of finance or accounting processes",
+      "Familiarity with invoices, approvals, reconciliations, reports, or financial records",
+      "Basic awareness of spreadsheets, ERP, email, or finance applications",
+      "No programming expertise required",
+      "No previous n8n experience required"
+    ],
+    "modules": [
+      "n8n Foundations for Finance & Accounting",
+      "Invoice & Accounts Payable Workflow Automation",
+      "Receivables, Payment & Follow-Up Automation",
+      "Reconciliation & Financial Data Workflows",
+      "Financial Reporting, AI Assistance & Approvals",
+      "End-to-End Controlled Finance Automation"
+    ],
+    "scenarios": [
+      "Supplier Invoice to Approval",
+      "Receivables Monitoring & Collection Follow-Up"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "n8n for Finance & Accounting — Awareness | TechnoEdge",
+    "suggestedSeoDescription": "Understand how n8n can automate repetitive finance and accounting activities across connected business systems."
+  },
+  {
+    "courseId": "RB0849",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB0849",
+    "category": "role-based",
+    "title": "n8n for Product & Service Management: Automate Product Workflows, Feedback & Service Operations — Intermediate Programme (16 Hours)",
+    "level": "Intermediate",
+    "duration": "16 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Develop functional proficiency in using n8n to automate recurring product and service-management workflows.",
+    "audience": [
+      "Product Managers",
+      "Product Owners",
+      "Service Managers",
+      "Product Operations Professionals",
+      "Technical Product Managers",
+      "Digital Product Managers",
+      "Business Analysts",
+      "Product Analysts",
+      "Customer Experience Managers",
+      "Product Support Managers",
+      "Implementation Managers",
+      "Product & Service Team Leads"
+    ],
+    "outcomes": [
+      "Develop functional proficiency in using n8n to automate recurring product and service-management workflows.",
+      "Build integrated workflows connecting customer feedback, product requests, service issues, collaboration tools, databases, and business applications.",
+      "Automate product intake, prioritisation inputs, stakeholder notifications, documentation, and follow-up activities.",
+      "Apply AI-assisted workflows for feedback classification, requirement summarisation, issue analysis, and product insight generation.",
+      "Design reliable workflows using conditional logic, approvals, error handling, monitoring, and reusable components."
+    ],
+    "prerequisites": [
+      "Basic understanding of product or service-management activities",
+      "Familiarity with customer feedback, requirements, product issues, or service workflows",
+      "Basic understanding of business applications and APIs is helpful",
+      "Familiarity with spreadsheets, forms, CRM, or collaboration tools is beneficial",
+      "No advanced programming knowledge required",
+      "No previous n8n experience required"
+    ],
+    "modules": [
+      "n8n Foundations for Product & Service Management",
+      "Product Requests & Feedback Intake Automation",
+      "Data Mapping, Transformation & Product Information Processing",
+      "Conditional Logic & Product Workflow Routing",
+      "Customer Feedback & Voice-of-Customer Automation",
+      "AI-Assisted Product & Service Workflows",
+      "Product Issue & Service Escalation Workflows",
+      "APIs, Webhooks & Product-System Integration",
+      "Product Documentation & Stakeholder Communication Automation",
+      "Approval, Human Review & Governance Workflows",
+      "Reusable Workflows, Error Handling & Monitoring",
+      "End-to-End Product & Service Automation Capstone"
+    ],
+    "scenarios": [
+      "Customer Feedback to Product Action",
+      "Product Issue to Service Resolution"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "n8n for Product & Service Management — Intermediate | TechnoEdge",
+    "suggestedSeoDescription": "Develop functional proficiency in using n8n to automate recurring product and service-management workflows."
+  },
+  {
+    "courseId": "RB1014",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB1014",
+    "category": "role-based",
+    "title": "Fireflies.ai for Strategy & Business Management: Turn Strategic Conversations into Decisions & Action — Awareness Programme (4 Hours)",
+    "level": "Awareness",
+    "duration": "4 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Understand how Fireflies.ai can capture and structure strategy meetings, business reviews, planning discussions, and cross-functional conversations.",
+    "audience": [
+      "Strategy Managers",
+      "Business Managers",
+      "Business Planning Professionals",
+      "Corporate Strategy Professionals",
+      "Business Unit Heads",
+      "Transformation Managers",
+      "Management Consultants",
+      "Strategy & Operations Professionals",
+      "Business Excellence Professionals",
+      "Program & Portfolio Managers",
+      "Strategic Initiative Leaders",
+      "Management Office Professionals"
+    ],
+    "outcomes": [
+      "Understand how Fireflies.ai can capture and structure strategy meetings, business reviews, planning discussions, and cross-functional conversations.",
+      "Explore practical methods for identifying strategic decisions, priorities, risks, blockers, commitments, and follow-up actions from meetings.",
+      "Experience AskFred, Smart Search, and Topic Trackers for retrieving business-critical information and recurring strategic themes.",
+      "Recognise how cross-meeting intelligence can improve management visibility, alignment, accountability, and decision follow-through.",
+      "Apply appropriate accuracy, confidentiality, consent, and human-validation practices when using AI-generated meeting intelligence."
+    ],
+    "prerequisites": [
+      "Basic understanding of strategy, business planning, or management activities",
+      "Familiarity with business reviews, planning meetings, or cross-functional discussions is helpful",
+      "Basic computer and internet proficiency",
+      "No technical AI or programming knowledge required",
+      "No previous Fireflies.ai experience required"
+    ],
+    "modules": [
+      "Fireflies.ai Foundations for Strategic Meetings",
+      "Capturing Decisions, Priorities & Strategic Discussions",
+      "AI Summaries & Business Review Intelligence",
+      "AskFred & Smart Search for Strategic Information",
+      "Topic Trackers & Cross-Meeting Business Insights",
+      "Strategy Meeting-to-Execution Workflow"
+    ],
+    "scenarios": [
+      "Strategic Business Review to Execution",
+      "Cross-Meeting Strategy Intelligence"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Fireflies.ai for Strategy & Business Management … | TechnoEdge",
+    "suggestedSeoDescription": "Understand how Fireflies.ai can capture and structure strategy meetings, business reviews, planning discussions, and cross-functional conversations."
+  },
+  {
+    "courseId": "RB1015",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB1015",
+    "category": "role-based",
+    "title": "Fireflies.ai for Strategy & Business Management: Turn Strategic Conversations into Decisions & Action — Basic Programme (8 Hours)",
+    "level": "Basic",
+    "duration": "8 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Build foundational proficiency in using Fireflies.ai to capture, summarise, search, and analyse strategic and business-management conversations.",
+    "audience": [
+      "Strategy Managers",
+      "Business Managers",
+      "Business Unit Heads",
+      "Corporate Strategy Professionals",
+      "Business Planning Professionals",
+      "Strategy & Transformation Managers",
+      "Program & Portfolio Managers",
+      "Business Operations Managers",
+      "Management Consultants",
+      "PMO Professionals",
+      "Chief of Staff Professionals",
+      "Business Excellence Professionals",
+      "Functional Leaders",
+      "Strategic Initiative Owners"
+    ],
+    "outcomes": [
+      "Build foundational proficiency in using Fireflies.ai to capture, summarise, search, and analyse strategic and business-management conversations.",
+      "Convert strategy meetings, business reviews, planning discussions, and stakeholder conversations into structured decisions, priorities, risks, actions, and follow-up items.",
+      "Apply AskFred, Smart Search, Topic Trackers, and conversation intelligence to identify recurring strategic themes and important business developments.",
+      "Develop repeatable workflows for tracking initiatives, commitments, blockers, decisions, and ownership across multiple business meetings.",
+      "Apply appropriate accuracy, confidentiality, access, and human-review controls when using AI-generated meeting intelligence for management decisions."
+    ],
+    "prerequisites": [
+      "Basic understanding of strategy, business planning, or management activities",
+      "Familiarity with business reviews, planning meetings, stakeholder discussions, or management meetings",
+      "Basic computer and internet proficiency",
+      "Familiarity with common virtual meeting and collaboration platforms is helpful",
+      "No programming or technical AI knowledge required",
+      "No previous Fireflies.ai experience required"
+    ],
+    "modules": [
+      "Fireflies.ai Foundations for Strategy & Business Management",
+      "Capturing Strategy & Business Review Meetings",
+      "AI Summaries, Decisions & Management Actions",
+      "AskFred & Smart Search for Strategic Intelligence",
+      "Topic Trackers & Strategic Theme Monitoring",
+      "Cross-Meeting Analysis & Business Intelligence",
+      "Strategic Initiative Tracking & Follow-Through",
+      "Reusable Strategy Intelligence Workflow & Quality Review"
+    ],
+    "scenarios": [
+      "Quarterly Business Review to Strategic Action",
+      "Cross-Meeting Strategic Intelligence"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Fireflies.ai for Strategy & Business Management — Basic | TechnoEdge",
+    "suggestedSeoDescription": "Build foundational proficiency in using Fireflies.ai to capture, summarise, search, and analyse strategic and business-management conversations."
+  },
+  {
+    "courseId": "RB1018",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB1018",
+    "category": "role-based",
+    "title": "Fireflies.ai for Risk & Internal Audit: Capture Evidence, Track Risks & Strengthen Audit Follow-Through — Awareness Programme (4 Hours)",
+    "level": "Awareness",
+    "duration": "4 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Understand how Fireflies.ai can support audit interviews, control walkthroughs, risk reviews, and governance meetings through automated transcription and summarisation.",
+    "audience": [
+      "Internal Auditors",
+      "Risk & Assurance Professionals",
+      "Enterprise Risk Management Professionals",
+      "IT Auditors",
+      "Technology Risk Professionals",
+      "Compliance Professionals",
+      "Governance Professionals",
+      "Process & Control Review Teams",
+      "Audit Managers",
+      "Risk Managers",
+      "Internal Control Professionals",
+      "Quality & Assurance Professionals"
+    ],
+    "outcomes": [
+      "Understand how Fireflies.ai can support audit interviews, control walkthroughs, risk reviews, and governance meetings through automated transcription and summarisation.",
+      "Explore practical methods for identifying risks, controls, issues, decisions, commitments, and follow-up actions from recorded conversations.",
+      "Use AskFred, Smart Search, and Topic Trackers to locate audit-relevant information and recurring risk themes efficiently.",
+      "Experience structured workflows for converting meeting conversations into review-ready notes, action trackers, and audit-supporting documentation.",
+      "Recognise confidentiality, consent, access, accuracy, and human-validation requirements when using AI-generated meeting information."
+    ],
+    "prerequisites": [
+      "Basic understanding of risk, controls, compliance, or internal-audit activities",
+      "Familiarity with interviews, walkthroughs, audit meetings, or management reviews is helpful",
+      "Basic computer and internet proficiency",
+      "No technical AI or programming knowledge required",
+      "No previous Fireflies.ai experience required"
+    ],
+    "modules": [
+      "Fireflies.ai Foundations for Risk & Audit Conversations",
+      "Capturing Audit Interviews & Control Walkthroughs",
+      "AI Summaries, Risks, Issues & Action Items",
+      "AskFred & Smart Search for Audit Information Retrieval",
+      "Topic Trackers & Recurring Risk Themes",
+      "Audit Meeting-to-Follow-Up Workflow & Responsible Use"
+    ],
+    "scenarios": [
+      "Control Walkthrough to Audit Documentation",
+      "Risk Review to Remediation Tracking"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Fireflies.ai for Risk & Internal Audit — Awareness | TechnoEdge",
+    "suggestedSeoDescription": "Understand how Fireflies.ai can support audit interviews, control walkthroughs, risk reviews, and governance meetings through automated transcription and…"
+  },
+  {
+    "courseId": "RB1019",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB1019",
+    "category": "role-based",
+    "title": "Fireflies.ai for Risk & Internal Audit: Capture Evidence, Track Risks & Strengthen Audit Follow-Through — Basic Programme (8 Hours)",
+    "level": "Basic",
+    "duration": "8 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Build foundational proficiency in using Fireflies.ai to capture, transcribe, summarise, and review audit interviews, control walkthroughs, risk discussions, and governance meetings.",
+    "audience": [
+      "Internal Auditors",
+      "IT Auditors",
+      "Risk Management Professionals",
+      "Enterprise Risk Management Teams",
+      "Technology Risk Professionals",
+      "Compliance Professionals",
+      "Risk Assurance Professionals",
+      "Internal Controls Professionals",
+      "Governance, Risk & Compliance Professionals",
+      "Audit Managers",
+      "Process & Control Assurance Teams",
+      "Information Security Risk Professionals",
+      "Third-Party Risk Professionals",
+      "Risk & Audit Leadership Teams"
+    ],
+    "outcomes": [
+      "Build foundational proficiency in using Fireflies.ai to capture, transcribe, summarise, and review audit interviews, control walkthroughs, risk discussions, and governance meetings.",
+      "Apply AI-assisted meeting intelligence to identify risks, controls, findings, commitments, decisions, evidence references, and follow-up actions from recorded discussions.",
+      "Use AskFred, Smart Search, Topic Trackers, and cross-meeting analysis to improve audit research, issue tracking, and visibility of recurring risk themes.",
+      "Develop repeatable workflows for converting audit and risk conversations into structured notes, action registers, management summaries, and follow-up documentation.",
+      "Apply appropriate confidentiality, consent, access, accuracy, and human-validation practices when using AI-generated meeting information."
+    ],
+    "prerequisites": [
+      "Basic understanding of risk, audit, controls, or compliance processes",
+      "Familiarity with audit interviews, control walkthroughs, review meetings, or management discussions",
+      "Basic computer and internet proficiency",
+      "Familiarity with common virtual meeting platforms is helpful",
+      "No programming or technical AI knowledge required",
+      "No previous Fireflies.ai experience required"
+    ],
+    "modules": [
+      "Fireflies.ai Foundations for Risk & Internal Audit",
+      "Capturing Audit Interviews & Control Walkthroughs",
+      "AI Summaries, Risks, Findings & Action Items",
+      "AskFred & Smart Search for Audit Intelligence",
+      "Topic Trackers & Recurring Risk Themes",
+      "Cross-Meeting Analysis & Risk Review Intelligence",
+      "Follow-Up, Remediation Tracking & Connected Workflows",
+      "Audit Documentation, Privacy & Quality Review"
+    ],
+    "scenarios": [
+      "Control Walkthrough to Audit Observation",
+      "Remediation Meeting to Action Tracking"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:14",
+    "suggestedSeoTitle": "Fireflies.ai for Risk & Internal Audit — Basic | TechnoEdge",
+    "suggestedSeoDescription": "Build foundational proficiency in using Fireflies.ai to capture, transcribe, summarise, and review audit interviews, control walkthroughs, risk discussions…"
+  },
+  {
+    "courseId": "RB1033",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB1033",
+    "category": "role-based",
+    "title": "AI for Business Unit Heads: Strategic Growth, Performance Management & Decision Intelligence — Basic Programme (8 Hours)",
+    "level": "Basic",
+    "duration": "8 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Understand how AI can support Business Unit Heads across strategy, growth, performance management, operational oversight, and decision-making.",
+    "audience": [
+      "Business Unit Heads",
+      "Business Unit Leaders",
+      "Business Heads",
+      "Division Heads",
+      "General Managers",
+      "Profit Centre Heads",
+      "P&L Leaders",
+      "Business Directors",
+      "Vertical Heads",
+      "Segment Heads",
+      "Regional Business Heads",
+      "Functional Business Leaders",
+      "Senior General Managers",
+      "Executive Leadership Team Members"
+    ],
+    "outcomes": [
+      "Understand how AI can support Business Unit Heads across strategy, growth, performance management, operational oversight, and decision-making.",
+      "Apply AI to analyse business performance, customers, competitors, market developments, risks, and growth opportunities.",
+      "Use AI to improve business reviews, planning, cross-functional coordination, management communication, and executive reporting.",
+      "Build practical capability to evaluate strategic options, business scenarios, assumptions, and trade-offs using AI-assisted analysis.",
+      "Understand responsible AI adoption, governance, confidentiality, and leadership accountability within a business unit."
+    ],
+    "prerequisites": [
+      "Experience in business-unit, divisional, or functional leadership",
+      "Familiarity with business planning, performance reviews, P&L, and management reporting",
+      "Basic understanding of digital business tools",
+      "No programming or technical AI knowledge required",
+      "Prior experience with AI tools is helpful but not mandatory"
+    ],
+    "modules": [
+      "AI Foundations for Business Unit Leadership",
+      "Executive Prompting for Business Management",
+      "Market, Customer & Competitive Intelligence",
+      "AI for Business Unit Strategy & Growth Planning",
+      "Performance, P&L & Decision Intelligence",
+      "Operational Excellence, Risk & Scenario Planning",
+      "Business Reviews, Cross-Functional Alignment & Communication",
+      "Responsible AI Leadership & Business Unit Action Plan"
+    ],
+    "scenarios": [
+      "Business Unit Performance to Growth Strategy",
+      "Performance Gap to Executive Decision"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:22",
+    "suggestedSeoTitle": "AI for Business Unit Heads — Basic | TechnoEdge",
+    "suggestedSeoDescription": "Understand how AI can support Business Unit Heads across strategy, growth, performance management, operational oversight, and decision-making."
+  },
+  {
+    "courseId": "RB1034",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB1034",
+    "category": "role-based",
+    "title": "AI for Business Unit Heads: Strategic Growth, Performance Management & Decision Intelligence — Intermediate Programme (16 Hours)",
+    "level": "Intermediate",
+    "duration": "16 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Develop practical AI capabilities for business-unit strategy, growth planning, performance management, and leadership decision-making.",
+    "audience": [
+      "Business Unit Heads",
+      "Business Unit Directors",
+      "General Managers",
+      "Division Heads",
+      "P&L Leaders",
+      "Business Heads",
+      "Regional Business Leaders",
+      "Functional Business Leaders",
+      "Business Line Heads",
+      "Portfolio Heads",
+      "Senior Operations Leaders",
+      "Commercial Leaders",
+      "Strategy & Transformation Leaders",
+      "Senior Management Team Members"
+    ],
+    "outcomes": [
+      "Develop practical AI capabilities for business-unit strategy, growth planning, performance management, and leadership decision-making.",
+      "Apply AI to analyse customers, competitors, financial and operational performance, risks, and business opportunities.",
+      "Use AI to strengthen planning, management reviews, cross-functional coordination, executive communication, and decision preparation.",
+      "Evaluate and prioritise AI opportunities across the business unit using business value, feasibility, risk, and adoption readiness.",
+      "Apply responsible AI practices related to confidentiality, data quality, governance, bias, accountability, and human judgement."
+    ],
+    "prerequisites": [
+      "Experience in business-unit, functional, or senior management responsibilities",
+      "Familiarity with business planning, performance reviews, budgets, and operational reporting",
+      "Basic familiarity with Generative AI tools is recommended",
+      "Ability to interpret business reports and structured data",
+      "No programming knowledge required"
+    ],
+    "modules": [
+      "Generative AI for Business Unit Leadership",
+      "Executive Prompting & Context Engineering",
+      "Market, Customer & Competitive Intelligence",
+      "Business Unit Strategy & Growth Planning",
+      "Scenario Planning & Business Resilience",
+      "AI-Assisted Business Performance Analysis",
+      "P&L, Investment & Resource Prioritisation",
+      "Customer & Commercial Decision Support",
+      "Cross-Functional Leadership & Execution",
+      "Executive Productivity & Communication",
+      "AI Opportunities & Business Unit Transformation",
+      "Responsible AI, Governance & Business Unit Capstone"
+    ],
+    "scenarios": [
+      "Business Unit Growth & Performance Strategy",
+      "Business Unit AI Transformation Portfolio"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:22",
+    "suggestedSeoTitle": "AI for Business Unit Heads — Intermediate | TechnoEdge",
+    "suggestedSeoDescription": "Develop practical AI capabilities for business-unit strategy, growth planning, performance management, and leadership decision-making."
+  },
+  {
+    "courseId": "RB1048",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB1048",
+    "category": "role-based",
+    "title": "AI for General Managers: Business Performance, Operational Leadership & Smarter Decision-Making — Awareness Programme (4 Hours)",
+    "level": "Awareness",
+    "duration": "4 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Understand how AI can support General Managers across business planning, operational leadership, performance management, and decision-making.",
+    "audience": [
+      "General Managers",
+      "Senior General Managers",
+      "Deputy General Managers",
+      "Assistant General Managers",
+      "Business General Managers",
+      "Regional General Managers",
+      "Operations General Managers",
+      "Plant General Managers",
+      "Branch General Managers",
+      "Unit Heads",
+      "Business Unit Leaders",
+      "Functional General Managers",
+      "P&L Leaders",
+      "Senior Business Managers",
+      "Cross-Functional Leaders"
+    ],
+    "outcomes": [
+      "Understand how AI can support General Managers across business planning, operational leadership, performance management, and decision-making.",
+      "Explore practical AI applications for analysing business information, identifying priorities, solving operational challenges, and preparing management reviews.",
+      "Apply structured prompting techniques to generate useful insights, summaries, action plans, and management recommendations.",
+      "Use AI to improve productivity across reports, meetings, presentations, stakeholder communication, and recurring management activities.",
+      "Recognise confidentiality, accuracy, bias, governance, risk, and human-accountability requirements when using AI in General Management."
+    ],
+    "prerequisites": [
+      "Experience in business, operational, or functional management",
+      "Familiarity with planning, performance reviews, and management reporting",
+      "Basic understanding of operational and financial information",
+      "No programming or technical AI knowledge required",
+      "No previous AI-tool experience required"
+    ],
+    "modules": [
+      "AI Foundations for General Management",
+      "Prompting for Business Management & Decision Support",
+      "Business Performance & Operational Analysis",
+      "Problem Solving, Prioritisation & Action Planning",
+      "Management Reviews, Meetings & Stakeholder Communication",
+      "Responsible AI & General Manager Action Plan"
+    ],
+    "scenarios": [
+      "Business Performance Issue to Management Action Plan",
+      "Operational Challenge to General Manager Decision Brief"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:22",
+    "suggestedSeoTitle": "AI for General Managers — Awareness | TechnoEdge",
+    "suggestedSeoDescription": "Understand how AI can support General Managers across business planning, operational leadership, performance management, and decision-making."
+  },
+  {
+    "courseId": "RB1049",
+    "pageUrl": "https://www.technoedgels.com/programmes/RB1049",
+    "category": "role-based",
+    "title": "AI for General Managers: Business Performance, Operational Leadership & Smarter Decision-Making — Basic Programme (8 Hours)",
+    "level": "Basic",
+    "duration": "8 Hours",
+    "delivery": "Instructor-Led",
+    "summary": "Understand how AI can support General Managers across business planning, operational oversight, performance management, and decision-making.",
+    "audience": [
+      "General Managers",
+      "Senior General Managers",
+      "Business General Managers",
+      "Regional General Managers",
+      "Operations General Managers",
+      "Functional General Managers",
+      "Plant General Managers",
+      "Branch General Managers",
+      "Unit Heads",
+      "Business Managers",
+      "Profit Centre Managers",
+      "Regional Business Leaders",
+      "Department Leaders",
+      "Senior Management Professionals"
+    ],
+    "outcomes": [
+      "Understand how AI can support General Managers across business planning, operational oversight, performance management, and decision-making.",
+      "Apply AI to analyse business information, operational data, customer insights, risks, and performance gaps.",
+      "Use AI to improve management reviews, reporting, problem-solving, stakeholder communication, and team coordination.",
+      "Develop practical skills in prompting, scenario analysis, prioritisation, option comparison, and decision preparation.",
+      "Understand responsible AI use, confidentiality, governance, data accuracy, bias, and management accountability."
+    ],
+    "prerequisites": [
+      "Experience in general management, business leadership, operations, or functional management",
+      "Familiarity with business planning, performance reviews, and management reporting",
+      "Basic understanding of digital business tools",
+      "No programming or technical AI knowledge required",
+      "Prior experience with AI tools is helpful but not mandatory"
+    ],
+    "modules": [
+      "AI Foundations for General Management",
+      "Prompting Skills for General Managers",
+      "AI for Business Planning & Priority Management",
+      "Business Performance & Operational Insights",
+      "AI-Assisted Problem Solving & Decision-Making",
+      "Operational Excellence, Risk & Scenario Planning",
+      "Management Reviews, Communication & Team Coordination",
+      "Responsible AI Leadership & General Manager Action Plan"
+    ],
+    "scenarios": [
+      "Business Performance Gap to Management Action Plan",
+      "Operational Challenge to Management Decision"
+    ],
+    "provider": null,
+    "examCode": null,
+    "officialSourceUrl": null,
+    "sourceReference": "import-batch:22",
+    "suggestedSeoTitle": "AI for General Managers — Basic | TechnoEdge",
+    "suggestedSeoDescription": "Understand how AI can support General Managers across business planning, operational oversight, performance management, and decision-making."
+  }
+]

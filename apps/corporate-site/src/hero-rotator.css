@@ -15,20 +15,20 @@
 .hero-backgrounds { z-index: -2; }
 
 .hero-background {
-  opacity: 0;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  transition: opacity .8s ease-in-out;
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
-.hero-background.is-active { opacity: 1; }
+.hero-background.is-active { display: block; }
 
 .hero-background-ai,
 .hero-background-workforce {
   background-color: #F0F7FF;
-  background-position: right center;
-  background-size: auto 100%;
+  object-position: right center;
+  object-fit: contain;
 }
 
 .hero-rotator::after {
@@ -52,6 +52,11 @@
   max-width: 760px;
   padding-top: 3.4rem;
   padding-bottom: 1.5rem;
+}
+
+.hero-rotator .hero-copy h1 {
+  font-family: Arial, "Segoe UI", sans-serif;
+  font-weight: 700;
 }
 
 .hero-rotator .hero-kicker {
@@ -88,20 +93,23 @@
 @media (max-width: 1050px) {
   .hero-background-ai,
   .hero-background-workforce {
-    background-position: 72% center;
-    background-size: cover;
+    object-position: 72% center;
+    object-fit: cover;
   }
 }
 
 @media (max-width: 760px) {
-  .hero.hero-rotator { min-height: 730px; }
+  .hero.hero-rotator {
+    min-height: 730px;
+    background:
+      radial-gradient(circle at 82% 82%, rgba(115, 194, 251, .42), transparent 34%),
+      radial-gradient(circle at 12% 18%, rgba(38, 102, 196, .14), transparent 32%),
+      linear-gradient(160deg, #fff 0%, #F0F7FF 58%, #dceeff 100%);
+  }
+  .hero-backgrounds { display: none; }
   .hero-rotator::after { background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.93) 42%, rgba(255,255,255,.67) 62%, rgba(255,255,255,.16) 100%); }
   .hero-background-ai,
-  .hero-background-workforce { background-position: 75% center; }
+  .hero-background-workforce { object-position: 75% center; }
   .hero-rotator .hero-copy { padding-top: 4.75rem; }
   .hero-rotator-controls { padding-bottom: 2.25rem; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-background { transition: none; }
 }

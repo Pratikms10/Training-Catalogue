@@ -1,6 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "vite",
+  "cleanUrls": true,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "redirects": [
@@ -11,8 +12,9 @@
       "permanent": true
     },
     { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/website", "destination": "/website/", "permanent": true },
-    { "source": "/website/index.html", "destination": "/website/", "permanent": true },
+    { "source": "/website", "destination": "/", "permanent": true },
+    { "source": "/website/", "destination": "/", "permanent": true },
+    { "source": "/website/index.html", "destination": "/", "permanent": true },
     { "source": "/e-learning", "destination": "/e-learning/", "permanent": true },
     { "source": "/e-learning/index.html", "destination": "/e-learning/", "permanent": true },
     { "source": "/catalogue/", "destination": "/catalogue", "permanent": true },
@@ -30,17 +32,28 @@
     },
     {
       "source": "/website/assets/:path*",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/assets/:path*",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/media/:path*",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000, stale-while-revalidate=604800" }]
+    },
+    {
+      "source": "/wp-content/uploads/:path*",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "/preview/:path*",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }]
     }
   ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index" },
     { "source": "/", "destination": "/website/index.html" },
-    { "source": "/website/:path*", "destination": "/website/index.html" },
-    { "source": "/e-learning/:path*", "destination": "/e-learning/index.html" },
-    { "source": "/catalogue", "destination": "/index.html" },
-    { "source": "/programmes/:path*", "destination": "/index.html" },
-    { "source": "/insights/:path*", "destination": "/index.html" },
-    { "source": "/careers/:path*", "destination": "/index.html" }
+    { "source": "/admin/:path*", "destination": "/app-shell.html" }
   ]
 }

@@ -189,7 +189,7 @@ export function ScrollExpand({
     <div ref={trackRef} className="scroll-expand__track"><div ref={stageRef} className="scroll-expand__stage">
       <div ref={frameRef} className="scroll-expand__frame">
         {mediaType === 'video'
-          ? <video ref={mediaRef as RefObject<HTMLVideoElement>} className="scroll-expand__media" src={src} poster={poster} muted loop playsInline preload="auto" />
+          ? <video ref={mediaRef as RefObject<HTMLVideoElement>} className="scroll-expand__media" src={src} poster={poster} muted loop playsInline preload="none" />
           : <img ref={mediaRef as RefObject<HTMLImageElement>} className="scroll-expand__media" src={src} alt={alt} draggable={false} />}
         <div ref={scrimRef} className="scroll-expand__scrim" />
         {children ? <div ref={overlayRef} className="scroll-expand__overlay">{children}</div> : null}

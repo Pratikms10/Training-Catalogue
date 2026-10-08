@@ -1,15 +1,17 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ArrowUp, Menu, X } from 'lucide-react';
 import { mountCorporateInteractions } from './interactions';
 import HeroRotator from './HeroRotator';
-import TEAI360Section from './TEAI360Section';
-import ServicesShowcase from './ServicesShowcase';
-import HomeInsightsSection from './HomeInsightsSection';
-import ClientLogosSection from './ClientLogosSection';
-import ContactSection from './ContactSection';
 import { FooterStructure } from '../../../src/components/FooterStructure';
 import { CONTACT_PHONES, whatsappUrl } from '../../../src/data/siteContact';
+import { AnalyticsConsent } from '../../../src/components/AnalyticsConsent';
+
+const TEAI360Section = lazy(() => import('./TEAI360Section'));
+const ServicesShowcase = lazy(() => import('./ServicesShowcase'));
+const HomeInsightsSection = lazy(() => import('./HomeInsightsSection'));
+const ClientLogosSection = lazy(() => import('./ClientLogosSection'));
+const ContactSection = lazy(() => import('./ContactSection'));
 
 function CorporateHome() {
   useEffect(() => mountCorporateInteractions(), []);
@@ -20,10 +22,10 @@ function CorporateHome() {
   <div id="top" aria-hidden="true"></div>
   <a className="skip-link" href="#main">Skip to content</a>
   <header className="site-header">
-    <a className="brand" href="/website/" aria-label="TechnoEdge home"><img src="/website/assets/technoedge-logo.png" alt="TechnoEdge Learning Services" /></a>
+    <a className="brand" href="/" aria-label="TechnoEdge home"><img src="/website/assets/technoedge-logo.png" alt="TechnoEdge Learning Services" /></a>
     <button className="menu-toggle" aria-expanded="false" aria-controls="primary-nav"><Menu className="menu-open-icon" size={28} aria-hidden="true" /><X className="menu-close-icon" size={28} aria-hidden="true" /><span className="sr-only">Menu</span></button>
     <nav id="primary-nav" className="primary-nav" aria-label="Primary navigation">
-      <a href="/website/" aria-current="page">Home</a>
+      <a href="/" aria-current="page">Home</a>
       <a href="/e-learning/">E-Learning</a>
       <a href="/catalogue">Catalogue</a>
       <a href="/insights">Insights</a>
@@ -38,6 +40,7 @@ function CorporateHome() {
   <main id="main">
     <HeroRotator />
 
+    <Suspense fallback={<div className="section" role="status">Loading TechnoEdge capabilities…</div>}>
     <ClientLogosSection />
 
     <section className="impact" aria-labelledby="impact-title">
@@ -67,17 +70,17 @@ function CorporateHome() {
       <div className="why-unified-showcase" aria-label="TechnoEdge partnerships, recognition and experience">
         <figure className="why-proof-card why-proof-dpiit">
           <span className="why-proof-label">DPIIT RECOGNITION</span>
-          <div className="why-proof-logo"><img src="/website/assets/partnerships/dpiit-recognition.png" alt="DPIIT recognition emblem" loading="lazy" decoding="async" /></div>
+          <div className="why-proof-logo"><img src="/website/assets/partnerships/dpiit-recognition.webp" alt="DPIIT recognition emblem" loading="lazy" decoding="async" /></div>
           <figcaption>Recognised by DPIIT</figcaption>
         </figure>
         <figure className="why-proof-card why-proof-skilling">
           <span className="why-proof-label">MICROSOFT SKILLING PARTNERSHIP</span>
-          <div className="why-proof-logo"><img src="/website/assets/partnerships/microsoft-training-skilling-partner-badge.png" alt="Microsoft Training Skilling Partner badge" loading="lazy" decoding="async" /></div>
+          <div className="why-proof-logo"><img src="/website/assets/partnerships/microsoft-training-skilling-partner-badge.webp" alt="Microsoft Training Skilling Partner badge" loading="lazy" decoding="async" /></div>
           <figcaption>Microsoft Training Skilling Partner</figcaption>
         </figure>
         <figure className="why-proof-card why-proof-startup">
           <span className="why-proof-label">STARTUP INDIA RECOGNITION</span>
-          <div className="why-proof-logo"><img src="/website/assets/partnerships/startup-india.png" alt="Startup India emblem" loading="lazy" decoding="async" /></div>
+          <div className="why-proof-logo"><img src="/website/assets/partnerships/startup-india.webp" alt="Startup India emblem" loading="lazy" decoding="async" /></div>
           <figcaption>Startup India</figcaption>
         </figure>
       </div>
@@ -211,6 +214,7 @@ function CorporateHome() {
     </section>
 
     <ContactSection />
+    </Suspense>
   </main>
 
   <FooterStructure />
@@ -227,6 +231,7 @@ function CorporateHome() {
     <button className="ai-bot-button" aria-expanded="false" aria-controls="contact-choices"><img src="/website/assets/contact-host-optimized.png" alt="A welcoming TechnoEdge host—open contact options" decoding="async" /><span>Talk to us</span></button>
   </div>
   <a className="back-top" href="#top" aria-label="Back to top"><ArrowUp size={20} aria-hidden="true" /></a>
+  <AnalyticsConsent />
   
 
     </div>

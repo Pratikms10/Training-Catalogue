@@ -28,6 +28,7 @@ interface Props {
   programme: BaseProgramme;
   onBack: () => void;
   onSelectProgramme?: (programme: BaseProgramme) => void;
+  relatedProgrammes?: Array<{ id: string; title: string }>;
 }
 
 const durationFormatNames: Record<string, string> = {
@@ -37,7 +38,7 @@ const durationFormatNames: Record<string, string> = {
   '32 Hours': 'Capability Development',
 };
 
-export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
+export const CourseDetail: React.FC<Props> = ({ programme, onBack, relatedProgrammes = [] }) => {
   // Accordion Section States: All major sections open by default for rich discoverability
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
     about: true,
@@ -168,14 +169,23 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
       {/* TOP NAVIGATION */}
       <nav aria-label="Breadcrumb Navigation" className="w-full bg-white border-b border-[rgba(1,38,106,0.12)] sticky top-0 z-30 shadow-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-8 py-3 flex items-center justify-between">
-          <button 
+          <ol className="flex flex-wrap items-center gap-2 text-xs sm:text-sm" aria-label="Breadcrumbs">
+            <li><a className="font-semibold text-[rgba(0,0,0,0.70)] hover:text-[#01266A]" href="/">Home</a></li>
+            <li aria-hidden="true">/</li>
+            <li>
+          <a
             id="back-to-catalogue-btn"
-            onClick={onBack}
+            href="/catalogue"
+            onClick={(event) => { event.preventDefault(); onBack(); }}
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[rgba(0,0,0,0.70)] hover:text-[#01266A]/70 transition-colors py-1.5 px-2.5 rounded-md hover:bg-[rgba(115,194,251,0.06)]"
           >
             <ChevronLeft className="w-4 h-4 text-[#01266A]" />
             Back to Catalogue
-          </button>
+          </a>
+            </li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" className="max-w-[45ch] truncate font-semibold text-[#01266A]">{programme.title}</li>
+          </ol>
         </div>
       </nav>
 
@@ -281,7 +291,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
       </header>
 
       {/* MAIN BODY AREA */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8">
         
         {/* 5 & 7. METADATA STRIP (FLOATING OVERLAP) */}
         <section 
@@ -415,7 +425,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
                     {programme.category === 'certifications' && details.providerCourseCode && (
                       <div className="rounded-xl border border-[rgba(1,38,106,0.08)] bg-[rgba(115,194,251,0.06)] p-5 sm:p-6">
-                        <h4 className="mb-2 text-sm font-bold text-[#000000]">Official provider reference</h4>
+                        <h3 className="mb-2 text-sm font-bold text-[#000000]">Official provider reference</h3>
                         <p className="mb-2 font-mono text-sm font-semibold text-[#000000]">
                           {details.provider || 'Provider'} course code: {details.providerCourseCode}
                           {details.examCode ? ` · Exam code: ${details.examCode}` : ''}
@@ -437,10 +447,10 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                     {/* 12 & 13. Light-Blue Content Panel: Tools Covered */}
                     {details.toolsCovered && details.toolsCovered.length > 0 && (
                       <div className="bg-[rgba(115,194,251,0.06)] p-5 sm:p-6 rounded-xl border border-[rgba(1,38,106,0.08)]">
-                        <h4 className="text-sm font-bold text-[#000000] mb-3 flex items-center gap-2">
+                        <h3 className="text-sm font-bold text-[#000000] mb-3 flex items-center gap-2">
                           <Wrench className="w-4 h-4 text-[#01266A]" />
                           <span>{programme.category === 'certifications' ? 'Products & technologies' : programme.id.startsWith('TT') ? 'Technology covered' : 'Tools covered'}</span>
-                        </h4>
+                        </h3>
                         <div className="flex flex-wrap gap-2">
                           {details.toolsCovered.map((tool: string, idx: number) => (
                             <span 
@@ -457,10 +467,10 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                     {/* 12 & 14. Light-Blue Content Panel: Who Should Attend */}
                     {details.audience && details.audience.length > 0 && (
                       <div className="bg-[rgba(115,194,251,0.06)] p-5 sm:p-6 rounded-xl border border-[rgba(1,38,106,0.08)]">
-                        <h4 className="text-sm font-bold text-[#000000] mb-3 flex items-center gap-2">
+                        <h3 className="text-sm font-bold text-[#000000] mb-3 flex items-center gap-2">
                           <Users className="w-4 h-4 text-[#01266A]" />
                           <span>Who should attend</span>
-                        </h4>
+                        </h3>
                         <ul className="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-sm text-[rgba(0,0,0,0.72)]">
                           {details.audience.map((item: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2.5">
@@ -511,10 +521,10 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
                 >
                   <div className="px-6 sm:px-8 py-6 sm:py-7">
                     <div className="bg-[rgba(115,194,251,0.06)] p-5 sm:p-6 rounded-xl border border-[rgba(1,38,106,0.08)]">
-                      <h4 className="text-sm font-bold text-[#000000] mb-3 flex items-center gap-2">
+                      <h3 className="text-sm font-bold text-[#000000] mb-3 flex items-center gap-2">
                         <FileText className="w-4 h-4 text-[#01266A]" />
                         <span>Prerequisites & Participant Readiness</span>
-                      </h4>
+                      </h3>
                       {details.prerequisitesList && details.prerequisitesList.length > 0 ? (
                         <ul className="space-y-2 text-sm text-[rgba(0,0,0,0.72)]">
                           {details.prerequisitesList.map((item: string, idx: number) => (
@@ -875,6 +885,18 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
           </section>
 
           {/* Course-specific close: gives the TOC a purposeful next step before the site footer. */}
+          {relatedProgrammes.length > 0 && (
+            <section aria-labelledby="related-programmes-heading" className="rounded-2xl border border-[rgba(1,38,106,0.14)] bg-white px-6 py-8 sm:px-8">
+              <h2 id="related-programmes-heading" className="text-2xl font-bold text-black">Related programmes</h2>
+              <p className="mt-2 text-sm text-[rgba(0,0,0,0.68)]">Continue with programmes from the same capability area.</p>
+              <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                {relatedProgrammes.map((related) => (
+                  <li key={related.id}><a className="flex h-full items-center justify-between gap-3 rounded-xl border border-[rgba(1,38,106,0.12)] px-4 py-3 font-semibold text-[#01266A] transition-colors hover:border-[#01266A] hover:bg-[rgba(115,194,251,0.06)]" href={`/programmes/${related.id}`}><span>{related.title}</span><ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" /></a></li>
+                ))}
+              </ul>
+            </section>
+          )}
+
           <section
             aria-labelledby="course-next-steps-heading"
             className="relative overflow-hidden rounded-2xl border border-[rgba(1,38,106,0.18)] bg-[linear-gradient(135deg,#F5FAFF_0%,#FFFFFF_52%,#EEF7FF_100%)] px-6 py-8 shadow-[0_16px_40px_rgba(0,70,180,0.08)] sm:px-8 sm:py-10"
@@ -929,7 +951,7 @@ export const CourseDetail: React.FC<Props> = ({ programme, onBack }) => {
 
         </div>
 
-      </main>
+      </div>
 
       {/* RFQ POPUP MODAL */}
       <RfqModal

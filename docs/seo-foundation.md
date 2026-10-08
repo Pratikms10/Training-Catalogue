@@ -24,22 +24,17 @@ The programme sitemap uses published `RB`, `TT`, `TC` and `CER` records from Pos
 
 The root `npm run build` command refreshes the sitemap before compilation and runs `npm run verify:seo` against the final `dist` output afterward.
 
-## Initial indexability policy
+## Indexability policy
 
-The initial sitemap contains the homepage, catalogue, e-learning, insights index, careers index and every published programme detail page.
+The sitemap contains the homepage, catalogue, e-learning, approved landing pages, insights index, careers index and programme detail pages that are both published and explicitly SEO-approved.
 
 Insight detail pages currently reuse templated article bodies, and career detail pages do not yet contain full job descriptions. These routes receive `noindex, follow` and are excluded from the sitemap until they pass editorial review. When those pages are expanded, introduce an explicit published/indexable field rather than inferring quality from a URL or text length.
 
-## Launch checklist
+## Operational guides
 
-1. Deploy the production build with the canonical `www` domain configured as the primary domain.
-2. Verify the non-`www` host redirects permanently to `www` and `/website/` redirects permanently to `/`.
-3. Verify successful responses and content types for `/robots.txt`, `/sitemap.xml` and every child sitemap.
-4. Submit `https://www.technoedgels.com/sitemap.xml` in Google Search Console and Bing Webmaster Tools.
-5. Inspect the homepage, catalogue, one URL from every programme category, insights and careers in Search Console.
-6. Export valuable URLs from the existing WordPress sitemap, Search Console and backlink data; create one-to-one permanent redirects before the final domain cutover.
-7. Monitor indexing, redirect errors, soft 404s and Core Web Vitals after launch.
+- Use `docs/seo-release-workflow.md` to remediate, approve and release held programme pages.
+- Use `docs/seo-launch-handoff.md` for production configuration, cutover, submissions, monitoring and rollback.
 
-## Next technical SEO phase
+## Rendering and status behavior
 
-The catalogue is still a client-rendered React application. Route metadata is updated after React loads and was verified in a browser, but social crawlers and crawlers without JavaScript may still see the shared HTML shell. The next phase should prerender or server-render indexable programme pages and return real HTTP 404/410 responses for missing routes.
+Indexable routes are prerendered with their H1, page body, metadata, canonical, structured data and internal links in the initial response. Unknown routes use the generated `404` document and production routing rules rather than returning the shared application shell with a successful status.

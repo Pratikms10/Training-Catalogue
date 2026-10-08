@@ -6,11 +6,11 @@ export function Header() {
 
   return (
     <header className={`site-header${menuOpen ? ' menu-open' : ''}`}>
-      <a className="site-brand" href="/website/" aria-label="TechnoEdge home">
+      <a className="site-brand" href="/" aria-label="TechnoEdge home">
         <img className="site-brand__logo" src="/website/assets/technoedge-logo.png" alt="TechnoEdge Learning Services" />
       </a>
       <nav id="e-learning-primary-nav" className="global-nav" aria-label="Primary navigation">
-        <a href="/website/">Home</a>
+        <a href="/">Home</a>
         <a href="/e-learning/" aria-current="page">E-Learning</a>
         <a href="/catalogue">Catalogue</a>
         <a href="/insights">Insights</a>

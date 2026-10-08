@@ -71,7 +71,7 @@ export const FloatingActions: React.FC = () => {
                 rel="noopener noreferrer"
                 aria-label="Chat with TechnoEdge on WhatsApp"
                 title={`Chat on WhatsApp (${CONTACT_PHONES[0].display})`}
-                className="flex items-center justify-center gap-2 py-2 px-2.5 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] text-white text-xs font-bold shadow-[0_4px_14px_rgba(37,211,102,0.45)] hover:shadow-[0_6px_20px_rgba(37,211,102,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white"
+                className="flex items-center justify-center gap-2 py-2 px-2.5 rounded-xl bg-[#25D366] hover:bg-[#20BD5A] text-[#062b14] text-xs font-bold shadow-[0_4px_14px_rgba(37,211,102,0.45)] hover:shadow-[0_6px_20px_rgba(37,211,102,0.65)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-white"
               >
                 <MessageCircle className="w-4 h-4 fill-white stroke-white shrink-0" aria-hidden="true" />
                 <span>Chat</span>

@@ -1,25 +1,48 @@
-import React, { useState, useEffect } from 'react';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryId, BaseProgramme, PeopleProcessProgramme } from './types';
 import { CATEGORIES_ARCHITECTURE } from './data/architectureData';
 import { HeaderStructure } from './components/HeaderStructure';
 import { IntroductionStructure } from './components/IntroductionStructure';
 import { CategoryNavigation } from './components/CategoryNavigation';
-import { CatalogueGrid } from './components/CatalogueGrid';
-import { CourseDetail } from './components/CourseDetail';
 import { FooterStructure } from './components/FooterStructure';
 import { RfqModal } from './components/RfqModal';
 import { FloatingActions } from './components/FloatingActions';
 import { peopleProcessProgrammes } from './data/actualProgrammes';
 import { fetchCourseById } from './api/catalogueApi';
-import { ImportCentre } from './components/admin/ImportCentre';
-import { CareersPage } from './components/careers/CareersPage';
-import { CareerRolePage } from './components/careers/CareerRolePage';
-import { InsightsPage } from './components/insights/InsightsPage';
-import { InsightArticlePage } from './components/insights/InsightArticlePage';
+import type { ImportedArticleContent } from './components/insights/InsightArticlePage';
 import { SeoHead } from './components/SeoHead';
+import { AnalyticsConsent } from './components/AnalyticsConsent';
 
-export default function App() {
+const CatalogueGrid = lazy(() => import('./components/CatalogueGrid').then((module) => ({ default: module.CatalogueGrid })));
+const CourseDetail = lazy(() => import('./components/CourseDetail').then((module) => ({ default: module.CourseDetail })));
+const ImportCentre = lazy(() => import('./components/admin/ImportCentre').then((module) => ({ default: module.ImportCentre })));
+const CareersPage = lazy(() => import('./components/careers/CareersPage').then((module) => ({ default: module.CareersPage })));
+const CareerRolePage = lazy(() => import('./components/careers/CareerRolePage').then((module) => ({ default: module.CareerRolePage })));
+const InsightsPage = lazy(() => import('./components/insights/InsightsPage').then((module) => ({ default: module.InsightsPage })));
+const InsightArticlePage = lazy(() => import('./components/insights/InsightArticlePage').then((module) => ({ default: module.InsightArticlePage })));
+const SeoLandingRoute = lazy(() => import('./components/SeoLandingRoute').then((module) => ({ default: module.SeoLandingRoute })));
+
+const trustRoutes = new Set(['/about', '/contact', '/authors/technoedge-editorial-team', '/editorial-policy', '/corrections-policy', '/ai-content-policy', '/privacy', '/terms']);
+const isSeoLandingPath = (pathname: string) => (
+  /^\/(?:services|solutions|industries|markets|catalogue)\/.+/.test(pathname)
+  || trustRoutes.has(pathname)
+);
+
+export interface AppInitialData {
+  programme?: BaseProgramme | null;
+  programmePath?: string;
+  insightContent?: ImportedArticleContent | null;
+  insightSlug?: string;
+  programmeLinks?: Array<{ id: string; title: string }>;
+  programmeLinksPath?: string;
+}
+
+interface AppProps {
+  initialData?: AppInitialData;
+}
+
+export default function App({ initialData }: AppProps) {
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
@@ -38,8 +61,12 @@ export default function App() {
   const careerRoleSlug = location.pathname.startsWith('/careers/')
     ? decodeURIComponent(location.pathname.replace('/careers/', ''))
     : null;
+  const isSeoLandingPage = isSeoLandingPath(location.pathname);
+  const isCatalogueRoute = location.pathname === '/catalogue' || location.pathname.startsWith('/programmes/');
   const [activeCategoryId, setActiveCategoryId] = useState<CategoryId>('role-based');
-  const [selectedProgramme, setSelectedProgramme] = useState<BaseProgramme | null>(null);
+  const [selectedProgramme, setSelectedProgramme] = useState<BaseProgramme | null>(() => (
+    initialData?.programmePath === location.pathname ? initialData.programme ?? null : null
+  ));
   const [isProgrammeLoading, setIsProgrammeLoading] = useState(false);
   const [programmeLoadError, setProgrammeLoadError] = useState<string | null>(null);
   const [isEnterpriseInquiryOpen, setIsEnterpriseInquiryOpen] = useState(false);
@@ -70,6 +97,15 @@ export default function App() {
           return;
         }
         setProgrammeLoadError(null);
+
+        if (initialData?.programmePath === path && initialData.programme?.id === id) {
+          setSelectedProgramme(initialData.programme);
+          setActiveCategoryId(initialData.programme.category === 'people-process'
+            ? 'people-behavioural'
+            : initialData.programme.category);
+          setIsProgrammeLoading(false);
+          return;
+        }
 
         const isLegacyCertificationCode = /^[A-Z0-9]{2,12}-[A-Z0-9][A-Z0-9-]{1,30}$/.test(id) && /\d/.test(id);
         if (id.startsWith('TT') || id.startsWith('TC') || id.startsWith('RB') || id.startsWith('CER') || isLegacyCertificationCode) {
@@ -145,7 +181,7 @@ export default function App() {
     return () => {
       activeController?.abort();
     };
-  }, [location.pathname, navigate]);
+  }, [initialData, location.pathname, navigate]);
 
   const handleSelectProgramme = (programme: BaseProgramme) => {
     navigate(`/programmes/${programme.id}`);
@@ -225,7 +261,7 @@ export default function App() {
         onQuickSearchClick={handleQuickSearchClick}
         onEnterpriseInquiryClick={() => openEnterpriseInquiry('catalogue_header_corporate_enquiry')}
         onNavigate={(path) => {
-          if (path === '/e-learning/' || path === '/website/') {
+          if (path === '/e-learning/' || path === '/') {
             window.location.assign(path);
             return;
           }
@@ -235,17 +271,27 @@ export default function App() {
         currentPath={location.pathname}
       />
       <main id="main-catalogue-content" className="flex-1 flex flex-col">
+        <Suspense fallback={<div className="flex-1 grid place-items-center px-6 py-24" role="status">Loading page…</div>}>
         {isImportCentre ? (
           <ImportCentre />
+        ) : isSeoLandingPage ? (
+          <SeoLandingRoute
+            pathname={location.pathname}
+            programmeLinks={initialData?.programmeLinksPath === location.pathname ? initialData.programmeLinks : undefined}
+          />
         ) : isInsightsPage ? (
           <InsightsPage />
         ) : insightArticleSlug ? (
-          <InsightArticlePage slug={insightArticleSlug} onBack={() => navigate('/insights')} />
+          <InsightArticlePage
+            slug={insightArticleSlug}
+            initialContent={initialData?.insightSlug === insightArticleSlug ? initialData.insightContent : null}
+            onBack={() => navigate('/insights')}
+          />
         ) : isCareersPage ? (
           <CareersPage onViewRole={(slug) => navigate(`/careers/${slug}`)} />
         ) : careerRoleSlug ? (
           <CareerRolePage slug={careerRoleSlug} onBack={() => navigate('/careers')} />
-        ) : (
+        ) : isCatalogueRoute ? (
           <>
         {isProgrammeLoading && (
           <div className="flex-1 flex items-center justify-center py-24 px-6" role="status">
@@ -257,6 +303,7 @@ export default function App() {
           <CourseDetail 
              programme={selectedProgramme} 
              onBack={handleBack} 
+             relatedProgrammes={initialData?.programmeLinksPath === location.pathname ? initialData.programmeLinks : undefined}
            />
         )}
 
@@ -275,8 +322,20 @@ export default function App() {
           </div>
         )}
 
-        <div className={selectedProgramme || isProgrammeLoading ? 'hidden' : 'block'}>
+        {!selectedProgramme && !isProgrammeLoading && (
+        <div className="block">
           <IntroductionStructure />
+          {location.pathname === '/catalogue' && initialData?.programmeLinksPath === '/catalogue' && initialData.programmeLinks?.length ? (
+            <section className="mx-auto w-full max-w-7xl px-4 pb-4 sm:px-10" aria-labelledby="catalogue-featured-programmes">
+              <h2 id="catalogue-featured-programmes" className="text-2xl font-bold text-black">Explore approved programmes</h2>
+              <p className="mt-2 text-[rgba(0,0,0,0.70)]">Start with these quality-reviewed programme pages, then use the filters to narrow the full catalogue.</p>
+              <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {initialData.programmeLinks.map((programme) => (
+                  <li key={programme.id}><a className="block rounded-lg border border-[rgba(1,38,106,0.14)] p-4 font-semibold text-[#01266A] hover:border-[#01266A] hover:underline" href={`/programmes/${programme.id}`}>{programme.title}</a></li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
           <CategoryNavigation
             categories={CATEGORIES_ARCHITECTURE}
             activeCategoryId={activeCategoryId}
@@ -287,8 +346,19 @@ export default function App() {
              onViewDetail={handleSelectProgramme}
           />
         </div>
-          </>
         )}
+          </>
+        ) : (
+          <section className="flex-1 grid place-items-center px-6 py-24 text-center" aria-labelledby="not-found-heading">
+            <div className="max-w-xl">
+              <p className="text-sm font-bold uppercase tracking-[0.16em] text-[#01266A]">404 error</p>
+              <h1 id="not-found-heading" className="mt-3 text-4xl font-bold text-[#000000]">Page not found</h1>
+              <p className="mt-4 text-[rgba(0,0,0,0.70)]">The page may have moved, been retired, or the address may be incorrect.</p>
+              <a className="mt-8 inline-flex rounded-lg bg-[#01266A] px-6 py-3 font-semibold text-white" href="/">Go to TechnoEdge home</a>
+            </div>
+          </section>
+        )}
+        </Suspense>
       </main>
       <FooterStructure 
         onSelectCategory={handleFooterCategorySelect}
@@ -304,6 +374,7 @@ export default function App() {
         onClose={() => setIsEnterpriseInquiryOpen(false)}
         ctaId={enterpriseInquiryCtaId}
       />
+      <AnalyticsConsent />
     </div>
   );
 }

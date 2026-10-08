@@ -21,7 +21,7 @@ export const FooterStructure: React.FC<FooterStructureProps> = ({
 
   const categoryLink = (catId: CategoryId, label: string) => (
     <a
-      href={`/catalogue?category=${encodeURIComponent(catId)}`}
+      href={`/catalogue/${encodeURIComponent(catId)}`}
       onClick={(event) => handleCategoryClick(event, catId)}
       className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors text-left"
     >
@@ -93,12 +93,12 @@ export const FooterStructure: React.FC<FooterStructureProps> = ({
               Quick Links
             </h3>
             <ul className="space-y-3 text-sm text-[rgba(0,0,0,0.68)]">
-              <li><a href="/website/#about" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">About Us</a></li>
-              <li><a href="/website/#services" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">Corporate Training</a></li>
+              <li><a href="/about" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">About Us</a></li>
+              <li><a href="/services/corporate-training" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">Corporate Training</a></li>
               <li><a href="/e-learning/" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">E-learning Solution</a></li>
-              <li><a href="/website/#contact" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">Business Consultation</a></li>
+              <li><a href="/services/ai-automation-consulting" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">AI &amp; Automation Consulting</a></li>
               <li><a href="/catalogue" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">Explore Programmes</a></li>
-              <li><a href="/website/#contact" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors" onClick={(e) => { if (onOpenInquiry) { e.preventDefault(); onOpenInquiry(); } }}>Contact Us</a></li>
+              <li><a href="/contact" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors" onClick={(e) => { if (onOpenInquiry) { e.preventDefault(); onOpenInquiry(); } }}>Contact Us</a></li>
             </ul>
           </div>
 
@@ -124,7 +124,7 @@ export const FooterStructure: React.FC<FooterStructureProps> = ({
                 Follow Us
               </h3>
               <a 
-                href="https://linkedin.com" 
+                href="https://www.linkedin.com/company/technoedge-learning-services-india-pvt-ltd"
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[rgba(115,194,251,0.08)] border border-[rgba(1,38,106,0.12)] text-[#01266A] hover:bg-[#01266A] hover:text-white transition-colors"
@@ -139,8 +139,9 @@ export const FooterStructure: React.FC<FooterStructureProps> = ({
                 Policies
               </h3>
               <ul className="space-y-3 text-sm text-[rgba(0,0,0,0.68)]">
-                <li><a href="#" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">Terms & Conditions</a></li>
-                <li><a href="#" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">Privacy Policy</a></li>
+                <li><a href="/terms" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">Terms &amp; Conditions</a></li>
+                <li><a href="/privacy" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">Privacy Policy</a></li>
+                <li><a href="/editorial-policy" className="hover:text-[#01266A]/70 hover:underline underline-offset-2 transition-colors">Editorial Policy</a></li>
               </ul>
             </div>
           </div>

@@ -25,7 +25,7 @@ export function Footer() {
           <ul className="space-y-2 text-xs font-bold text-[#68666c]">
             <li>
               <a
-                href="/website/"
+                href="/"
                 className="hover:text-[#0b0b0d] flex items-center gap-1 transition-colors"
               >
                 <span>TechnoEdge Home</span>

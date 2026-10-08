@@ -182,7 +182,6 @@ export default function TEAI360Section() {
                     data-stage-index={index}
                     aria-current={state === 'active' ? 'step' : undefined}
                     aria-pressed={state === 'active'}
-                    aria-label={`Level ${index + 1}: ${stage.name}. ${stage.headline}`}
                     onClick={() => selectStage(index)}
                     onPointerMove={tiltStage}
                     onPointerLeave={resetStageTilt}

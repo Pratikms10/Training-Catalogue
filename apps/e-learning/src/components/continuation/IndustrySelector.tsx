@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useLayoutEffect } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import type { CSSProperties } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { INDUSTRIES_DATA } from '../../data/learningData';
@@ -7,30 +7,22 @@ import type { IndustryItem } from '../../types';
 import './sculpted-cards.css';
 
 const INDUSTRY_IMAGES: Record<string, string> = {
-  automotive: '/media/industries-new/Automotive.png',
-  banking: '/media/industries-new/Banking.png',
-  energy: '/media/industries-new/Energy_Utilities.png',
-  it: '/media/industries-new/IT_Technology.png',
-  insurance: '/media/industries-new/Insurance.png',
-  logistics: '/media/industries-new/Logistics_SupplyChain.png',
-  manufacturing: '/media/industries-new/Manufacturing.png',
-  pharma: '/media/industries-new/Pharma.png',
-  retail: '/media/industries-new/Retail.png',
-  telecom: '/media/industries-new/Telecom.png',
+  automotive: '/media/industries-new/Automotive.webp',
+  banking: '/media/industries-new/Banking.webp',
+  energy: '/media/industries-new/Energy_Utilities.webp',
+  it: '/media/industries-new/IT_Technology.webp',
+  insurance: '/media/industries-new/Insurance.webp',
+  logistics: '/media/industries-new/Logistics_SupplyChain.webp',
+  manufacturing: '/media/industries-new/Manufacturing.webp',
+  pharma: '/media/industries-new/Pharma.webp',
+  retail: '/media/industries-new/Retail.webp',
+  telecom: '/media/industries-new/Telecom.webp',
 };
 
 export function IndustrySelector() {
   const containerRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [scrollRange, setScrollRange] = useState<number>(0);
-
-  // Preload all 10 industry illustrations on mount for instant zero-lag rendering
-  useEffect(() => {
-    Object.values(INDUSTRY_IMAGES).forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, []);
 
   // Measure total horizontal track scroll distance dynamically
   useLayoutEffect(() => {
@@ -143,7 +135,7 @@ function IndustryCard({ industry }: IndustryCardProps) {
         {theme.tagline}
       </div>
     </header>
-    <div className="industry-diorama"><img src={INDUSTRY_IMAGES[industry.id]} alt={industry.title+' workplace clay illustration'} loading="eager" decoding="async"/></div>
+    <div className="industry-diorama"><img src={INDUSTRY_IMAGES[industry.id]} alt={industry.title+' workplace clay illustration'} loading="lazy" decoding="async"/></div>
     <div className="industry-editable-panels">
       <section><h4>Typical Challenge</h4><p>{industry.challenge}</p></section>
       <section><h4>Formats That Fit</h4><p>{industry.formats}</p></section>

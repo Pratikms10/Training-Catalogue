@@ -73,6 +73,12 @@ export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'produc
   app.use(express.json({ limit: '1mb' }));
   app.use('/api/admin/import', createImportCentreRouter(pool));
 
+  app.get('/api/indexnow-key', (_request, response) => {
+    const key = process.env.INDEXNOW_KEY?.trim();
+    if (!key || !/^[a-zA-Z0-9-]{8,128}$/.test(key)) return response.sendStatus(404);
+    return response.type('text/plain').send(key);
+  });
+
   app.post('/api/enquiries', async (request, response, next) => {
     try {
       const enquiry = validateEnquiry(request.body);
@@ -163,14 +169,21 @@ export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'produc
       throw new Error(`Static build directory not found: ${distDirectory}. Run npm run build first.`);
     }
     app.get('/', (_request, response) => response.sendFile(path.join(distDirectory, 'website', 'index.html')));
-    app.get(/^\/website$/, (_request, response) => response.redirect(308, '/website/'));
-    app.get(/^\/website\/$/, (_request, response) => response.sendFile(path.join(distDirectory, 'website', 'index.html')));
-    app.use(express.static(distDirectory));
+    app.get(/^\/website\/?$/, (_request, response) => response.redirect(308, '/'));
+    app.get(/^\/website\/index\.html$/, (_request, response) => response.redirect(308, '/'));
+    app.get(/.*/, (request, response, next) => {
+      const relativePath = request.path.replace(/^\/+|\/+$/g, '');
+      if (!relativePath || path.extname(relativePath)) return next();
+      const cleanHtml = path.resolve(distDirectory, `${relativePath}.html`);
+      if (!cleanHtml.startsWith(`${distDirectory}${path.sep}`) || !fs.existsSync(cleanHtml)) return next();
+      return response.sendFile(cleanHtml);
+    });
+    app.use(express.static(distDirectory, { extensions: ['html'] }));
     app.use((request, response, next) => {
       if (request.method !== 'GET' || request.path.startsWith('/api/') || !request.accepts('html')) {
         return next();
       }
-      return response.sendFile(path.join(distDirectory, 'index.html'));
+      return response.status(404).sendFile(path.join(distDirectory, '404.html'));
     });
   }
 

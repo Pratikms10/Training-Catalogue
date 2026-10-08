@@ -21,9 +21,13 @@ function formatTechnology(value: string) {
 }
 
 export const CertificationCard: React.FC<Props> = ({ programme, onViewDetail }) => (
-  <button
-    type="button"
-    onClick={onViewDetail}
+  <a
+    href={`/programmes/${encodeURIComponent(programme.id)}`}
+    onClick={(event) => {
+      if (!onViewDetail) return;
+      event.preventDefault();
+      onViewDetail();
+    }}
     className="group flex h-full w-full max-w-sm mx-auto flex-col overflow-hidden rounded-xl border border-[rgba(1,38,106,0.12)] bg-white text-left transition-all duration-200 hover:-translate-y-1 hover:border-[#01266A]/30 hover:shadow-[0_10px_28px_rgba(1,38,106,0.16)] focus:outline-none focus:ring-2 focus:ring-[#01266A]/30"
     aria-label={`View details for ${programme.title}`}
   >
@@ -88,5 +92,5 @@ export const CertificationCard: React.FC<Props> = ({ programme, onViewDetail }) 
         </span>
       </div>
     </div>
-  </button>
+  </a>
 );

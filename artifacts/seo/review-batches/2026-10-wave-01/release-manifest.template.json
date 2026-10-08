@@ -1,0 +1,207 @@
+{
+  "batchId": "2026-10-wave-01",
+  "reviewedBy": "PENDING — replace with accountable reviewer",
+  "reviewedAt": null,
+  "programmes": [
+    {
+      "courseId": "CER0118",
+      "approved": false,
+      "sourceUrl": "https://learn.microsoft.com/en-us/credentials/certifications/github-advanced-security/",
+      "seoTitle": "GitHub Advanced Security Certification Exam … | TechnoEdge",
+      "seoDescription": "This exam is designed for experienced professionals in the field of software development and security. This certification is designed for individuals who have…",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "CER0120",
+      "approved": false,
+      "sourceUrl": "https://learn.microsoft.com/en-us/credentials/certifications/github-copilot/",
+      "seoTitle": "GitHub Copilot Certification Exam — Certification | TechnoEdge",
+      "seoDescription": "The GitHub Copilot certification exam evaluates your skill in using the AI-driven code completion tool in various programming languages, certifying your…",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "CER0121",
+      "approved": false,
+      "sourceUrl": "https://learn.microsoft.com/en-us/credentials/certifications/github-foundations/",
+      "seoTitle": "GitHub Foundations Certification Exam — Certification | TechnoEdge",
+      "seoDescription": "This exam is targeted towards GitHub users who want to validate their understanding of the foundational topics, products, and concepts of collaborating…",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0419",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Meta AI & Manus for Information Technology — Awareness | TechnoEdge",
+      "seoDescription": "Understand how Meta AI and Manus can support technical research, IT documentation, troubleshooting, and operational productivity.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0420",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Meta AI & Manus for Information Technology — Basic | TechnoEdge",
+      "seoDescription": "Build practical capability in using Meta AI and Manus for technical research, IT support, troubleshooting, documentation, and operational analysis.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0516",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Gemini for Google Workspace for Finance & Accounting … | TechnoEdge",
+      "seoDescription": "Build foundational capability to use Gemini across Google Workspace for financial analysis, reporting, documentation, and finance coordination.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0517",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Gemini for Google Workspace for Finance & Accounting … | TechnoEdge",
+      "seoDescription": "Develop practical proficiency in using Gemini across Google Workspace for financial analysis, accounting support, reporting, planning, and finance operations.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0551",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Gemini for Google Workspace for Senior Leadership … | TechnoEdge",
+      "seoDescription": "Understand how Gemini for Google Workspace can support executive communication, meeting productivity, strategic review, and leadership decision preparation.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0552",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Gemini for Google Workspace for Senior Leadership — Basic | TechnoEdge",
+      "seoDescription": "Build practical capability in using Gemini across Google Workspace for executive communication, information synthesis, business reviews, and leadership…",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0577",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Microsoft Copilot Studio for Customer Service & Customer… | TechnoEdge",
+      "seoDescription": "Understand how Microsoft Copilot Studio can support customer self-service, support, onboarding, and customer-success interactions.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0578",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Microsoft Copilot Studio for Customer Service & Customer… | TechnoEdge",
+      "seoDescription": "Build foundational capability in using Microsoft Copilot Studio to create customer-service and customer-success agents.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0784",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Zapier for Legal & Compliance — Awareness | TechnoEdge",
+      "seoDescription": "Understand how Zapier can automate repetitive legal and compliance coordination across connected business applications.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0825",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Make.com for Product & Service Management — Intermediate | TechnoEdge",
+      "seoDescription": "Develop functional proficiency in using Make.com to automate recurring product and service-management workflows.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0829",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "n8n for Marketing — Awareness | TechnoEdge",
+      "seoDescription": "Understand how n8n can automate repetitive marketing activities across campaigns, lead management, content workflows, and reporting.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0831",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "n8n for Marketing — Intermediate | TechnoEdge",
+      "seoDescription": "Develop functional proficiency in using n8n to automate recurring marketing and campaign-management workflows.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0838",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "n8n for Finance & Accounting — Awareness | TechnoEdge",
+      "seoDescription": "Understand how n8n can automate repetitive finance and accounting activities across connected business systems.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB0849",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "n8n for Product & Service Management — Intermediate | TechnoEdge",
+      "seoDescription": "Develop functional proficiency in using n8n to automate recurring product and service-management workflows.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB1014",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Fireflies.ai for Strategy & Business Management … | TechnoEdge",
+      "seoDescription": "Understand how Fireflies.ai can capture and structure strategy meetings, business reviews, planning discussions, and cross-functional conversations.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB1015",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Fireflies.ai for Strategy & Business Management — Basic | TechnoEdge",
+      "seoDescription": "Build foundational proficiency in using Fireflies.ai to capture, summarise, search, and analyse strategic and business-management conversations.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB1018",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Fireflies.ai for Risk & Internal Audit — Awareness | TechnoEdge",
+      "seoDescription": "Understand how Fireflies.ai can support audit interviews, control walkthroughs, risk reviews, and governance meetings through automated transcription and…",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB1019",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "Fireflies.ai for Risk & Internal Audit — Basic | TechnoEdge",
+      "seoDescription": "Build foundational proficiency in using Fireflies.ai to capture, transcribe, summarise, and review audit interviews, control walkthroughs, risk discussions…",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB1033",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "AI for Business Unit Heads — Basic | TechnoEdge",
+      "seoDescription": "Understand how AI can support Business Unit Heads across strategy, growth, performance management, operational oversight, and decision-making.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB1034",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "AI for Business Unit Heads — Intermediate | TechnoEdge",
+      "seoDescription": "Develop practical AI capabilities for business-unit strategy, growth planning, performance management, and leadership decision-making.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB1048",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "AI for General Managers — Awareness | TechnoEdge",
+      "seoDescription": "Understand how AI can support General Managers across business planning, operational leadership, performance management, and decision-making.",
+      "notes": "Pending factual, source and search-snippet review."
+    },
+    {
+      "courseId": "RB1049",
+      "approved": false,
+      "sourceUrl": "",
+      "seoTitle": "AI for General Managers — Basic | TechnoEdge",
+      "seoDescription": "Understand how AI can support General Managers across business planning, operational oversight, performance management, and decision-making.",
+      "notes": "Pending factual, source and search-snippet review."
+    }
+  ]
+}

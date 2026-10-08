@@ -29,6 +29,9 @@ function baseProgramme(row) {
     level: row.level_code,
     duration: durationLabel(row.duration_minutes),
     format: row.format || undefined,
+    seoIndexable: row.seo_indexable === true,
+    seoTitle: row.seo_title || undefined,
+    seoDescription: row.seo_description || undefined,
     details: {
       summary: row.summary || undefined,
       delivery: row.delivery || undefined,
@@ -193,7 +196,10 @@ function buildFilters(filters) {
 
 const catalogueSelect = `
   SELECT
-    ccv.*
+    ccv.*,
+    c.seo_indexable,
+    c.seo_title,
+    c.seo_description
   FROM catalogue.course_catalogue_view ccv
   JOIN catalogue.courses c ON c.course_id = ccv.course_id
   LEFT JOIN catalogue.tools_technology_details tt ON tt.course_id = c.course_id

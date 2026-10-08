@@ -13,7 +13,7 @@ const COURSE_POSTER = '/media/learner-journey-poster.jpg';
 
 function CourseVideo({ className = '' }: { className?: string }) {
   return <div className={`journey-video ${className}`.trim()}>
-    <video src={COURSE_VIDEO} poster={COURSE_POSTER} muted loop playsInline preload="auto" aria-label="Converted e-learning video" />
+    <video src={COURSE_VIDEO} poster={COURSE_POSTER} muted loop playsInline preload="none" aria-label="Converted e-learning video" />
     <span>From SOP to a learning experience</span>
   </div>;
 }

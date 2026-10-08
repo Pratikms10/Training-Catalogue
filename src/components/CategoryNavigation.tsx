@@ -32,7 +32,7 @@ function getCoverDiameter(width: number, height: number, x: number, y: number) {
 export const CategoryNavigation: React.FC<Props> = ({ categories, activeCategoryId, onSelectCategory }) => {
   const [activeTabOrigin, setActiveTabOrigin] = useState<Record<string, { x: number; y: number; coverSize: number; isHovered: boolean }>>({});
 
-  const handlePointerEnter = useCallback((catId: string, event: React.PointerEvent<HTMLButtonElement>) => {
+  const handlePointerEnter = useCallback((catId: string, event: React.PointerEvent<HTMLAnchorElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
@@ -78,11 +78,12 @@ export const CategoryNavigation: React.FC<Props> = ({ categories, activeCategory
             const originData = activeTabOrigin[cat.id];
             const isHovered = Boolean(originData?.isHovered);
             return (
-              <button
+              <a
                 key={cat.id}
+                href={`/catalogue/${cat.id}`}
                 role="tab"
                 aria-selected={isActive}
-                onClick={() => onSelectCategory(cat.id)}
+                onClick={(event) => { event.preventDefault(); onSelectCategory(cat.id); }}
                 onPointerEnter={(e) => handlePointerEnter(cat.id, e)}
                 onPointerDown={(e) => handlePointerEnter(cat.id, e)}
                 onPointerLeave={() => handlePointerLeave(cat.id)}
@@ -159,7 +160,7 @@ export const CategoryNavigation: React.FC<Props> = ({ categories, activeCategory
                     </div>
                   )}
                 </div>
-              </button>
+              </a>
             );
           })}
         </div>

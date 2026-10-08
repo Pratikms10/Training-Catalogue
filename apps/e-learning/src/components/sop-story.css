@@ -28,6 +28,8 @@
 .sop-transform .journey-copy .eyebrow { font-size: 12px; }
 .sop-transform .journey-copy h2 { font-size: clamp(52px,5.3vw,78px); line-height: 1.01; }
 .sop-transform .journey-copy p { max-width: 520px; font-size: clamp(17px,1.25vw,20px); line-height: 1.58; }
+.sop-transform .journey-copy p,
+.sop-transform .learner-thought { color: #465f74; }
 .journey-after-surface .learner-after { z-index: 30; right: 3vw; bottom: 5vh; width: min(31vw,310px); height: min(31vw,310px); opacity: 1; }
 .journey-after-surface .learner-thought-after { z-index: 10; right: calc(3vw + min(34vw,340px) * .7); bottom: min(35vh,300px); left: auto; border-radius: 20px 20px 6px 20px; }
 .journey-after-surface [data-scroll-reveal] { opacity: 0; transform: translate3d(0,24px,0) scale(.965); will-change: opacity,transform; }

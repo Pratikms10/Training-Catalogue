@@ -35,12 +35,19 @@ export interface InsightArticle {
   image: string;
   author: string;
   url: string;
+  indexable: boolean;
+  datePublished?: string;
+  dateModified?: string;
 }
 
 export const insightsArticles: InsightArticle[] = importedInsights.map((article) => ({
   ...article,
+  author: article.author === 'admintechnoedge' ? 'TechnoEdge Editorial Team' : article.author,
   category: article.category as InsightCategory,
   url: `/insights/${article.id}`,
+  indexable: false,
+  datePublished: undefined,
+  dateModified: undefined,
 }));
 
 export const insightCategories: ReadonlyArray<'All' | InsightCategory> = [

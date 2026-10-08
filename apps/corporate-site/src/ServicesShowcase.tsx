@@ -1,30 +1,20 @@
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
+import { useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
 import { ArrowRight } from 'lucide-react';
 
 const services = [
-  { name: 'Content & Language', title: 'Content Processing & Language Services', subtitle: 'Make every message clear and accessible.', image: '/website/assets/services-showcase/content-language-india-v2.png', imageAlt: 'Content specialists reviewing captions and language adaptations', visualLabel: 'Content that connects across languages' },
-  { name: 'E-Learning', title: 'E-Learning Solutions', subtitle: 'Flexible by design. Consistent at scale.', image: '/website/assets/services-showcase/e-learning-india-v2.png', imageAlt: 'Professional learner taking a digital course on a laptop', visualLabel: 'Digital learning that stays engaging' },
-  { name: 'Corporate Training', title: 'Corporate Training Solutions', subtitle: 'Learn it. Practise it. Use it.', image: '/website/assets/services-showcase/corporate-training-india-v2.png', imageAlt: 'Trainer guiding a group through a practical technology workshop', visualLabel: 'Expert-led learning, grounded in real work' },
-  { name: 'AI & Automation', title: 'AI & Automation Consulting', subtitle: 'From useful idea to working process.', image: '/website/assets/services-showcase/ai-automation-india-v2.png', imageAlt: 'Consultants reviewing an AI-supported business workflow', visualLabel: 'Practical AI for everyday operations' },
-  { name: 'Data & AI Support', title: 'Data & AI Support', subtitle: 'Better data makes better AI possible.', image: '/website/assets/services-showcase/data-ai-india-v2.png', imageAlt: 'Data specialists checking structured datasets and AI readiness', visualLabel: 'Reliable data, ready for what comes next' },
+  { name: 'Content & Language', title: 'Content Processing & Language Services', subtitle: 'Make every message clear and accessible.', image: '/website/assets/services-showcase/content-language-india-v2.webp', imageAlt: 'Content specialists reviewing captions and language adaptations', visualLabel: 'Content that connects across languages' },
+  { name: 'E-Learning', title: 'E-Learning Solutions', subtitle: 'Flexible by design. Consistent at scale.', image: '/website/assets/services-showcase/e-learning-india-v2.webp', imageAlt: 'Professional learner taking a digital course on a laptop', visualLabel: 'Digital learning that stays engaging' },
+  { name: 'Corporate Training', title: 'Corporate Training Solutions', subtitle: 'Learn it. Practise it. Use it.', image: '/website/assets/services-showcase/corporate-training-india-v2.webp', imageAlt: 'Trainer guiding a group through a practical technology workshop', visualLabel: 'Expert-led learning, grounded in real work' },
+  { name: 'AI & Automation', title: 'AI & Automation Consulting', subtitle: 'From useful idea to working process.', image: '/website/assets/services-showcase/ai-automation-india-v2.webp', imageAlt: 'Consultants reviewing an AI-supported business workflow', visualLabel: 'Practical AI for everyday operations' },
+  { name: 'Data & AI Support', title: 'Data & AI Support', subtitle: 'Better data makes better AI possible.', image: '/website/assets/services-showcase/data-ai-india-v2.webp', imageAlt: 'Data specialists checking structured datasets and AI readiness', visualLabel: 'Reliable data, ready for what comes next' },
 ] as const;
-
-const AUTOPLAY_DELAY = 3000;
 
 export default function ServicesShowcase() {
   const [activeIndex, setActiveIndex] = useState(2);
-  const [isPaused, setIsPaused] = useState(false);
   const deckRef = useRef<HTMLDivElement | null>(null);
   const dragStart = useRef<number | null>(null);
 
   const move = (direction: 1 | -1) => setActiveIndex((current) => (current + direction + services.length) % services.length);
-
-  useEffect(() => {
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reducedMotion || isPaused) return;
-    const timer = window.setInterval(() => move(1), AUTOPLAY_DELAY);
-    return () => window.clearInterval(timer);
-  }, [activeIndex, isPaused]);
 
   const offsetFor = (index: number) => {
     let offset = index - activeIndex;
@@ -39,7 +29,6 @@ export default function ServicesShowcase() {
     const distance = event.clientX - start;
     dragStart.current = null;
     deckRef.current?.style.setProperty('--drag-x', '0px');
-    setIsPaused(false);
     if (Math.abs(distance) > 42) move(distance < 0 ? 1 : -1);
   };
 
@@ -64,9 +53,7 @@ export default function ServicesShowcase() {
           aria-label="TechnoEdge services"
           tabIndex={0}
           onKeyDown={(event) => { if (event.key === 'ArrowLeft') move(-1); if (event.key === 'ArrowRight') move(1); }}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onPointerDown={(event) => { dragStart.current = event.clientX; event.currentTarget.setPointerCapture(event.pointerId); event.currentTarget.classList.add('is-dragging'); setIsPaused(true); }}
+          onPointerDown={(event) => { dragStart.current = event.clientX; event.currentTarget.setPointerCapture(event.pointerId); event.currentTarget.classList.add('is-dragging'); }}
           onPointerMove={(event) => { if (dragStart.current === null) return; const distance = Math.max(-110, Math.min(110, event.clientX - dragStart.current)); deckRef.current?.style.setProperty('--drag-x', `${distance}px`); }}
           onPointerUp={(event) => { event.currentTarget.classList.remove('is-dragging'); finishDrag(event); }}
           onPointerCancel={(event) => { event.currentTarget.classList.remove('is-dragging'); finishDrag(event); }}
@@ -74,11 +61,11 @@ export default function ServicesShowcase() {
           {services.map((service, index) => {
             const offset = offsetFor(index);
             return (
-              <article className={`services-stack-card${offset === 0 ? ' is-active' : ''}`} id={`service-slide-${index}`} role="tabpanel" aria-labelledby={`service-tab-${index}`} aria-hidden={offset !== 0} style={{ '--card-offset': offset, '--card-distance': Math.abs(offset) } as CSSProperties} key={service.name}>
-                <img src={service.image} alt={service.imageAlt} loading={index === 2 ? 'eager' : 'lazy'} draggable="false" />
+              <div className={`services-stack-card${offset === 0 ? ' is-active' : ''}`} id={`service-slide-${index}`} role="tabpanel" aria-labelledby={`service-tab-${index}`} aria-hidden={offset !== 0} style={{ '--card-offset': offset, '--card-distance': Math.abs(offset) } as CSSProperties} key={service.name}>
+                <img src={service.image} alt={service.imageAlt} loading="lazy" decoding="async" draggable="false" />
                 <div className="services-stack-shade" aria-hidden="true" />
                 <div className="services-stack-copy"><span>{service.visualLabel}</span><h3>{service.title}</h3><a href="#contact" tabIndex={offset === 0 ? 0 : -1}>Explore service <ArrowRight size={17} aria-hidden="true" /></a></div>
-              </article>
+              </div>
             );
           })}
         </div>

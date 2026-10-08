@@ -12,6 +12,7 @@ export interface CareerJob {
   department: string;
   type: string;
   location?: string;
+  indexable: boolean;
 }
 
 export interface CareerPhoto {
@@ -50,6 +51,7 @@ export const careerJobs: CareerJob[] = [
     department: 'Design',
     type: 'Full-time',
     location: 'Pune',
+    indexable: false,
   },
   {
     id: 2,
@@ -57,6 +59,7 @@ export const careerJobs: CareerJob[] = [
     title: 'AI Solutions Intern',
     department: 'AI Solutions',
     type: 'Internship',
+    indexable: false,
   },
   {
     id: 3,
@@ -64,6 +67,7 @@ export const careerJobs: CareerJob[] = [
     title: 'Content Creator',
     department: 'Content',
     type: 'Full-time',
+    indexable: false,
   },
   {
     id: 4,
@@ -71,6 +75,7 @@ export const careerJobs: CareerJob[] = [
     title: 'Sales Intern',
     department: 'Sales',
     type: 'Internship',
+    indexable: false,
   },
 ];
 

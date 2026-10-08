@@ -10,7 +10,7 @@ interface HeaderStructureProps {
 }
 
 const primaryNavigation = [
-  { label: 'Home', path: '/website/', enabled: true },
+  { label: 'Home', path: '/', enabled: true },
   { label: 'E-Learning', path: '/e-learning/', enabled: true },
   { label: 'Catalogue', path: '/catalogue', enabled: true },
   { label: 'Insights', path: '/insights', enabled: true },
@@ -36,7 +36,7 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
       {/* Main navigation header */}
       <div className="mx-auto grid h-[76px] w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 px-4 min-[761px]:h-20 min-[761px]:px-[clamp(22px,4.5vw,72px)] min-[1280px]:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] min-[1280px]:gap-x-6">
         {/* The corporate wordmark is shared by every site topbar. */}
-        <a href="/website/" aria-label="TechnoEdge home" className="shrink-0 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#01266A]">
+        <a href="/" aria-label="TechnoEdge home" className="shrink-0 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#01266A]">
           <img
             id="header-brand-logo"
             src="/website/assets/technoedge-logo.png"
@@ -47,14 +47,16 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
 
         <nav className="hidden min-[1280px]:flex items-center justify-center justify-self-center gap-6 font-[Arial,sans-serif]" aria-label="Primary navigation">
           {visibleNavigation.map((item) => {
-            const isActive = item.path === '/catalogue'
-              ? currentPath === '/catalogue' || currentPath.startsWith('/programmes/')
-              : currentPath.startsWith(item.path);
+            const isActive = item.path === '/'
+              ? currentPath === '/' || currentPath === '/website/'
+              : item.path === '/catalogue'
+                ? currentPath === '/catalogue' || currentPath.startsWith('/programmes/')
+                : currentPath.startsWith(item.path);
             return (
-              <button
+              <a
                 key={item.path}
-                type="button"
-                onClick={() => navigate(item.path)}
+                href={item.path}
+                onClick={(event) => { event.preventDefault(); navigate(item.path); }}
                 aria-current={isActive ? 'page' : undefined}
                 className={`relative py-2 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#01266A]/35 rounded-sm cursor-pointer ${
                   isActive ? 'text-[#01266A]' : 'text-[rgba(0,0,0,0.72)] hover:text-[#2666C4]'
@@ -62,7 +64,7 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
               >
                 {item.label}
                 <span className={`absolute inset-x-0 -bottom-1 h-0.5 rounded-full bg-[#01266A] transition-transform ${isActive ? 'scale-x-100' : 'scale-x-0'}`} />
-              </button>
+              </a>
             );
           })}
         </nav>
@@ -110,15 +112,15 @@ export const HeaderStructure: React.FC<HeaderStructureProps> = ({
                 ? currentPath === '/catalogue' || currentPath.startsWith('/programmes/')
                 : currentPath.startsWith(item.path);
               return (
-                <button
+                <a
                   key={item.path}
-                  type="button"
-                  onClick={() => navigate(item.path)}
+                  href={item.path}
+                  onClick={(event) => { event.preventDefault(); navigate(item.path); }}
                   aria-current={isActive ? 'page' : undefined}
                   className={`border-b border-[rgba(38,102,196,0.12)] px-1 py-3.5 text-left text-sm font-semibold ${isActive ? 'text-[#01266A]' : 'text-[rgba(0,0,0,0.78)]'}`}
                 >
                   {item.label}
-                </button>
+                </a>
               );
             })}
             <div className="mt-5 grid gap-3 sm:grid-cols-2">

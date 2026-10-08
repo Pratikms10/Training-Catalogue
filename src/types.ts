@@ -111,6 +111,9 @@ export interface BaseProgramme {
   duration?: string;
   format?: 'Instructor-Led' | 'Virtual Class' | 'Self-Paced' | 'Blended' | string;
   details?: ProgrammeDetails; // Full programme content for future view
+  seoIndexable?: boolean;
+  seoTitle?: string;
+  seoDescription?: string;
 }
 
 export interface RoleBasedProgramme extends BaseProgramme {

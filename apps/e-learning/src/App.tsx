@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { LayeredCorporateHero } from './components/LayeredCorporateHero';
-import { SopStory } from './components/SopStory';
 import { GlassCursor } from './components/ui/glass-cursor';
-import { LearningUniverse } from './components/continuation/LearningUniverse';
-import { LevelComparisonMatrix } from './components/continuation/LevelComparisonMatrix';
-import { IndustrySelector as ContinuationIndustries } from './components/continuation/IndustrySelector';
-import { ContactSection as ContinuationContact } from './components/continuation/ContactSection';
 import { FooterStructure } from '../../../src/components/FooterStructure';
-import { SectionDivider } from './components/SectionDivider';
+import { AnalyticsConsent } from '../../../src/components/AnalyticsConsent';
 import './components/continuation/continuation.css';
+
+const SopStory = lazy(() => import('./components/SopStory').then((module) => ({ default: module.SopStory })));
+const LearningUniverse = lazy(() => import('./components/continuation/LearningUniverse').then((module) => ({ default: module.LearningUniverse })));
+const LevelComparisonMatrix = lazy(() => import('./components/continuation/LevelComparisonMatrix').then((module) => ({ default: module.LevelComparisonMatrix })));
+const ContinuationIndustries = lazy(() => import('./components/continuation/IndustrySelector').then((module) => ({ default: module.IndustrySelector })));
+const ContinuationContact = lazy(() => import('./components/continuation/ContactSection').then((module) => ({ default: module.ContactSection })));
+const SectionDivider = lazy(() => import('./components/SectionDivider').then((module) => ({ default: module.SectionDivider })));
 
 export default function App() {
   const [progress, setProgress] = useState(0);
@@ -41,6 +43,7 @@ export default function App() {
         <Header />
         <main>
           <LayeredCorporateHero />
+          <Suspense fallback={<section className="section-divider" role="status">Loading e-learning capabilities…</section>}>
           <SopStory />
           <LearningUniverse />
           <SectionDivider id="divider-formats-depth" />
@@ -49,9 +52,11 @@ export default function App() {
           <ContinuationIndustries />
           <SectionDivider id="divider-industries-contact" />
           <ContinuationContact />
+          </Suspense>
         </main>
         <FooterStructure />
       </div>
+      <AnalyticsConsent />
     </div>
   );
 }

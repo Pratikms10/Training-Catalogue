@@ -1,0 +1,16 @@
+{
+  "batchId": "2026-10-wave-01",
+  "generatedAt": "2026-10-08T07:40:09.834Z",
+  "status": "pending-editorial-approval",
+  "programmeCount": 25,
+  "categories": {
+    "certifications": 3,
+    "role-based": 22
+  },
+  "releaseInstructions": [
+    "Review every programme against its source evidence and visible page content.",
+    "Replace the pending reviewer fields and evidence URLs in the manifest template.",
+    "Set approved to true only for programmes that pass editorial review.",
+    "Run npm run seo:release -- \"C:\\Users\\Techno1\\Documents\\ChatGPT\\Technoedge Website\\artifacts\\seo\\review-batches\\2026-10-wave-01\\release-manifest.template.json\" for the mandatory dry run."
+  ]
+}

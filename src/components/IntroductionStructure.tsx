@@ -16,7 +16,7 @@ export const IntroductionStructure: React.FC = () => {
 
           <div className="catalogue-hero__supporting-copy">
             <p id="main-introduction-description">
-              3,500+ curated corporate training programmes, shaped by real-world experience and designed to bridge strategic skill gaps.
+              Explore 3,500+ practical programmes for critical skill gaps.
             </p>
           </div>
 
@@ -29,26 +29,16 @@ export const IntroductionStructure: React.FC = () => {
       </div>
 
       <div className="catalogue-hero__media" aria-hidden="true">
-        <video
+        <img
           className="catalogue-hero__video"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster="/media/technoedge-catalogue-hero-poster.jpg"
+          src="/media/technoedge-catalogue-hero-poster.jpg"
+          alt=""
           width={854}
           height={480}
+          fetchPriority="high"
           aria-hidden="true"
           tabIndex={-1}
-          disablePictureInPicture
-        >
-          <source
-            src="/media/technoedge-catalogue-hero.mp4"
-            type="video/mp4"
-            media="(prefers-reduced-motion: no-preference)"
-          />
-        </video>
+        />
         <div className="catalogue-hero__video-tone" />
       </div>
     </section>

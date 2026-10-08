@@ -23,7 +23,7 @@ function getCoverDiameter(width: number, height: number, x: number, y: number) {
 export const PeopleProcessCard: React.FC<Props> = ({ programme, onViewDetail }) => {
   const [origin, setOrigin] = useState({ x: 0, y: 0, coverSize: 0, isHovered: false });
 
-  const handlePointerEnter = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerEnter = useCallback((e: React.PointerEvent<HTMLAnchorElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -36,14 +36,17 @@ export const PeopleProcessCard: React.FC<Props> = ({ programme, onViewDetail }) 
   }, []);
 
   return (
-    <div 
+    <a
+      href={`/programmes/${encodeURIComponent(programme.id)}`}
       className="flex flex-col border border-[rgba(1,38,106,0.12)] rounded-xl bg-white hover:shadow-[0_10px_28px_rgba(1,38,106,0.16)] hover:border-[#01266A]/30 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-[#01266A]/30 focus:border-transparent transition-all duration-200 h-full w-full max-w-sm mx-auto group cursor-pointer overflow-hidden relative"
-      onClick={onViewDetail}
+      onClick={(event) => {
+        if (!onViewDetail) return;
+        event.preventDefault();
+        onViewDetail();
+      }}
       onPointerEnter={handlePointerEnter}
       onPointerDown={handlePointerEnter}
       onPointerLeave={handlePointerLeave}
-      tabIndex={0}
-      role="button"
       aria-label={`View details for ${programme.title}`}
     >
       {/* Dynamic Origin Fill Ripple */}
@@ -113,6 +116,6 @@ export const PeopleProcessCard: React.FC<Props> = ({ programme, onViewDetail }) 
           </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 };

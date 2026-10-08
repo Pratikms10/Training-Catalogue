@@ -195,7 +195,7 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
         </section>
       )}
 
-      <main className="mx-auto max-w-[1160px] space-y-7 px-5 py-12 sm:px-8 sm:py-16">
+      <div className="mx-auto max-w-[1160px] space-y-7 px-5 py-12 sm:px-8 sm:py-16">
         {(details.summary || (details.audience && details.audience.length) || (details.productTechnologies && details.productTechnologies.length)) && (
           <section className="rounded-2xl border border-[#01266A]/12 bg-white p-6 shadow-sm sm:p-8">
             <div className="mb-5 flex items-center gap-3">
@@ -296,7 +296,7 @@ export const CertificationDetail: React.FC<Props> = ({ programme, onBack }) => {
             <button type="button" onClick={() => openRfq('catalogue_certification_bottom_proposal')} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-bold text-[#01266A] transition-transform hover:-translate-y-0.5">Build a training proposal <ArrowRight className="h-4 w-4" /></button>
           </div>
         </section>
-      </main>
+      </div>
 
       <RfqModal programme={programme} isOpen={isRfqOpen} onClose={() => setIsRfqOpen(false)} ctaId={rfqCtaId} />
     </div>

@@ -8,9 +8,10 @@ import '../../styles/insights.css';
 interface InsightArticlePageProps {
   slug: string;
   onBack: () => void;
+  initialContent?: ImportedArticleContent | null;
 }
 
-interface ImportedArticleContent {
+export interface ImportedArticleContent {
   content: string;
   tables: string;
 }
@@ -103,9 +104,9 @@ const ReferenceTable: React.FC<{ source: string }> = ({ source }) => {
   );
 };
 
-export const InsightArticlePage: React.FC<InsightArticlePageProps> = ({ slug, onBack }) => {
+export const InsightArticlePage: React.FC<InsightArticlePageProps> = ({ slug, onBack, initialContent = null }) => {
   const article = useMemo(() => getInsightArticleById(slug), [slug]);
-  const [content, setContent] = useState<ImportedArticleContent | null>(null);
+  const [content, setContent] = useState<ImportedArticleContent | null>(initialContent);
   const [contentError, setContentError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -114,6 +115,12 @@ export const InsightArticlePage: React.FC<InsightArticlePageProps> = ({ slug, on
 
   useEffect(() => {
     let active = true;
+    if (initialContent) {
+      setContent(initialContent);
+      setContentError(null);
+      return () => { active = false; };
+    }
+
     setContent(null);
     setContentError(null);
 
@@ -133,7 +140,7 @@ export const InsightArticlePage: React.FC<InsightArticlePageProps> = ({ slug, on
       });
 
     return () => { active = false; };
-  }, [article]);
+  }, [article, initialContent]);
 
   const blocks = useMemo(() => (content ? parseBlocks(content.content) : []), [content]);
   const headings = useMemo(() => blocks.filter((block): block is Extract<ArticleBlock, { type: 'heading' }> => block.type === 'heading' && block.level === 2), [blocks]);
@@ -154,16 +161,18 @@ export const InsightArticlePage: React.FC<InsightArticlePageProps> = ({ slug, on
     <div className="insights-page insight-article-page">
       <header className="insight-article-hero">
         <div className="insights-shell insight-article-hero__inner">
-          <button className="insight-article__back" type="button" onClick={onBack}>
+          <nav aria-label="Breadcrumbs">
+          <a className="insight-article__back" href="/insights" onClick={(event) => { event.preventDefault(); onBack(); }}>
             <ArrowLeft aria-hidden="true" /> Back to Insights
-          </button>
+          </a>
+          </nav>
 
           <span className="insight-article__category">{article.category}</span>
           <h1>{article.title}</h1>
           <p className="insight-article__summary">{article.excerpt}</p>
 
           <div className="insight-article__meta" aria-label="Article information">
-            <span><UserRound aria-hidden="true" /> {article.author}</span>
+            <a href="/authors/technoedge-editorial-team"><UserRound aria-hidden="true" /> {article.author}</a>
             <i aria-hidden="true" />
             <span><CalendarDays aria-hidden="true" /> {article.date}</span>
             <i aria-hidden="true" />

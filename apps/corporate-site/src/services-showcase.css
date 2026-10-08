@@ -24,8 +24,9 @@
 .services-stack-copy a { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; min-height: 40px; padding: .65rem 1rem; border-radius: 8px; color: #fff; background: #01266A; box-shadow: 0 8px 18px rgba(1,38,106,.2); font-size: .84rem; font-weight: 800; line-height: 1; text-rendering: geometricPrecision; -webkit-font-smoothing: antialiased; transition: background .22s,transform .22s,box-shadow .22s; }
 .services-stack-copy a:hover { color: #fff; background: #2666C4; transform: translateY(-1px); box-shadow: 0 11px 23px rgba(21,63,112,.26); }
 .services-carousel-dots { display: flex; justify-content: center; gap: .48rem; margin-top: 1.25rem; }
-.services-carousel-dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 99px; background: rgba(38,102,196,.22); cursor: pointer; transition: width .35s,background .35s; }
-.services-carousel-dots button.is-active { width: 30px; background: #2666C4; }
+.services-carousel-dots button { position: relative; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 99px; background: transparent; cursor: pointer; }
+.services-carousel-dots button::before { position: absolute; inset: 10px; content: ""; border-radius: 99px; background: rgba(38,102,196,.32); transition: inset .35s,background .35s; }
+.services-carousel-dots button.is-active::before { inset-inline: 3px; background: #2666C4; }
 .services-carousel-dots button:focus-visible { outline: 2px solid #73C2FB; outline-offset: 3px; }
 @media (max-width: 900px) { .services-carousel-tabs { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; padding: 0 .4rem .5rem; scrollbar-width: none; } .services-carousel-tabs::-webkit-scrollbar { display: none; } .services-carousel-tabs button { flex: 0 0 auto; } .services-stack-card { --stack-x: calc(var(--card-offset) * clamp(130px,22vw,185px)); } }
 @media (max-width: 650px) { .services-showcase.section { padding: 4.5rem .8rem; } .services-showcase-header { padding: 0 .4rem; } .services-showcase-header h2 { font-size: clamp(2.25rem,10vw,3.35rem); } .services-card-deck { height: 450px; width: 100vw; margin-left: calc(50% - 50vw); } .services-stack-card { --stack-x: calc(var(--card-offset) * 108px); width: min(84vw,360px); height: 380px; border-radius: 22px; } }

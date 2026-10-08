@@ -1,7 +1,5 @@
 'use client';
 
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { HTMLAttributes, ReactNode } from 'react';
 import { useEffect, useRef } from 'react';
 
@@ -15,10 +13,18 @@ export function ParallaxComponent({ children, className = '', ...props }: Parall
   useEffect(() => {
     const root = parallaxRef.current;
     if (!root) return;
+    let cancelled = false;
+    let context: { revert(): void } | undefined;
+    let postLoaderRefresh = 0;
 
-    gsap.registerPlugin(ScrollTrigger);
-
-    const context = gsap.context(() => {
+    const enableParallax = async () => {
+      const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger'),
+      ]);
+      if (cancelled) return;
+      gsap.registerPlugin(ScrollTrigger);
+      context = gsap.context(() => {
       const timeline = gsap.timeline({
         defaults: { ease: 'none', force3D: true },
         scrollTrigger: {
@@ -60,20 +66,18 @@ export function ParallaxComponent({ children, className = '', ...props }: Parall
           { yPercent: -11, scale: 0.98, autoAlpha: 0 },
           0,
         );
-    }, root);
+      }, root);
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+      postLoaderRefresh = window.setTimeout(() => ScrollTrigger.refresh(), 500);
+    };
 
-    const refresh = () => ScrollTrigger.refresh();
-    const images = Array.from(root.querySelectorAll('img'));
-    images.forEach((image) => {
-      if (!image.complete) image.addEventListener('load', refresh, { once: true });
-    });
-    requestAnimationFrame(refresh);
-    const postLoaderRefresh = window.setTimeout(refresh, 3400);
+    window.addEventListener('scroll', enableParallax, { once: true, passive: true });
 
     return () => {
+      cancelled = true;
+      window.removeEventListener('scroll', enableParallax);
       window.clearTimeout(postLoaderRefresh);
-      images.forEach((image) => image.removeEventListener('load', refresh));
-      context.revert();
+      context?.revert();
     };
   }, []);
 

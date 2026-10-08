@@ -7,7 +7,7 @@ export function SOPPaper() {
       <div className="sop-mast"><span>STANDARD OPERATING PROCEDURE</span></div>
       <div className="sop-rule"/>
       <span className="sop-title">SOP</span>
-      <h3>Team communication</h3>
+      <div className="sop-heading text-[18px] font-semibold leading-tight tracking-[-0.025em] text-[#203740] mb-3">Team communication</div>
       <p className="sop-summary">A guide to clearer conversations and agreed next steps.</p>
       <ol className="sop-steps">
         <li><span>01</span><span>Prepare the conversation.</span></li>

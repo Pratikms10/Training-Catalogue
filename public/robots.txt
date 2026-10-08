@@ -2,5 +2,19 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/admin/
+Disallow: /api/
+Disallow: /preview/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /preview/
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /preview/
 
 Sitemap: https://www.technoedgels.com/sitemap.xml

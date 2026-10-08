@@ -13,3 +13,4 @@ data/import-reports/*-preview.json
 data/private/
 .runtime/
 .vercel/
+.lighthouseci/

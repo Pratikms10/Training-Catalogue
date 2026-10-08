@@ -2,6 +2,7 @@ import ExcelJS from 'exceljs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { deriveInsightExcerpt, normalizeInsightContent } from './lib/insight-quality.mjs';
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const sourcePath = process.argv[2];
@@ -54,7 +55,7 @@ for (let rowNumber = 2; rowNumber <= sheet.rowCount; rowNumber += 1) {
   if (!status) continue;
 
   const title = text(row, columns.get('Card_Title'));
-  const body = text(row, columns.get('Article_Part_1')).replace(/\r\n/g, '\n');
+  const body = normalizeInsightContent(text(row, columns.get('Article_Part_1')));
 
   if (status !== 'OK' || !title || !body) {
     skipped.push({ rowNumber, title, status, reason: text(row, columns.get('Error')) || 'Missing article body' });
@@ -70,7 +71,7 @@ for (let rowNumber = 2; rowNumber <= sheet.rowCount; rowNumber += 1) {
     id,
     title,
     category: categoryFor(title),
-    excerpt: text(row, columns.get('Excerpt')).replace(/\.\.\.$/, '').trim(),
+    excerpt: deriveInsightExcerpt(body, text(row, columns.get('Excerpt'))),
     date: text(row, columns.get('Card_Date')),
     readTime: `${Math.max(3, Math.round(wordCount / 225))} min read`,
     image: text(row, columns.get('Thumbnail_URL')),

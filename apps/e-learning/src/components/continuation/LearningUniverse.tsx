@@ -5,7 +5,7 @@ import {
 } from 'motion/react';
 import { WORLDS_DATA } from '../../data/f1LearningData';
 import { DemoType } from '../../types';
-import scormXapiShowcase from '../../assets/formats-real/scorm-xapi-service-showcase.png';
+import scormXapiShowcase from '../../assets/formats-real/scorm-xapi-service-showcase.webp';
 import './learning-universe.css';
 import {
   Play,
@@ -101,6 +101,8 @@ export function LearningUniverse() {
               <img 
                 src="/media/scorm-xapi-learning-journey-v1.png" 
                 alt="3D Illustration of SCORM and xAPI LMS Integration"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 style={{ mixBlendMode: 'darken' }}
                 referrerPolicy="no-referrer"
@@ -418,6 +420,8 @@ export function LearningUniverse() {
                 <img
                   src={scormXapiShowcase}
                   alt="SCORM and xAPI service showcase showing course launch, LMS delivery, learner tracking and analytics reporting"
+                  loading="lazy"
+                  decoding="async"
                   className="format-showcase-card__image"
                 />
               ) : <>

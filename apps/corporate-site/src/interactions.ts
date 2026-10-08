@@ -136,15 +136,19 @@ export function mountCorporateInteractions(): () => void {
   let openedFrom: HTMLElement | null = null;
   let galleryIndex = 0;
   let previousBodyOverflow = '';
+  const mediaControl = (node: HTMLElement) => node.querySelector<HTMLButtonElement>(':scope > .media-open-control');
 
   mediaNodes.forEach((node) => {
     const label = node.querySelector('figcaption')?.textContent?.trim()
       || node.querySelector(':scope > span')?.textContent?.trim()
       || 'training moment';
-    node.setAttribute('role', 'button');
-    node.setAttribute('aria-haspopup', 'dialog');
-    node.setAttribute('aria-label', `View ${label}`);
-    node.tabIndex = innerWidth <= 760 || reducedMotion ? 0 : -1;
+    const control = document.createElement('button');
+    control.type = 'button';
+    control.className = 'media-open-control';
+    control.setAttribute('aria-haspopup', 'dialog');
+    control.setAttribute('aria-label', `View ${label}`);
+    control.tabIndex = innerWidth <= 760 || reducedMotion ? 0 : -1;
+    node.append(control);
   });
 
   const showMediaSlide = (index: number) => {
@@ -171,8 +175,9 @@ export function mountCorporateInteractions(): () => void {
   };
 
   const openMediaSlide = (node: HTMLElement) => {
-    if (!mediaDialog || node.tabIndex < 0) return;
-    openedFrom = node;
+    const control = mediaControl(node);
+    if (!mediaDialog || !control || control.tabIndex < 0) return;
+    openedFrom = control;
     showMediaSlide(mediaNodes.indexOf(node));
     previousBodyOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -185,15 +190,6 @@ export function mountCorporateInteractions(): () => void {
       if (!(target instanceof Element)) return;
       const node = target.closest<HTMLElement>('.media-node');
       if (node && mediaWorld.contains(node)) openMediaSlide(node);
-    });
-    observe(mediaWorld, 'keydown', (event) => {
-      if (!(event instanceof KeyboardEvent) || !['Enter', ' '].includes(event.key)) return;
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-      const node = target.closest<HTMLElement>('.media-node');
-      if (!node || !mediaWorld.contains(node)) return;
-      event.preventDefault();
-      openMediaSlide(node);
     });
     observe(mediaDialog, 'close', () => {
       document.body.style.overflow = previousBodyOverflow;
@@ -253,7 +249,8 @@ export function mountCorporateInteractions(): () => void {
       node.style.zIndex = String(20 + Math.round(phase * 20) + layout.layer);
       node.classList.toggle('is-active', opacity > .5);
       node.classList.toggle('is-focus', approaching > .78 && leaving < .45);
-      node.tabIndex = opacity > .5 ? 0 : -1;
+      const control = mediaControl(node);
+      if (control) control.tabIndex = opacity > .5 ? 0 : -1;
       node.setAttribute('aria-hidden', String(opacity <= .5));
     });
     if (Math.abs(targetProgress - renderedProgress) > .00008) mediaFrame = frame(drawMedia);
@@ -264,7 +261,8 @@ export function mountCorporateInteractions(): () => void {
       if (mediaIntro) mediaIntro.style.opacity = '1';
       mediaNodes.forEach((node) => {
         node.classList.remove('is-active', 'is-focus');
-        node.tabIndex = 0;
+        const control = mediaControl(node);
+        if (control) control.tabIndex = 0;
         node.removeAttribute('aria-hidden');
       });
       return;

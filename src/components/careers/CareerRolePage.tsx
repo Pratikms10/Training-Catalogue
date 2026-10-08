@@ -30,10 +30,12 @@ export const CareerRolePage: React.FC<CareerRolePageProps> = ({ slug, onBack }) 
   return (
     <section className="career-role-page" aria-labelledby="career-role-title">
       <div className="careers-page-shell">
-        <button type="button" className="career-role-page__back" onClick={onBack}>
+        <nav aria-label="Breadcrumbs">
+        <a className="career-role-page__back" href="/careers" onClick={(event) => { event.preventDefault(); onBack(); }}>
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Back to careers
-        </button>
+        </a>
+        </nav>
         <div className="career-role-page__content">
           <div>
             <p className="careers-section-label">Careers at TechnoEdge</p>
@@ -50,6 +52,20 @@ export const CareerRolePage: React.FC<CareerRolePageProps> = ({ slug, onBack }) 
             Send your profile
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
           </button>
+        </div>
+        <div className="career-role-page__details">
+          <section aria-labelledby="role-overview-heading">
+            <h2 id="role-overview-heading">About this role</h2>
+            <p>This opportunity sits within the {job.department} team and is offered as a {job.type.toLowerCase()} role{job.location ? ` based in ${job.location}` : ''}. Detailed responsibilities and qualification criteria are confirmed with shortlisted candidates before an application progresses.</p>
+          </section>
+          <section aria-labelledby="role-application-heading">
+            <h2 id="role-application-heading">Application process</h2>
+            <p>Send your profile with the role title in the subject. The TechnoEdge careers team will review relevant experience and contact suitable applicants with the complete role brief and next steps.</p>
+          </section>
+          <section aria-labelledby="role-company-heading">
+            <h2 id="role-company-heading">Working at TechnoEdge</h2>
+            <p>TechnoEdge brings together learning, content, technology and AI capabilities to help enterprise teams build practical skills and improve how work gets done.</p>
+          </section>
         </div>
       </div>
       {isEmailDialogOpen && <CareerEmailDialog roleTitle={job.title} onClose={() => setIsEmailDialogOpen(false)} />}

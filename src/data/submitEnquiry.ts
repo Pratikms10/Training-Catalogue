@@ -36,5 +36,15 @@ export async function submitEnquiry(enquiry: EnquirySubmission): Promise<string>
   if (!response.ok || typeof result.reference !== 'string') {
     throw new Error(typeof result.error === 'string' ? result.error : 'Your enquiry could not be saved. Please try again or contact us directly.');
   }
+  window.dispatchEvent(new CustomEvent('technoedge:lead-submitted', {
+    detail: {
+      enquiry_kind: enquiry.kind,
+      course_id: enquiry.courseId || undefined,
+      course_category: enquiry.courseCategory || undefined,
+      preferred_channel: enquiry.preferredChannel || undefined,
+      source_path: enquiry.sourcePage,
+      cta_id: enquiry.ctaId || undefined,
+    },
+  }));
   return result.reference;
 }

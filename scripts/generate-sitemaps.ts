@@ -5,6 +5,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { closePool, getPool } from '../server/database.mjs';
 import { peopleProcessProgrammes } from '../src/data/peopleProcessProgrammes';
+import { seoLandingPages } from '../src/data/seoLandingPages';
+import { insightsArticles } from '../src/data/insightsData';
 
 const SITE_ORIGIN = 'https://www.technoedgels.com';
 const SITEMAP_NAMESPACE = 'http://www.sitemaps.org/schemas/sitemap/0.9';
@@ -77,6 +79,7 @@ async function getPublishedProgrammes(): Promise<SitemapEntry[]> {
       SELECT course_id, updated_at
       FROM catalogue.courses
       WHERE status = 'published'
+        AND seo_indexable = true
         AND category_code IN ('role-based', 'tools-technology', 'technical-training', 'certifications')
       ORDER BY course_id
     `);
@@ -113,11 +116,13 @@ async function getPublishedProgrammes(): Promise<SitemapEntry[]> {
 
 async function main() {
   const programmeEntries = await getPublishedProgrammes();
+  const landingEntries = seoLandingPages.map((page) => ({ path: page.path, lastmod: page.updated }));
   const childSitemaps = [
     ['sitemap-pages.xml', [
       { path: '/' },
       { path: '/catalogue' },
       { path: '/e-learning/' },
+      ...landingEntries,
     ]],
     ['sitemap-programmes.xml', programmeEntries],
     ['sitemap-insights.xml', [{ path: '/insights' }]],
@@ -142,8 +147,46 @@ async function main() {
         'Allow: /',
         'Disallow: /admin/',
         'Disallow: /api/admin/',
+        'Disallow: /api/',
+        'Disallow: /preview/',
+        '',
+        'User-agent: OAI-SearchBot',
+        'Allow: /',
+        'Disallow: /admin/',
+        'Disallow: /api/',
+        'Disallow: /preview/',
+        '',
+        'User-agent: GPTBot',
+        'Allow: /',
+        'Disallow: /admin/',
+        'Disallow: /api/',
+        'Disallow: /preview/',
         '',
         `Sitemap: ${SITE_ORIGIN}/sitemap.xml`,
+        '',
+      ].join('\n'),
+      'utf8',
+    ),
+    writeFile(
+      path.join(outputDirectory, 'insights.xml'),
+      [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<rss version="2.0">',
+        '  <channel>',
+        '    <title>TechnoEdge Insights</title>',
+        `    <link>${SITE_ORIGIN}/insights</link>`,
+        '    <description>Enterprise learning, technology, data and AI insights from TechnoEdge.</description>',
+        '    <language>en</language>',
+        ...insightsArticles.filter((article) => article.indexable).map((article) => [
+          '    <item>',
+          `      <title>${xmlEscape(article.title)}</title>`,
+          `      <link>${xmlEscape(canonicalUrl(article.url))}</link>`,
+          `      <guid isPermaLink="true">${xmlEscape(canonicalUrl(article.url))}</guid>`,
+          `      <description>${xmlEscape(article.excerpt)}</description>`,
+          '    </item>',
+        ].join('\n')),
+        '  </channel>',
+        '</rss>',
         '',
       ].join('\n'),
       'utf8',
