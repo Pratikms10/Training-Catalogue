@@ -4,6 +4,9 @@
   "cleanUrls": true,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "crons": [
+    { "path": "/api/cron/publish", "schedule": "*/5 * * * *" }
+  ],
   "redirects": [
     {
       "source": "/:path*",
@@ -23,8 +26,13 @@
   ],
   "headers": [
     {
-      "source": "/admin/:path*",
-      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }]
+      "source": "/adminzz/:path*",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" },
+        { "key": "Cache-Control", "value": "private, no-store, max-age=0" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "same-origin" }
+      ]
     },
     {
       "source": "/api/:path*",
@@ -53,7 +61,8 @@
   ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index" },
+    { "source": "/sitemap-insights.xml", "destination": "/api/insights-sitemap" },
     { "source": "/", "destination": "/website/index.html" },
-    { "source": "/admin/:path*", "destination": "/app-shell.html" }
+    { "source": "/adminzz/:path*", "destination": "/app-shell.html" }
   ]
 }

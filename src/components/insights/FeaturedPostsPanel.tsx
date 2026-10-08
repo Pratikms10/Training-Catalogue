@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  featuredPostsByCategory,
   type FeaturedCategory,
   type FeaturedPost,
+  type InsightArticle,
 } from '../../data/insightsData';
 import { CategoryToggleGroup } from './CategoryToggleGroup';
 import { FeaturedMiniCard } from './FeaturedMiniCard';
@@ -13,19 +13,22 @@ const postsPerGroup = 5;
 
 type TransitionDirection = 'forward' | 'backward';
 
-const getGroup = (category: FeaturedCategory, group: number) => (
-  featuredPostsByCategory[category].slice(group * postsPerGroup, (group + 1) * postsPerGroup)
-);
+const toPost = (article: InsightArticle): FeaturedPost => ({ id: article.id, title: article.title, category: article.category, date: article.date, image: article.image, url: article.url });
 
-export const FeaturedPostsPanel: React.FC = () => {
+export const FeaturedPostsPanel: React.FC<{ articles: InsightArticle[] }> = ({ articles }) => {
   const [activeCategory, setActiveCategory] = useState<FeaturedCategory>('Latest');
   const [activeGroup, setActiveGroup] = useState(0);
   const [direction, setDirection] = useState<TransitionDirection>('forward');
   const [outgoingPosts, setOutgoingPosts] = useState<FeaturedPost[] | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const transitionTimer = useRef<number | null>(null);
-  const visiblePosts = getGroup(activeCategory, activeGroup);
-  const groupCount = Math.ceil(featuredPostsByCategory[activeCategory].length / postsPerGroup);
+  const postsByCategory: Record<FeaturedCategory, FeaturedPost[]> = {
+    Latest: articles.slice(1).map(toPost),
+    AI: articles.filter((article) => article.category === 'AI & Automation').map(toPost),
+    Security: articles.filter((article) => article.category === 'Cloud & Security').map(toPost),
+  };
+  const visiblePosts = postsByCategory[activeCategory].slice(activeGroup * postsPerGroup, (activeGroup + 1) * postsPerGroup);
+  const groupCount = Math.ceil(postsByCategory[activeCategory].length / postsPerGroup);
 
   useEffect(() => () => {
     if (transitionTimer.current !== null) window.clearTimeout(transitionTimer.current);

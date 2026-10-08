@@ -3,10 +3,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getCatalogueFilters, getCourseById, listCourses } from './catalogueRepository.mjs';
-import { createImportCentreRouter } from './importCentre.mjs';
 import { EnquiryInputError, EnquiryStorageUnavailableError, saveContactActionToWorkbook, saveEnquiryToWorkbook, validateEnquiry } from './enquiries.mjs';
 import { saveEnquiryToDatabase } from './enquiryDatabase.mjs';
 import { saveContactActionToDatabase, validateContactAction } from './contactActions.mjs';
+import { createAdminRouter } from './adminRouter.mjs';
+import { getPublicBlog, listApprovedComments, listPublicBlogs, publishDueBlogs, submitPublicComment } from './blogRepository.mjs';
+import { sendEnquiryNotification } from './adminNotifications.mjs';
 
 const serverDirectory = path.dirname(fileURLToPath(import.meta.url));
 const distDirectory = path.resolve(serverDirectory, '../dist');
@@ -71,7 +73,7 @@ export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'produc
   const app = express();
   app.disable('x-powered-by');
   app.use(express.json({ limit: '1mb' }));
-  app.use('/api/admin/import', createImportCentreRouter(pool));
+  app.use('/api/adminzz', createAdminRouter(pool));
 
   app.get('/api/indexnow-key', (_request, response) => {
     const key = process.env.INDEXNOW_KEY?.trim();
@@ -79,10 +81,26 @@ export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'produc
     return response.type('text/plain').send(key);
   });
 
+  app.get('/api/cron/publish', async (request, response) => {
+    const expected = String(process.env.CRON_SECRET || '');
+    const provided = String(request.headers.authorization || '').replace(/^Bearer\s+/i, '');
+    if (!expected || provided !== expected) return response.sendStatus(401);
+    try {
+      const published = await publishDueBlogs(pool, 'scheduler');
+      return response.json({ published: published.length, checkedAt: new Date().toISOString() });
+    } catch (error) {
+      console.error('Scheduled publication check failed:', error);
+      return response.status(500).json({ error: 'Scheduled publication check failed.' });
+    }
+  });
+
   app.post('/api/enquiries', async (request, response, next) => {
     try {
       const enquiry = validateEnquiry(request.body);
       const result = await saveEnquiry(enquiry);
+      await sendEnquiryNotification(pool, enquiry, result.reference).catch((error) => {
+        console.error('Enquiry notification could not be sent:', error.message);
+      });
       response.status(result.duplicate ? 200 : 201).json({ reference: result.reference });
     } catch (error) {
       if (error instanceof EnquiryInputError) return response.status(400).json({ error: error.message });
@@ -149,6 +167,55 @@ export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'produc
     }
   });
 
+  app.get('/api/insights', async (request, response, next) => {
+    try {
+      const data = await listPublicBlogs(pool, { limit: request.query.limit });
+      return response.json({ data });
+    } catch (error) {
+      return next(error);
+    }
+  });
+
+  app.get('/api/insights/:slug', async (request, response, next) => {
+    try {
+      const result = await getPublicBlog(pool, request.params.slug);
+      if (!result) return response.status(404).json({ error: 'Article not found.' });
+      if (result.redirect) return response.status(308).json({ redirect: `/insights/${result.redirect}` });
+      return response.json(result);
+    } catch (error) {
+      return next(error);
+    }
+  });
+
+  app.get('/api/insights/:slug/comments', async (request, response, next) => {
+    try {
+      return response.json({ data: await listApprovedComments(pool, request.params.slug) });
+    } catch (error) {
+      return next(error);
+    }
+  });
+
+  app.post('/api/insights/:slug/comments', async (request, response) => {
+    try {
+      const result = await submitPublicComment(pool, request, request.params.slug, request.body || {});
+      return response.status(202).json({ ...result, message: 'Your comment was received and is awaiting moderation.' });
+    } catch (error) {
+      return response.status(error.status || 400).json({ error: error.message || 'The comment could not be submitted.' });
+    }
+  });
+
+  app.get('/api/insights-sitemap', async (_request, response, next) => {
+    try {
+      const origin = String(process.env.APP_URL || 'https://www.technoedgels.com').replace(/\/$/, '');
+      const articles = await listPublicBlogs(pool, { limit: 500 });
+      const escape = (value) => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+      const urls = articles.map((article) => `  <url><loc>${escape(`${origin}${article.url}`)}</loc><lastmod>${escape(article.dateModified)}</lastmod></url>`).join('\n');
+      return response.type('application/xml').send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`);
+    } catch (error) {
+      return next(error);
+    }
+  });
+
   app.get('/api/courses/:courseId', async (request, response, next) => {
     try {
       const courseId = request.params.courseId.trim().toUpperCase();
@@ -191,7 +258,7 @@ export function createApp(pool, { serveStatic = process.env.NODE_ENV === 'produc
     const isInputError = error.message?.startsWith('Invalid') || error.message?.includes('positive integers');
     if (!isInputError) console.error(error);
     response.status(isInputError ? 400 : 500).json({
-      error: isInputError ? error.message : 'The catalogue service could not complete the request.',
+      error: isInputError ? error.message : 'The website service could not complete the request.',
     });
   });
 

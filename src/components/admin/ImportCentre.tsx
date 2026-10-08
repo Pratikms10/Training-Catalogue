@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AlertCircle, CheckCircle2, Download, FileSpreadsheet, Upload } from 'lucide-react';
 import {
   commitCourseImport,
+  getImportHistory,
   ImportPreview,
   jsonlDownloadUrl,
   previewCourseImport,
@@ -15,6 +16,10 @@ export const ImportCentre: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{ imported: number; message: string } | null>(null);
   const [confirmed, setConfirmed] = useState(false);
+  const [history, setHistory] = useState<Array<{ preview_id: string; file_name: string; status: string; created_at: string; completed_at?: string; counts?: { valid?: number } }>>([]);
+  const loadHistory = () => getImportHistory().then((result) => setHistory(result.data)).catch(() => {});
+
+  useEffect(() => { loadHistory(); }, []);
 
   const validate = async () => {
     setError(null);
@@ -44,6 +49,7 @@ export const ImportCentre: React.FC = () => {
     try {
       setResult(await commitCourseImport(preview.previewId));
       setConfirmed(false);
+      loadHistory();
     } catch (importError) {
       setError(importError instanceof Error ? importError.message : 'Import failed.');
     } finally {
@@ -54,7 +60,7 @@ export const ImportCentre: React.FC = () => {
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-8" aria-labelledby="import-centre-title">
       <div className="mb-8">
-        <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-[#01266A]">Local administration</p>
+        <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-[#01266A]">Secure catalogue administration</p>
         <h1 id="import-centre-title" className="text-3xl font-bold text-black">Course Import Centre</h1>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-black/65">
           Upload a Tools or Role-Based Excel, JSON, JSONL, or structured course-text file. Validation happens before Supabase is changed.
@@ -102,7 +108,7 @@ export const ImportCentre: React.FC = () => {
               {isWorking ? 'Working…' : 'Validate and preview'}
             </button>
             <a
-              href="/api/admin/import/template"
+              href="/api/adminzz/catalogue/import/template"
               download
               className="inline-flex items-center gap-2 rounded-lg border border-[rgba(38,102,196,0.24)] px-5 py-3 text-sm font-semibold text-[#01266A]"
             >
@@ -213,6 +219,16 @@ export const ImportCentre: React.FC = () => {
           </div>
         </div>
       )}
+
+      <section className="mt-8 rounded-xl border border-[rgba(38,102,196,0.14)] bg-white p-5" aria-labelledby="import-history-title">
+        <h2 id="import-history-title" className="text-lg font-bold">Import history</h2>
+        {history.length ? <ul className="mt-3 divide-y divide-[rgba(38,102,196,0.12)] text-sm">{history.map((batch) => (
+          <li key={batch.preview_id} className="flex flex-wrap items-center justify-between gap-2 py-3">
+            <span><strong>{batch.file_name}</strong><span className="ml-2 text-black/50">{new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(batch.created_at))}</span></span>
+            <span className="rounded-full bg-[#F0F7FF] px-2 py-1 text-xs font-bold text-[#01266A]">{batch.status} · {batch.counts?.valid || 0} valid</span>
+          </li>
+        ))}</ul> : <p className="mt-3 text-sm text-black/55">Validated and imported batches will be recorded here.</p>}
+      </section>
     </section>
   );
 };

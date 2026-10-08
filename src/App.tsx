@@ -16,7 +16,7 @@ import { AnalyticsConsent } from './components/AnalyticsConsent';
 
 const CatalogueGrid = lazy(() => import('./components/CatalogueGrid').then((module) => ({ default: module.CatalogueGrid })));
 const CourseDetail = lazy(() => import('./components/CourseDetail').then((module) => ({ default: module.CourseDetail })));
-const ImportCentre = lazy(() => import('./components/admin/ImportCentre').then((module) => ({ default: module.ImportCentre })));
+const AdminApp = lazy(() => import('./admin/AdminApp'));
 const CareersPage = lazy(() => import('./components/careers/CareersPage').then((module) => ({ default: module.CareersPage })));
 const CareerRolePage = lazy(() => import('./components/careers/CareerRolePage').then((module) => ({ default: module.CareerRolePage })));
 const InsightsPage = lazy(() => import('./components/insights/InsightsPage').then((module) => ({ default: module.InsightsPage })));
@@ -52,7 +52,7 @@ export default function App({ initialData }: AppProps) {
     if (location.pathname.length <= 1 || !location.pathname.endsWith('/')) return;
     navigate(`${location.pathname.replace(/\/+$/, '')}${location.search}`, { replace: true });
   }, [location.pathname, location.search, navigate]);
-  const isImportCentre = location.pathname === '/admin/import';
+  const isAdminzz = location.pathname.startsWith('/adminzz');
   const isInsightsPage = location.pathname === '/insights';
   const insightArticleSlug = location.pathname.startsWith('/insights/')
     ? decodeURIComponent(location.pathname.replace('/insights/', ''))
@@ -246,6 +246,10 @@ export default function App({ initialData }: AppProps) {
     }, 100);
   };
 
+  if (isAdminzz) {
+    return <Suspense fallback={<div className="min-h-screen grid place-items-center bg-[#F0F7FF] text-[#01266A]">Loading secure workspace…</div>}><AdminApp /></Suspense>;
+  }
+
   if (location.pathname === '/') {
     return <div role="status" className="min-h-screen grid place-items-center">Opening TechnoEdge Home…</div>;
   }
@@ -272,9 +276,7 @@ export default function App({ initialData }: AppProps) {
       />
       <main id="main-catalogue-content" className="flex-1 flex flex-col">
         <Suspense fallback={<div className="flex-1 grid place-items-center px-6 py-24" role="status">Loading page…</div>}>
-        {isImportCentre ? (
-          <ImportCentre />
-        ) : isSeoLandingPage ? (
+        {isSeoLandingPage ? (
           <SeoLandingRoute
             pathname={location.pathname}
             programmeLinks={initialData?.programmeLinksPath === location.pathname ? initialData.programmeLinks : undefined}

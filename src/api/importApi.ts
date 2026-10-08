@@ -33,9 +33,10 @@ export interface ImportPreview {
 }
 
 export async function previewCourseImport(source: Blob, fileName: string): Promise<ImportPreview> {
-  const response = await fetch(`/api/admin/import/preview?fileName=${encodeURIComponent(fileName)}`, {
+  const response = await fetch(`/api/adminzz/catalogue/import/preview?fileName=${encodeURIComponent(fileName)}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/octet-stream' },
+    headers: { 'Content-Type': 'application/octet-stream', 'X-CSRF-Token': document.cookie.match(/(?:^|; )te_admin_csrf=([^;]*)/)?.[1] || '' },
+    credentials: 'same-origin',
     body: source,
   });
   const body = await response.json();
@@ -44,9 +45,10 @@ export async function previewCourseImport(source: Blob, fileName: string): Promi
 }
 
 export async function commitCourseImport(previewId: string) {
-  const response = await fetch('/api/admin/import/commit', {
+  const response = await fetch('/api/adminzz/catalogue/import/commit', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': document.cookie.match(/(?:^|; )te_admin_csrf=([^;]*)/)?.[1] || '' },
+    credentials: 'same-origin',
     body: JSON.stringify({ previewId }),
   });
   const body = await response.json();
@@ -55,5 +57,12 @@ export async function commitCourseImport(previewId: string) {
 }
 
 export function jsonlDownloadUrl(previewId: string) {
-  return `/api/admin/import/jsonl/${encodeURIComponent(previewId)}`;
+  return `/api/adminzz/catalogue/import/jsonl/${encodeURIComponent(previewId)}`;
+}
+
+export async function getImportHistory() {
+  const response = await fetch('/api/adminzz/catalogue/import/history', { credentials: 'same-origin' });
+  const body = await response.json();
+  if (!response.ok) throw new Error(body.error || 'Import history could not be loaded.');
+  return body as { data: Array<{ preview_id: string; file_name: string; status: string; created_at: string; completed_at?: string; counts?: { valid?: number } }> };
 }

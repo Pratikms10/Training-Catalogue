@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import {
   insightCategories,
-  insightsArticles,
   type InsightArticle,
 } from '../../data/insightsData';
 import { BlogCard } from './BlogCard';
@@ -11,7 +10,7 @@ import { InsightsPagination } from './InsightsPagination';
 
 const articlesPerPage = 12;
 
-export const LatestInsightsSection: React.FC = () => {
+export const LatestInsightsSection: React.FC<{ articles: InsightArticle[] }> = ({ articles }) => {
   const [activeCategory, setActiveCategory] = useState<InsightsFilter>('All');
   const [currentPage, setCurrentPage] = useState(1);
   const [outgoingArticles, setOutgoingArticles] = useState<InsightArticle[] | null>(null);
@@ -20,9 +19,9 @@ export const LatestInsightsSection: React.FC = () => {
 
   const filteredArticles = useMemo(() => (
     activeCategory === 'All'
-      ? insightsArticles
-      : insightsArticles.filter((article) => article.category === activeCategory)
-  ), [activeCategory]);
+      ? articles
+      : articles.filter((article) => article.category === activeCategory)
+  ), [activeCategory, articles]);
 
   const totalPages = Math.max(1, Math.ceil(filteredArticles.length / articlesPerPage));
   const visibleArticles = filteredArticles.slice(

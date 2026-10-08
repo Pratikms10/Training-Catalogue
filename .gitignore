@@ -8,6 +8,11 @@ __pycache__/
 *.log
 .env*
 !.env.example
+
+# Local audit and generated business-report artifacts
+artifacts/lighthouse/
+artifacts/technoedge-catalogue-*.png
+outputs/
 data/import-staging/
 data/import-reports/*-preview.json
 data/private/

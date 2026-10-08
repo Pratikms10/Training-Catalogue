@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, CalendarDays, Clock3, UserRound } from 'lucide-react';
-import { getInsightArticleById } from '../../data/insightsData';
+import { getInsightArticleById, type InsightArticle } from '../../data/insightsData';
 import { ArticleImage } from './ArticleImage';
 import { InsightComments } from './InsightComments';
 import '../../styles/insights.css';
@@ -14,6 +14,7 @@ interface InsightArticlePageProps {
 export interface ImportedArticleContent {
   content: string;
   tables: string;
+  contentHtml?: string;
 }
 
 type ArticleBlock =
@@ -105,47 +106,60 @@ const ReferenceTable: React.FC<{ source: string }> = ({ source }) => {
 };
 
 export const InsightArticlePage: React.FC<InsightArticlePageProps> = ({ slug, onBack, initialContent = null }) => {
-  const article = useMemo(() => getInsightArticleById(slug), [slug]);
+  const staticArticle = useMemo(() => getInsightArticleById(slug), [slug]);
+  const [article, setArticle] = useState<InsightArticle | undefined>(staticArticle);
   const [content, setContent] = useState<ImportedArticleContent | null>(initialContent);
   const [contentError, setContentError] = useState<string | null>(null);
+  const [resolved, setResolved] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
-  }, [article]);
+  }, [slug]);
 
   useEffect(() => {
     let active = true;
-    if (initialContent) {
-      setContent(initialContent);
-      setContentError(null);
-      return () => { active = false; };
-    }
-
-    setContent(null);
+    setArticle(staticArticle);
+    setContent(initialContent);
     setContentError(null);
-
-    if (!article) return () => { active = false; };
-
-    getContent(article.id)
-      .then((nextContent) => {
-        if (!active) return;
-        if (!nextContent?.content) {
-          setContentError('This article is not available.');
-          return;
+    setResolved(false);
+    fetch(`/api/insights/${encodeURIComponent(slug)}`)
+      .then(async (response) => {
+        if (response.status === 308) {
+          const redirect = await response.json() as { redirect: string };
+          window.location.assign(redirect.redirect);
+          return null;
         }
-        setContent(nextContent);
+        if (!response.ok) throw new Error('The managed article is unavailable.');
+        return response.json() as Promise<{ article: InsightArticle; contentHtml: string; referenceTable: string }>;
+      })
+      .then((managed) => {
+        if (!active || !managed) return;
+        setArticle(managed.article);
+        setContent({ content: '', tables: managed.referenceTable || '', contentHtml: managed.contentHtml });
+        setResolved(true);
       })
       .catch(() => {
-        if (active) setContentError('The article content could not be loaded. Please try again.');
+        if (!active) return;
+        if (!staticArticle) setContentError('This article is not available.');
+        setResolved(true);
+        if (!initialContent && staticArticle) {
+          getContent(staticArticle.id)
+            .then((nextContent) => { if (active) setContent(nextContent); })
+            .catch(() => { if (active) setContentError('The article content could not be loaded. Please try again.'); });
+        }
       });
 
     return () => { active = false; };
-  }, [article, initialContent]);
+  }, [slug, staticArticle, initialContent]);
 
   const blocks = useMemo(() => (content ? parseBlocks(content.content) : []), [content]);
   const headings = useMemo(() => blocks.filter((block): block is Extract<ArticleBlock, { type: 'heading' }> => block.type === 'heading' && block.level === 2), [blocks]);
 
-  if (!article) {
+  if (!article && !resolved) {
+    return <div className="insights-page insight-article-page"><p className="insight-article__content-loading" role="status">Loading article…</p></div>;
+  }
+
+  if (!article && resolved) {
     return (
       <div className="insights-page insight-article-page">
         <section className="insight-article-not-found">
@@ -197,7 +211,7 @@ export const InsightArticlePage: React.FC<InsightArticlePageProps> = ({ slug, on
             </aside>
 
             <article className="insight-article__body">
-              {content && blocks.map((block, index) => {
+              {content?.contentHtml ? <div dangerouslySetInnerHTML={{ __html: content.contentHtml }} /> : content && blocks.map((block, index) => {
                 if (block.type === 'heading') {
                   const Heading = block.level === 2 ? 'h2' : 'h3';
                   return <Heading id={block.id} key={block.id}>{block.text}</Heading>;
@@ -208,6 +222,7 @@ export const InsightArticlePage: React.FC<InsightArticlePageProps> = ({ slug, on
                 return <p key={`paragraph-${index}`}>{block.text}</p>;
               })}
 
+              {!article && !resolved && <p className="insight-article__content-loading" role="status">Loading article…</p>}
               {!content && !contentError && <p className="insight-article__content-loading" role="status">Loading article…</p>}
               {contentError && <p className="insight-article__content-error" role="alert">{contentError}</p>}
               {content && <ReferenceTable source={content.tables} />}

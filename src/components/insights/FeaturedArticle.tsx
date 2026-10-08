@@ -1,27 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { featuredArticle } from '../../data/insightsData';
+import { featuredArticle, type InsightArticle } from '../../data/insightsData';
 import { ArticleImage } from './ArticleImage';
 
-export const FeaturedArticle: React.FC = () => (
+export const FeaturedArticle: React.FC<{ article?: InsightArticle }> = ({ article = featuredArticle }) => (
   <article className="featured-article">
-    <Link className="featured-article__image-link" to={featuredArticle.url} aria-label={`Read ${featuredArticle.title}`}>
+    <Link className="featured-article__image-link" to={article.url} aria-label={`Read ${article.title}`}>
       <ArticleImage
-        image={featuredArticle.image}
-        alt={featuredArticle.title}
+        image={article.image}
+        alt={article.title}
         className="featured-article__image"
       />
     </Link>
 
     <h3>
-      <Link to={featuredArticle.url}>{featuredArticle.title}</Link>
+      <Link to={article.url}>{article.title}</Link>
     </h3>
 
-    <p className="featured-article__summary">{featuredArticle.summary}</p>
+    <p className="featured-article__summary">{article.excerpt}</p>
 
     <div className="featured-article__meta">
-      <span>{featuredArticle.author} · {featuredArticle.date}</span>
-      <Link className="insights-read-link" to={featuredArticle.url}>
+      <span>{article.author} · {article.date}</span>
+      <Link className="insights-read-link" to={article.url}>
         Read article <span aria-hidden="true">→</span>
       </Link>
     </div>

@@ -327,7 +327,7 @@ export function resolveSeoDocument(pathnameInput: string, context: SeoRouteConte
     }
   }
 
-  if (pathname === '/admin/import' || pathname.startsWith('/admin/')) {
+  if (pathname === '/adminzz' || pathname.startsWith('/adminzz/')) {
     return {
       title: 'Catalogue Administration | TechnoEdge',
       description: 'Restricted catalogue administration area.',

@@ -12,57 +12,55 @@ interface InsightCommentsProps {
   articleId: string;
 }
 
-const storageKey = (articleId: string) => `technoedge-insight-comments:${articleId}`;
-
-const loadComments = (articleId: string): InsightComment[] => {
-  try {
-    const stored = window.localStorage.getItem(storageKey(articleId));
-    return stored ? JSON.parse(stored) as InsightComment[] : [];
-  } catch {
-    return [];
-  }
-};
-
 export const InsightComments: React.FC<InsightCommentsProps> = ({ articleId }) => {
-  const [comments, setComments] = useState<InsightComment[]>(() => loadComments(articleId));
+  const [comments, setComments] = useState<InsightComment[]>([]);
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [confirmation, setConfirmation] = useState('');
 
   useEffect(() => {
-    setComments(loadComments(articleId));
+    let active = true;
+    fetch(`/api/insights/${encodeURIComponent(articleId)}/comments`)
+      .then(async (response) => {
+        if (!response.ok) throw new Error('Comments could not be loaded.');
+        return response.json() as Promise<{ data: InsightComment[] }>;
+      })
+      .then((result) => { if (active) setComments(result.data || []); })
+      .catch(() => { if (active) setComments([]); });
     setName('');
+    setEmail('');
     setMessage('');
     setError('');
     setConfirmation('');
+    return () => { active = false; };
   }, [articleId]);
 
-  const submitComment = (event: React.FormEvent<HTMLFormElement>) => {
+  const submitComment = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const cleanName = name.trim();
+    const cleanEmail = email.trim();
     const cleanMessage = message.trim();
 
-    if (cleanName.length < 2 || cleanMessage.length < 10) {
+    if (cleanName.length < 2 || !cleanEmail || cleanMessage.length < 10) {
       setConfirmation('');
-      setError('Please enter your name and a comment of at least 10 characters.');
+      setError('Please enter your name, email, and a comment of at least 10 characters.');
       return;
     }
-
-    const nextComment: InsightComment = {
-      id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-      name: cleanName,
-      message: cleanMessage,
-      createdAt: new Date().toISOString(),
-    };
-    const nextComments = [nextComment, ...comments];
-
-    setComments(nextComments);
-    window.localStorage.setItem(storageKey(articleId), JSON.stringify(nextComments));
-    setName('');
-    setMessage('');
-    setError('');
-    setConfirmation('Saved in this browser only. Your comment is not published to other visitors.');
+    try {
+      const response = await fetch(`/api/insights/${encodeURIComponent(articleId)}/comments`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: cleanName, email: cleanEmail, message: cleanMessage }),
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(body.error || 'Your comment could not be submitted.');
+      setName(''); setEmail(''); setMessage(''); setError('');
+      setConfirmation('Thanks. Your comment is awaiting approval before it appears publicly.');
+    } catch (submissionError) {
+      setConfirmation('');
+      setError(submissionError instanceof Error ? submissionError.message : 'Your comment could not be submitted.');
+    }
   };
 
   return (
@@ -78,6 +76,20 @@ export const InsightComments: React.FC<InsightCommentsProps> = ({ articleId }) =
       </div>
 
       <form className="insight-comments__form" onSubmit={submitComment} noValidate>
+        <div className="insight-comments__field">
+          <label htmlFor="insight-comment-email">Email <span>(private)</span></label>
+          <input
+            id="insight-comment-email"
+            name="email"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            autoComplete="email"
+            maxLength={254}
+            placeholder="you@company.com"
+          />
+        </div>
+
         <div className="insight-comments__field">
           <label htmlFor="insight-comment-name">Name</label>
           <input
@@ -106,7 +118,7 @@ export const InsightComments: React.FC<InsightCommentsProps> = ({ articleId }) =
         </div>
 
         <div className="insight-comments__form-footer">
-          <p>Comments in this prototype are stored only in this browser.</p>
+          <p>Your email stays private. Approved comments are published publicly.</p>
           <button type="submit">
             Post comment <Send aria-hidden="true" />
           </button>
