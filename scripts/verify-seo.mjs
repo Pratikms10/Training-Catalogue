@@ -175,11 +175,8 @@ assert.match(notFoundHtml, /<meta\s+name="robots"\s+content="noindex, follow"/i)
 assert.match(notFoundHtml, /<h1\b[^>]*>Page not found<\/h1>/i);
 
 const vercel = JSON.parse(await readFile(path.join(projectRoot, 'vercel.json'), 'utf8'));
-assert.ok(vercel.redirects.some((rule) => rule.source === '/website' && rule.destination === '/' && rule.permanent === true));
-assert.ok(vercel.redirects.some((rule) => rule.source === '/website/' && rule.destination === '/' && rule.permanent === true));
-assert.ok(vercel.redirects.some((rule) => rule.source === '/website/index.html' && rule.destination === '/' && rule.permanent === true));
 assert.ok(vercel.redirects.some((rule) => rule.source === '/e-learning' && rule.destination === '/e-learning/' && rule.permanent === true));
-assert.ok(vercel.rewrites.some((rule) => rule.source === '/' && rule.destination === '/website/index.html'));
+assert.ok(vercel.rewrites.some((rule) => rule.source === '/' && rule.destination === '/website'));
 assert.equal(vercel.cleanUrls, true, 'Clean URLs must be enabled for prerendered HTML routes.');
 for (const forbidden of ['/programmes/:path*', '/insights/:path*', '/careers/:path*', '/website/:path*', '/e-learning/:path*']) {
   assert.ok(!vercel.rewrites.some((rule) => rule.source === forbidden), `Catch-all rewrite would create soft 200 responses: ${forbidden}`);

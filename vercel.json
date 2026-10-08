@@ -15,9 +15,6 @@
       "permanent": true
     },
     { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/website", "destination": "/", "permanent": true },
-    { "source": "/website/", "destination": "/", "permanent": true },
-    { "source": "/website/index.html", "destination": "/", "permanent": true },
     { "source": "/e-learning", "destination": "/e-learning/", "permanent": true },
     { "source": "/e-learning/index.html", "destination": "/e-learning/", "permanent": true },
     { "source": "/catalogue/", "destination": "/catalogue", "permanent": true },
@@ -62,7 +59,7 @@
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index" },
     { "source": "/sitemap-insights.xml", "destination": "/api/insights-sitemap" },
-    { "source": "/", "destination": "/website/index.html" },
+    { "source": "/", "destination": "/website" },
     { "source": "/adminzz/:path*", "destination": "/app-shell.html" }
   ]
 }
