@@ -8,7 +8,7 @@ ALTER TABLE catalogue.categories
 
 ALTER TABLE catalogue.categories
   ADD CONSTRAINT categories_prefix_check
-    CHECK (id_prefix IN ('RB', 'PP', 'PI', 'TT', 'CF', 'TC', 'CER'));
+    CHECK (id_prefix IN ('RB', 'PP', 'PI', 'BS', 'TT', 'CF', 'TC', 'CER'));
 
 UPDATE catalogue.categories
 SET id_prefix = 'PI',
@@ -20,8 +20,12 @@ ALTER TABLE catalogue.courses
 
 ALTER TABLE catalogue.courses
   ADD CONSTRAINT courses_id_shape_check CHECK (
-    course_id ~ '^(RB|PP|PI|TT|TC|CER)[0-9]{4,}$'
+    course_id ~ '^(RB|PP|PI|BS|TT|TC|CER)[0-9]{4,}$'
     OR (course_id ~ '^[A-Z0-9]{2,12}-[A-Z0-9][A-Z0-9-]{1,30}$' AND course_id ~ '[0-9]')
   );
+
+INSERT INTO catalogue.schema_migrations (version)
+VALUES ('013_process_catalogue')
+ON CONFLICT (version) DO NOTHING;
 
 COMMIT;

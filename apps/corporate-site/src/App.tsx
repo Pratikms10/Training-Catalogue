@@ -13,9 +13,12 @@ const HomeInsightsSection = lazy(() => import('./HomeInsightsSection'));
 const ClientLogosSection = lazy(() => import('./ClientLogosSection'));
 const ContactSection = lazy(() => import('./ContactSection'));
 
-function CorporateHome() {
+function CorporateInteractions() {
   useEffect(() => mountCorporateInteractions(), []);
+  return null;
+}
 
+function CorporateHome() {
   return (
     <div id="corporate-site">
 
@@ -214,6 +217,7 @@ function CorporateHome() {
     </section>
 
     <ContactSection />
+    <CorporateInteractions />
     </Suspense>
   </main>
 

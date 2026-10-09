@@ -75,4 +75,8 @@ BEGIN
 END;
 $$;
 
+INSERT INTO catalogue.schema_migrations (version)
+VALUES ('014_behavioural_catalogue')
+ON CONFLICT (version) DO NOTHING;
+
 COMMIT;
