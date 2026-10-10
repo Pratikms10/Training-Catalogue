@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './hero-rotator.css';
 
 const heroSlides = [
@@ -30,13 +30,35 @@ const heroSlides = [
 
 export default function HeroRotator() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [rotationPaused, setRotationPaused] = useState(false);
   const activeSlide = heroSlides[activeIndex];
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (rotationPaused || reducedMotion.matches) return undefined;
+
+    const timer = window.setInterval(() => {
+      if (!document.hidden) {
+        setActiveIndex((currentIndex) => (currentIndex + 1) % heroSlides.length);
+      }
+    }, 3000);
+
+    return () => window.clearInterval(timer);
+  }, [activeIndex, rotationPaused]);
 
   return (
     <section
       className="hero hero-rotator"
       aria-roledescription="carousel"
       aria-label="TechnoEdge capability highlights"
+      onMouseEnter={() => setRotationPaused(true)}
+      onMouseLeave={() => setRotationPaused(false)}
+      onFocusCapture={() => setRotationPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+          setRotationPaused(false);
+        }
+      }}
     >
       <div className="hero-backgrounds" aria-hidden="true">
         {heroSlides.map((slide, index) => (
