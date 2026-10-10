@@ -29,13 +29,17 @@ export const IntroductionStructure: React.FC = () => {
       </div>
 
       <div className="catalogue-hero__media" aria-hidden="true">
-        <img
+        <video
           className="catalogue-hero__video"
-          src="/media/technoedge-catalogue-hero-poster.jpg"
-          alt=""
+          src="/media/technoedge-catalogue-hero.mp4"
+          poster="/media/technoedge-catalogue-hero-poster.jpg"
           width={854}
           height={480}
-          fetchPriority="high"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
           aria-hidden="true"
           tabIndex={-1}
         />
