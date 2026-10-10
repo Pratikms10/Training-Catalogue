@@ -4,25 +4,27 @@ import './hero-rotator.css';
 const heroSlides = [
   {
     eyebrow: 'AI CAPABILITY FOR EVERY TEAM',
-    heading: 'Turn AI ambition into',
-    accent: 'role-ready capability.',
+    heading: 'Turn AI Ambition Into',
+    accent: 'Role-Ready Capability.',
+    headingMarkup: 'Turn AI Ambition<br><span><b>Into</b> Role-Ready<br>Capability.</span>',
     description: 'Equip teams across IT, operations, sales and leadership to use AI safely, practically and at scale.',
     image: '/website/assets/hero-ai-capability-ascent-optimized.jpg',
     mobileImage: '/website/assets/hero-ai-capability-ascent-mobile.webp',
     mobileImage2x: '/website/assets/hero-ai-capability-ascent-mobile-2x.webp',
     variant: 'ai',
-    primaryAction: { label: 'Explore AI capability', href: '#ai-journey' },
-    secondaryAction: { label: 'Talk to us', href: '#contact' },
+    primaryAction: { label: 'Explore AI Capability', href: '#ai-journey' },
+    secondaryAction: { label: 'Talk To Us', href: '#contact' },
   },
   {
     eyebrow: 'WORKFORCE LEARNING',
-    heading: 'Skills that move',
-    accent: 'business forward.',
+    heading: 'Skills That Move',
+    accent: 'Business Forward.',
+    headingMarkup: 'Skills That Move<br><span>Business Forward.</span>',
     description: 'Role-based learning and practical AI support built for measurable outcomes.',
     image: '/website/assets/hero-career-growth-v2-optimized.jpg',
     variant: 'workforce',
-    primaryAction: { label: 'Explore our services', href: '#services' },
-    secondaryAction: { label: 'Talk to us', href: '#contact' },
+    primaryAction: { label: 'Explore Our Services', href: '#services' },
+    secondaryAction: { label: 'Talk To Us', href: '#contact' },
   },
 ] as const;
 
@@ -65,7 +67,7 @@ export default function HeroRotator() {
           // page's LCP text while still allowing slide controls to update it.
           dangerouslySetInnerHTML={{ __html: `
             <span class="hero-kicker">${activeSlide.eyebrow}</span>
-            <h1>${activeSlide.heading}<br><span>${activeSlide.accent}</span></h1>
+            <h1>${activeSlide.headingMarkup}</h1>
             <p>${activeSlide.description}</p>
             <div class="hero-actions">
               <a class="btn btn-solid hero-button" href="${activeSlide.primaryAction.href}">${activeSlide.primaryAction.label} <span>›</span></a>

@@ -157,7 +157,7 @@ export function mountCorporateInteractions(): () => void {
     const node = mediaNodes[galleryIndex];
     const sourceImage = node.querySelector<HTMLImageElement>('img');
     if (sourceImage) {
-      lightboxImage.src = sourceImage.getAttribute('src') || '';
+      lightboxImage.src = sourceImage.currentSrc || sourceImage.src;
       lightboxImage.alt = sourceImage.alt;
       lightboxImage.hidden = false;
       lightboxQuote.hidden = true;

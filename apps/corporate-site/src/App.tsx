@@ -13,6 +13,24 @@ const HomeInsightsSection = lazy(() => import('./HomeInsightsSection'));
 const ClientLogosSection = lazy(() => import('./ClientLogosSection'));
 const ContactSection = lazy(() => import('./ContactSection'));
 
+interface GalleryImageProps {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}
+
+function GalleryImage({ src, alt, width, height }: GalleryImageProps) {
+  const optimizedSource = src.replace(/\.(?:jpe?g)$/i, '-1200.webp');
+
+  return (
+    <picture>
+      <source srcSet={optimizedSource} type="image/webp" />
+      <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
+    </picture>
+  );
+}
+
 function CorporateInteractions() {
   useEffect(() => mountCorporateInteractions(), []);
   return null;
@@ -49,7 +67,7 @@ function CorporateHome() {
     <section className="impact" aria-labelledby="impact-title">
       <div className="impact-shell">
         <header className="impact-intro">
-          <h2 id="impact-title">Built through experience. Proven through scale.</h2>
+          <h2 id="impact-title">Built Through <em>Experience.</em><br />Proven Through <em>Scale.</em></h2>
           <p>Four measures of the capability we build with teams worldwide.</p>
         </header>
         <div className="impact-grid" aria-label="Company metrics">
@@ -67,8 +85,9 @@ function CorporateHome() {
 
     <section className="why why-unified section" aria-labelledby="why-heading">
       <header className="why-unified-intro">
-        <div><span className="eyebrow">WHY TECHNOEDGE</span><h2 id="why-heading">Built to teach.<br /><em>Recognised to deliver.</em></h2></div>
-        <p>Five years of helping teams turn learning into practical capability—through expert-led training, digital experiences and AI-enabled solutions.</p>
+        <span className="eyebrow">WHY TECHNOEDGE</span>
+        <h2 id="why-heading">Built to <em>teach.</em><br />Recognised to <em>deliver.</em></h2>
+        <p>Five years of helping teams turn learning into practical capability through expert-led training, digital experiences and AI-enabled solutions.</p>
       </header>
       <div className="why-unified-showcase" aria-label="TechnoEdge partnerships, recognition and experience">
         <figure className="why-proof-card why-proof-dpiit">
@@ -95,14 +114,14 @@ function CorporateHome() {
       <div className="media-pin">
         <header className="media-universe-intro">
           <span>INSIDE THE EXPERIENCE</span>
-          <h2 id="media-universe-title">Real moments.<br />Real impact.</h2>
-          <p>Real classrooms, learner voices, and recognition. Select a moment to explore.</p>
+          <h2 id="media-universe-title">Real Moments. <em>Real Impact.</em></h2>
+          <p>Real classroom moments, learner voices and recognition. Select a moment to explore.</p>
         </header>
 
         <div className="media-field">
           <div className="media-world">
             <figure className="media-node media-photo" data-focus="0.06" data-x="390" data-y="310" data-zoom="1.06" style={{ '--wx': '390px', '--wy': '310px', '--node-width': '520px', '--depth': '-60px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-auditorium-wide.jpeg" alt="Large audience attending an artificial intelligence learning forum" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-auditorium-wide.jpeg" alt="Large audience attending an artificial intelligence learning forum" width={1280} height={960} />
               <figcaption>Learning at scale</figcaption>
             </figure>
 
@@ -111,12 +130,12 @@ function CorporateHome() {
             </blockquote>
 
             <figure className="media-node media-photo" data-focus="0.18" data-x="1510" data-y="290" data-zoom="1.02" style={{ '--wx': '1510px', '--wy': '290px', '--node-width': '560px', '--depth': '-20px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-classroom-intro.jpeg" alt="Instructor addressing learners in a corporate classroom" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-classroom-intro.jpeg" alt="Instructor addressing learners in a corporate classroom" width={4032} height={2268} />
               <figcaption>Instructor-led capability building</figcaption>
             </figure>
 
             <figure className="media-node media-photo media-tall" data-focus="0.24" data-x="2070" data-y="420" data-zoom="1.12" style={{ '--wx': '2070px', '--wy': '420px', '--node-width': '430px', '--depth': '50px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-team-campus.jpeg" alt="Training cohort gathered after a learning session" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-team-campus.jpeg" alt="Training cohort gathered after a learning session" width={4000} height={3000} />
               <figcaption>Learning communities</figcaption>
             </figure>
 
@@ -125,17 +144,17 @@ function CorporateHome() {
             </blockquote>
 
             <figure className="media-node media-photo" data-focus="0.36" data-x="1420" data-y="1070" data-zoom="1.04" style={{ '--wx': '1420px', '--wy': '1070px', '--node-width': '560px', '--depth': '-45px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-ai-lab.jpeg" alt="Learners participating in a hands-on artificial intelligence lab" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-ai-lab.jpeg" alt="Learners participating in a hands-on artificial intelligence lab" width={1600} height={716} />
               <figcaption>Applied AI in the room</figcaption>
             </figure>
 
             <figure className="media-node media-photo media-tall" data-focus="0.42" data-x="860" data-y="1160" data-zoom="1.22" style={{ '--wx': '860px', '--wy': '1160px', '--node-width': '360px', '--depth': '70px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-auditorium-selfie.jpeg" alt="Trainers and a large auditorium audience after a session" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-auditorium-selfie.jpeg" alt="Trainers and a large auditorium audience after a session" width={1280} height={960} />
               <figcaption>A room full of learning</figcaption>
             </figure>
 
             <figure className="media-node media-photo" data-focus="0.48" data-x="340" data-y="990" data-zoom="1.08" style={{ '--wx': '340px', '--wy': '990px', '--node-width': '500px', '--depth': '-10px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-team-global.jpeg" alt="International learning team gathered after a workshop" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-team-global.jpeg" alt="International learning team gathered after a workshop" width={2016} height={1134} />
               <figcaption>Global teams, shared progress</figcaption>
             </figure>
 
@@ -144,52 +163,47 @@ function CorporateHome() {
             </blockquote>
 
             <figure className="media-node media-photo" data-focus="0.60" data-x="820" data-y="690" data-zoom="1.02" style={{ '--wx': '820px', '--wy': '690px', '--node-width': '570px', '--depth': '-65px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-classroom-session.jpeg" alt="Corporate learners attending a practical data storytelling session" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-classroom-session.jpeg" alt="Corporate learners attending a practical data storytelling session" width={4032} height={2268} />
               <figcaption>Practice in progress</figcaption>
             </figure>
 
             <figure className="media-node media-photo" data-focus="0.66" data-x="1320" data-y="600" data-zoom="1.08" style={{ '--wx': '1320px', '--wy': '600px', '--node-width': '500px', '--depth': '25px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-team-corporate.jpeg" alt="Corporate training cohort celebrating completion" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-team-corporate.jpeg" alt="Corporate training cohort celebrating completion" width={1600} height={1200} />
               <figcaption>Capability unlocked together</figcaption>
             </figure>
 
             <figure className="media-node media-photo" data-focus="0.72" data-x="1780" data-y="590" data-zoom="1.1" style={{ '--wx': '1780px', '--wy': '590px', '--node-width': '470px', '--depth': '-25px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-team-workshop.jpeg" alt="Corporate workshop participants celebrating their learning" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-team-workshop.jpeg" alt="Corporate workshop participants celebrating their learning" width={1280} height={960} />
               <figcaption>Workshop completion</figcaption>
             </figure>
 
             <figure className="media-node media-photo" data-focus="0.78" data-x="2100" data-y="1080" data-zoom="1.02" style={{ '--wx': '2100px', '--wy': '1080px', '--node-width': '520px', '--depth': '35px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-bloom-session.jpeg" alt="Facilitator leading a technology training session" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-bloom-session.jpeg" alt="Facilitator leading a technology training session" width={1280} height={960} />
               <figcaption>Learning designed for work</figcaption>
             </figure>
 
             <figure className="media-node media-photo" data-focus="0.85" data-x="1510" data-y="1370" data-zoom="1.05" style={{ '--wx': '1510px', '--wy': '1370px', '--node-width': '540px', '--depth': '-40px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-interactive-room.jpeg" alt="Interactive classroom with learners engaged around shared tables" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-interactive-room.jpeg" alt="Interactive classroom with learners engaged around shared tables" width={1600} height={1200} />
               <figcaption>Participation over presentation</figcaption>
             </figure>
 
             <figure className="media-node media-photo" data-focus="0.92" data-x="690" data-y="1370" data-zoom="1.04" style={{ '--wx': '690px', '--wy': '1370px', '--node-width': '560px', '--depth': '30px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/training-enterprise-team.jpeg" alt="Enterprise learning community gathered after training" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/training-enterprise-team.jpeg" alt="Enterprise learning community gathered after training" width={1600} height={1200} />
               <figcaption>Real people. Real capability.</figcaption>
             </figure>
 
             <figure className="media-node media-photo media-recognition" style={{ '--node-width': '390px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/recognition-mit-memento.jpg" alt="Military Institute of Technology commemorative memento" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/recognition-mit-memento.jpg" alt="Military Institute of Technology commemorative memento" width={1650} height={2200} />
               <figcaption>Military Institute of Technology memento</figcaption>
             </figure>
 
             <figure className="media-node media-photo media-recognition" style={{ '--node-width': '360px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/recognition-smsos-2025.jpg" alt="SMSOS Conference 2025 commemorative memento" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/recognition-smsos-2025.jpg" alt="SMSOS Conference 2025 commemorative memento" width={1650} height={2200} />
               <figcaption>SMSOS Conference 2025</figcaption>
             </figure>
 
-            <figure className="media-node media-photo media-recognition" style={{ '--node-width': '340px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/recognition-youtube-letter.jpg" alt="Letter from YouTube marking Pavan Lalwani’s 100,000-subscriber milestone" loading="lazy" />
-              <figcaption>Letter marking the creator milestone</figcaption>
-            </figure>
-
             <figure className="media-node media-photo media-recognition" style={{ '--node-width': '350px' } as React.CSSProperties}>
-              <img src="/website/assets/training-media/recognition-mit-letter.jpg" alt="Framed appreciation letter from Military Institute of Technology for a TechnoEdge skill-development course" loading="lazy" />
+              <GalleryImage src="/website/assets/training-media/recognition-mit-letter.jpg" alt="Framed appreciation letter from Military Institute of Technology for a TechnoEdge skill-development course" width={1650} height={2200} />
               <figcaption>Appreciation from Military Institute of Technology</figcaption>
             </figure>
           </div>

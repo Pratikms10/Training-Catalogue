@@ -111,7 +111,7 @@ export default function ContactSection() {
         <div className="contact-story">
           <div className="contact-story-main">
             <span className="contact-kicker">LET'S BUILD CAPABILITY</span>
-            <h2 id="contact-heading">Let's build what your team needs next.</h2>
+            <h2 id="contact-heading"><em>Let’s build</em> what your team needs next.</h2>
             <p>Start with the goal. We can help you explore the right training, digital learning, or AI support.</p>
             <div className="contact-scope" aria-label="What we can discuss">
               <span>Corporate training</span>

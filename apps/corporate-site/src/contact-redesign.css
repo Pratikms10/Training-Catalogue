@@ -5,8 +5,8 @@
 }
 .contact-shell {
   display: grid;
-  grid-template-columns: minmax(0, .83fr) minmax(0, 1.17fr);
-  width: min(100%, 1400px);
+  grid-template-columns: minmax(330px, .72fr) minmax(0, 1.28fr);
+  width: min(100%, 1220px);
   margin: 0 auto;
   overflow: hidden;
   border: 1px solid rgba(38, 102, 196, .18);
@@ -20,8 +20,8 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
-  min-height: 740px;
-  padding: clamp(2.3rem, 4vw, 4.25rem);
+  min-height: 650px;
+  padding: clamp(2rem, 3vw, 3rem);
   overflow: hidden;
   background: radial-gradient(circle at 96% 20%, rgba(115, 194, 251, .3), transparent 40%), linear-gradient(145deg, #01266A, #2666C4 115%);
   color: #fff;
@@ -52,25 +52,29 @@
 }
 .contact-kicker,
 .contact-panel-intro > span { font-size: .69rem; font-weight: 900; letter-spacing: .2em; }
-.contact-kicker { color: #73C2FB; }
+.contact-kicker { display: inline-flex; padding: .42rem .9rem; border-radius: 999px; background: #b7d8ff; color: #01266A; line-height: 1; }
 .contact-story h2 {
+  width: 100%;
   max-width: 12ch;
-  margin: 1.3rem 0 1.25rem;
-  font-family: News706, Georgia, serif;
-  font-size: clamp(3.1rem, 4.3vw, 5rem);
-  font-weight: 700;
-  line-height: 1.02;
+  margin: 1.4rem 0 1.25rem;
+  color: #fff;
+  font-family: Arial,"Segoe UI",sans-serif;
+  font-size: clamp(2.3rem,3vw,3.25rem);
+  font-weight: 760;
+  line-height: 1.08;
   letter-spacing: -.045em;
   text-wrap: balance;
 }
+.contact-story h2 em { color: #73C2FB; font: inherit; font-style: normal; }
 .contact-story-main > p { max-width: 37ch; margin: 0; color: #F0F7FF; font-size: clamp(1rem, 1.24vw, 1.17rem); line-height: 1.6; }
 .contact-scope { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 2.1rem; }
 .contact-scope span { padding: .48rem .74rem; border: 1px solid rgba(115, 194, 251, .34); border-radius: 999px; background: rgba(255, 255, 255, .07); color: #F0F7FF; font-size: .73rem; font-weight: 750; }
 .contact-direct { position: relative; margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(218, 232, 255, .22); }
 .contact-direct > span { display: block; margin-bottom: .75rem; color: #73C2FB; font-size: .74rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; }
 .contact-direct > div { display: flex; flex-wrap: wrap; gap: .65rem; }
-.contact-direct a { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: .55rem .8rem; border: 1px solid rgba(222, 237, 255, .36); border-radius: 10px; background: rgba(255, 255, 255, .09); color: #fff; font-size: .84rem; font-weight: 780; text-decoration: none; transition: background .2s ease, transform .2s ease; }
-.contact-direct a:hover { background: rgba(255, 255, 255, .18); transform: translateY(-2px); }
+.contact-direct a { display: inline-flex; flex: 1 1 145px; align-items: center; justify-content: center; gap: .45rem; min-height: 42px; padding: .5rem .7rem; border: 1px solid #73C2FB; border-radius: 6px; background: #fff; color: #01266A; font-size: .8rem; font-weight: 800; text-align: center; text-decoration: none; transition: background .2s ease, transform .2s ease; }
+.contact-direct a svg { display: none; }
+.contact-direct a:hover { background: #F0F7FF; transform: translateY(-2px); }
 .contact-direct a:focus-visible { outline: 2px solid #73C2FB; outline-offset: 3px; }
 
 .contact-panel { min-width: 0; padding: clamp(2rem, 3.8vw, 4rem); }

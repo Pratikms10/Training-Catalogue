@@ -1,5 +1,5 @@
 .hero.hero-rotator {
-  min-height: clamp(640px, 70vw, 820px);
+  min-height: clamp(650px, calc(100svh - 80px), 880px);
   isolation: isolate;
   overflow: hidden;
   background: #F0F7FF;
@@ -27,15 +27,15 @@
 .hero-background-ai,
 .hero-background-workforce {
   background-color: #F0F7FF;
-  object-position: right center;
-  object-fit: contain;
+  object-position: center;
+  object-fit: cover;
 }
 
 .hero-rotator::after {
   z-index: -1;
   content: "";
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(255,255,255,.99) 0%, rgba(255,255,255,.94) 30%, rgba(255,255,255,.56) 48%, rgba(255,255,255,.08) 70%, rgba(255,255,255,.02) 100%);
+  background: linear-gradient(90deg, #fff 0%, #fff 32%, rgba(255,255,255,.96) 38%, rgba(255,255,255,.62) 48%, rgba(255,255,255,.12) 64%, rgba(255,255,255,0) 74%);
 }
 
 .hero-rotator-content {
@@ -48,29 +48,60 @@
 }
 
 .hero-rotator .hero-copy {
-  width: min(100%, 760px);
-  max-width: 760px;
-  padding-top: 3.4rem;
-  padding-bottom: 1.5rem;
+  width: min(47vw, 820px);
+  max-width: none;
+  padding: 2.5rem 0 5.5rem clamp(2rem, 8.35vw, 10rem);
 }
 
 .hero-rotator .hero-copy h1 {
   font-family: Arial, "Segoe UI", sans-serif;
-  font-weight: 700;
+  margin: 0 0 clamp(2.4rem, 5vh, 4.4rem);
+  color: #01266A;
+  font-size: clamp(3.15rem, 4.55vw, 5.45rem);
+  font-weight: 750;
+  line-height: 1.02;
+  letter-spacing: -.055em;
+  text-wrap: balance;
 }
+.hero-rotator .hero-copy h1 span { color: #2666C4; }
+.hero-rotator .hero-copy h1 span b { color: #01266A; font: inherit; }
 
 .hero-rotator .hero-kicker {
-  margin-bottom: 1.1rem;
-  color: #2666C4;
+  margin-bottom: clamp(2rem, 4vh, 3.2rem);
+  padding: .48rem 1.55rem;
+  border-radius: 999px;
+  background: #a9d5fb;
+  color: #01266A;
+  font-size: clamp(.7rem, .9vw, .9rem);
+  line-height: 1;
 }
 
-.hero-rotator .hero-copy > p { max-width: 620px; }
+.hero-rotator .hero-copy > p {
+  max-width: 620px;
+  margin: 0 0 clamp(2rem, 4vh, 3.4rem);
+  color: rgba(0,0,0,.78);
+  font-size: clamp(1rem, 1.25vw, 1.35rem);
+  line-height: 1.35;
+}
+.hero-rotator .hero-actions { gap: 1.7rem; }
+.hero-rotator .hero-button {
+  min-height: 60px;
+  padding: .9rem 1.8rem;
+  border-radius: 7px;
+  font-family: Arial, "Segoe UI", sans-serif;
+  font-size: clamp(.95rem, 1.05vw, 1.15rem);
+}
+.hero-rotator .hero-button.btn-solid { min-width: 310px; }
+.hero-rotator .hero-button.btn-outline { min-width: 208px; }
 
 .hero-rotator-controls {
+  position: absolute;
+  bottom: clamp(2rem, 6vh, 4.8rem);
+  left: clamp(2rem, 8.35vw, 10rem);
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1rem clamp(1.25rem, 4vw, 4.5rem) 3.25rem;
+  padding: 0;
   color: #01266A;
 }
 
@@ -91,25 +122,66 @@
 .hero-rotator-dots button:focus-visible { outline: 3px solid #2666C4; outline-offset: 3px; }
 
 @media (max-width: 1050px) {
+  .hero.hero-rotator { min-height: 650px; }
   .hero-background-ai,
   .hero-background-workforce {
-    object-position: 72% center;
+    object-position: 67% center;
     object-fit: cover;
   }
+  .hero-rotator::after {
+    background: linear-gradient(90deg, #fff 0%, rgba(255,255,255,.98) 31%, rgba(255,255,255,.78) 47%, rgba(255,255,255,.18) 68%, transparent 82%);
+  }
+  .hero-rotator .hero-copy {
+    width: min(58vw, 570px);
+    padding: 2.5rem 0 4.5rem clamp(2rem, 4vw, 3rem);
+  }
+  .hero-rotator .hero-copy h1 {
+    margin-bottom: 2.3rem;
+    font-size: clamp(2.65rem, 5vw, 3rem);
+  }
+  .hero-rotator .hero-kicker { margin-bottom: 1.8rem; }
+  .hero-rotator .hero-copy > p { margin-bottom: 2rem; font-size: 1rem; }
+  .hero-rotator .hero-actions { gap: .75rem; }
+  .hero-rotator .hero-button { min-height: 52px; padding: .75rem 1rem; font-size: .9rem; }
+  .hero-rotator .hero-button.btn-solid { min-width: 220px; }
+  .hero-rotator .hero-button.btn-outline { min-width: 130px; }
+  .hero-rotator-controls { bottom: 2.2rem; left: clamp(2rem, 4vw, 3rem); }
 }
 
 @media (max-width: 760px) {
   .hero.hero-rotator {
-    min-height: 730px;
+    min-height: 690px;
     background:
       radial-gradient(circle at 82% 82%, rgba(115, 194, 251, .42), transparent 34%),
       radial-gradient(circle at 12% 18%, rgba(38, 102, 196, .14), transparent 32%),
       linear-gradient(160deg, #fff 0%, #F0F7FF 58%, #dceeff 100%);
   }
-  .hero-backgrounds { display: none; }
-  .hero-rotator::after { background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(255,255,255,.93) 42%, rgba(255,255,255,.67) 62%, rgba(255,255,255,.16) 100%); }
+  .hero-backgrounds { display: block; }
+  .hero-rotator::after { background: linear-gradient(180deg, rgba(255,255,255,.99) 0%, rgba(255,255,255,.96) 48%, rgba(255,255,255,.72) 68%, rgba(255,255,255,.2) 100%); }
   .hero-background-ai,
-  .hero-background-workforce { object-position: 75% center; }
-  .hero-rotator .hero-copy { padding-top: 4.75rem; }
-  .hero-rotator-controls { padding-bottom: 2.25rem; }
+  .hero-background-workforce { object-position: 70% center; }
+  .hero-rotator .hero-copy {
+    width: 100%;
+    padding: 2.7rem 1.25rem 8rem;
+  }
+  .hero-rotator .hero-kicker {
+    margin-bottom: 1.5rem;
+    padding: .42rem .85rem;
+    font-size: .62rem;
+  }
+  .hero-rotator .hero-copy h1 {
+    margin-bottom: 1.5rem;
+    font-size: clamp(2.55rem, 12vw, 3.65rem);
+    line-height: .98;
+  }
+  .hero-rotator .hero-copy > p { max-width: 34rem; margin-bottom: 1.6rem; line-height: 1.5; }
+  .hero-rotator .hero-actions { gap: .65rem; }
+  .hero-rotator .hero-button { min-width: 0 !important; min-height: 48px; padding: .7rem .95rem; }
+  .hero-rotator-controls { bottom: 2rem; left: 1.25rem; }
+}
+
+@media (max-width: 420px) {
+  .hero.hero-rotator { min-height: 720px; }
+  .hero-rotator .hero-copy h1 { font-size: clamp(2.35rem, 11.5vw, 3rem); }
+  .hero-rotator .hero-actions { align-items: stretch; flex-direction: column; width: min(100%, 290px); }
 }
